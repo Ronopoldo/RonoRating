@@ -7,13 +7,15 @@ app.get('/', function(request, response){ response.send(`Монитор акти
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
 
 
 client.on('messageCreate', msg => {
 
 if (msg.content.toLowerCase() == '/start')
   {
+
+
     let filepath = "./data/UserData/" + msg.author.id;
     console.log(filepath)
     if (!fs.existsSync(filepath)) 
@@ -69,7 +71,9 @@ if (msg.content.toLowerCase().startsWith('/card'))
 
 Canvacord.Canvas.trigger(User.avatarURL({ format: "png"}))
   .then(buffer => {
-    Canvacord.write(buffer, "./triggered.gif");
+    msg.channel.send({
+    files: [buffer]
+});
   })
   .catch(console.error);
 
