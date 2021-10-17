@@ -1,0 +1,27 @@
+{
+  "name": "node.js-v16-on-replit-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ronopoldo/RonoRating.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ronopoldo/RonoRating/issues"
+  },
+  "homepage": "https://github.com/Ronopoldo/RonoRating#readme",
+  "dependencies": {
+    "canvacord": "^5.2.3",
+    "discord.js": "^13.2.0",
+    "express": "^4.17.1",
+    "jimp": "^0.16.1",
+    "node": "^16.10.0"
+  }
+}
