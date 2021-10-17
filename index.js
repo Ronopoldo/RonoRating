@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const fs = require("fs");
-const sharp = require('sharp');
+const Canvacord = require("canvacord");
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
@@ -66,13 +66,17 @@ if (msg.content.toLowerCase().startsWith('/card'))
     client.users.fetch(pingedUser).then(User => 
       {
 
-        
 
-        
-sharp('./Images/Background/1.png')
-  .composite([{ input: '2.png', gravity: 'southeast' }])
- .toFile(User.id + '.png')
-        
+Canvacord.Canvas.trigger(User.avatarURL({ format: "png"}))
+  .then(buffer => {
+    Canvacord.write(buffer, "./triggered.gif");
+  })
+  .catch(console.error);
+
+
+// rank.build()
+
+//     });
         msg.reply(User.avatarURL() + '1')
         
 
