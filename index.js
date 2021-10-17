@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const fs = require("fs");
-const {Canvas} = require("canvacord");
+const sharp = require('sharp');
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
@@ -65,10 +65,15 @@ if (msg.content.toLowerCase().startsWith('/card'))
    }else {pingedUser = 'Не найдено пользователей! Используйте упомянание или его id, чтобы указать пользователя'}
     client.users.fetch(pingedUser).then(User => 
       {
-      
+
         
+
         
+sharp('./Images/Background/1.png')
+  .composite([{ input: '2.png', gravity: 'southeast' }])
+ .toFile(User.id + '.png')
         
+        msg.reply(User.avatarURL() + '1')
         
 
       },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
