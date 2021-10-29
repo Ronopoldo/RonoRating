@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const fs = require("fs");
+const jimp = require('jimp');
 const Canvacord = require("canvacord");
+const sharp = require("sharp");
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
@@ -69,21 +71,59 @@ if (msg.content.toLowerCase().startsWith('/card'))
       {
 
 
-Canvacord.Canvas.trigger(User.avatarURL({ format: "png"}))
-  .then(buffer => {
-    msg.channel.send({
-    files: [buffer]
-});
-  })
-  .catch(console.error);
+// Canvacord.Canvas.fuse('./Images/Background/1.png', User.avatarURL({ format: "png"})) //VVVV
+// sharp('./Images/Background/1.png')
+//   .composite([{ input: User.avatarURL({ format: "png"}), gravity: 'southeast' }])
+//  .toFile(User.id + '.png')
+
+
+//   ).then(buffer => { //User.avatarURL({ format: "png"})
+//     msg.channel.send({
+//     files: [buffer]
+// });
+//   })
+  // .catch(console.error);
 
 
 // rank.build()
 
 //     });
-        msg.reply(User.avatarURL() + '1')
-        
 
+
+
+// jimp.read('./Images/Background/1.png')
+//   .then(image => {
+//       image.mirror();
+//       console.log(image)
+//       image.write('test.png');
+//     // Do stuff with the image.
+//   })
+//   .catch(err => {
+//     // Handle an exception.
+//   });
+        
+//User.avatarURL({ format: "png"})
+
+
+// Jimp.read('./Images/Background/1.png', function (err, img) {
+//   var userava = Jimp.read('.test/1.png');
+//     img.blit(userava, 100,100)
+//    .write('same_ratio1.jpg'); // save
+ 
+// });
+
+
+async function main() {
+  const image = await jimp.read('./Images/Background/1.png');
+  const mask = await jimp.read(User.avatarURL({ format: "png"}, {size: 300}));
+  mask.circle()
+  image.resize(1024, 1024)
+  image.blit(mask,100,100);
+  image.write('./userCards/' + pingedUser + '.png')
+  await msg.channel.send({files: ['./userCards/' + pingedUser + '.png']});
+}
+
+main();
       },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }
 
