@@ -114,13 +114,25 @@ if (msg.content.toLowerCase().startsWith('/card'))
 
 
 async function main() {
-  const image = await jimp.read('./Images/Background/1.png');
-  const mask = await jimp.read(User.avatarURL({ format: "png"}, {size: 300}));
-  mask.circle()
+  const image = await jimp.read('./Images/Background/2.png');
+  const avatar = await jimp.read(User.avatarURL({ format: "png"}, {size: 128}));
+  const border = await jimp.read('./Images/Borders/1.png');
+  const font = await jimp.loadFont('./fonts/4.fnt');
+  const name = await jimp.read('./Images/Blank.png');
+  avatar.circle()
   image.resize(1024, 1024)
-  image.blit(mask,100,100);
-  image.write('./userCards/' + pingedUser + '.png')
-  await msg.channel.send({files: ['./userCards/' + pingedUser + '.png']});
+  border.resize(jimp.AUTO, 200)
+  name.print(font,0,0,'ПИСЯ КОТА ГЫГЫГЫЫГЫЫГЫГ')
+  name.resize(jimp.AUTO, 500)
+
+  image.blit(border,40,40)
+  image.blit(avatar,79,79);
+  image.blit(name, 200, 50)
+  // image.write('./userCards/' + pingedUser + '.png')
+  // await msg.channel.send({files: ['./userCards/' + pingedUser + '.png']});
+  img.getBuffer(Jimp.MIME_PNG, (err, buffer) => {
+  console.log(buffer);
+})
 }
 
 main();
