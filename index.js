@@ -80,15 +80,22 @@ if (msg.content.toLowerCase().startsWith('/card'))
 
 
 
-
+let fontsize = 70
+let nameLength = User.tag.length
 var request = require('request').defaults({ encoding: null });
  request.get(User.avatarURL({ format: "png"}, {size: 128}), function (err, res, body) {
 
 
-ctx.font = '80px "Main"'
+  console.log('Адоптируем...')
+  fontsize = 70 - (nameLength/3)*4
+console.log('Адоптация:' + fontsize)
+
+
+ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 50, 50)
-const out = fs.createWriteStream('temp.png')
-const stream = canvas.createPNGStream()
+console.log('Тег: ' + User.tag)
+let out = fs.createWriteStream(pingedUser + 'temp.png')
+let stream = canvas.createPNGStream()
 stream.pipe(out)
 out.on('finish', () =>  { console.log('The PNG file was created.') 
 
@@ -99,14 +106,19 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
 
 
           console.log('456')
-            sharp('./Images/Background/2.png')
+          sharp('./Images/Background/2.png')
             .resize(1024, 1024)
-            .jpeg()
-            .composite([{ input: '124.png', top: 40, left: 10}])
+            .composite([
+              { input: './Images/Borders/5.png', top: 50, left: 50},
+              { input: body, top: 76, left: 76},
+              { input: "./Images/circler.png", top: 76, left: 76},
+              { input: pingedUser + 'temp.png', top: 74, left: 170}])
             // .composite([{ input: 'temp.png', top: 40, left: 10}])
-            .toFile(User.id + '.png', function(err) {
+            .toFile(pingedUser + '.png', function(err) {
               console.log("error: ", err)
               msg.channel.send({files: [pingedUser + '.png']});
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              fs.unlinkSync(pingedUser + "temp.png")
               });
 
 
