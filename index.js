@@ -5,6 +5,7 @@ const fs = require("fs");
 const axios = require("axios");
 const Canvacord = require("canvacord");
 const sharp = require("sharp");
+const talkedRecently = new Set();
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
@@ -26,13 +27,20 @@ if (msg.content.toLowerCase() == '/start')
 
     let filepath = "./data/UserData/" + msg.author.id;
     console.log(filepath)
+    try{
     if (!fs.existsSync(filepath)) 
       {
-        fs.mkdir(filepath, err => {console.log(err)})
+        fs.mkdirSync(filepath, err => {console.log(err)})
+        fs.mkdirSync(filepath + '/integers', err => {console.log(err)})
+              fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
+  if (err) throw err;
+  console.log('Данные были добавлены в конец файла!');
+});
       }else
       {
         msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!')
       }
+    }catch(err){}
   }
 
 
@@ -136,4 +144,37 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
 });
 
 
+
+
+client.on('messageCreate', msg =>{
+    if (talkedRecently.has(msg.author.id)) {
+    } else {
+
+
+                if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints')) 
+      {
+          // Removes the user from the set after a minute
+          try{
+          console.log(msg.author.tag + ' + 1 поинт актива')
+          
+          
+          let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints', "utf8");
+          Points = parseInt(Points) + 1
+
+          console.log('Поинты: ' + Points)
+           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints', Points.toString(), 'utf8')
+           }catch(err){console.log(err)}
+      }
+
+
+
+
+                    talkedRecently.add(msg.author.id);
+        setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(msg.author.id);
+        }, 60000);
+    }
+    
+    })
 client.login(process.env.DISCORD_TOKEN);
