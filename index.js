@@ -1,3 +1,4 @@
+//Полное создание всех файлов, сбор информации о балансе, уровне и тп при сообщении и вывод этого всего через /card 
 const express = require('express');
 const app = express();
 const port = 3000;
