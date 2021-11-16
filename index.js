@@ -32,10 +32,47 @@ if (msg.content.toLowerCase() == '/start')
       {
         fs.mkdirSync(filepath, err => {console.log(err)})
         fs.mkdirSync(filepath + '/integers', err => {console.log(err)})
+        fs.mkdirSync(filepath + '/collections', err => {console.log(err)})
+        fs.mkdirSync(filepath + '/config', err => {console.log(err)})
+        fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
               fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
-  if (err) throw err;
-  console.log('Данные были добавлены в конец файла!');
-});
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+            fs.writeFileSync(filepath + '/integers/money', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+                        fs.writeFileSync(filepath + '/integers/exp', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+                        fs.writeFileSync(filepath + '/config/language', 'RU', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+            fs.writeFileSync(filepath + '/config/theme', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+                        fs.writeFileSync(filepath + '/collections/userThemes', 'default', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+            fs.writeFileSync(filepath + '/integers/lvl', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      fs.writeFileSync(filepath + '/badges/active', '0\n0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      fs.writeFileSync(filepath + '/config/badge', 'NULL', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      
+      msg.reply('Успешно!')
       }else
       {
         msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!')
@@ -98,7 +135,7 @@ var request = require('request').defaults({ encoding: null });
   fontsize = 70 - (nameLength/3)*4
 console.log('Адоптация:' + fontsize)
 
-
+//Юзер
 ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 50, 50)
 console.log('Тег: ' + User.tag)
@@ -106,6 +143,41 @@ let out = fs.createWriteStream(pingedUser + 'temp.png')
 let stream = canvas.createPNGStream()
 stream.pipe(out)
 out.on('finish', () =>  { console.log('The PNG file was created.') 
+
+//Деньги
+let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillText(Money, 50, 50)
+console.log('Мани: ' + Money)
+let out = fs.createWriteStream(pingedUser + 'tempMoney.png')
+let stream = canvas.createPNGStream()
+stream.pipe(out)
+out.on('finish', () =>  { console.log('The PNG file was created.') 
+
+//Уровень
+let Level = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.fillText(Level, 50, 50)
+console.log('Мани: ' + Level)
+let out = fs.createWriteStream(pingedUser + 'tempLvl.png')
+let stream = canvas.createPNGStream()
+stream.pipe(out)
+out.on('finish', () =>  { console.log('The PNG file was created.') 
+
+
+//Кол-во тем
+let Themes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+let ThemeAmount = Themes.split('\n')
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+console.log('VVV AMOUNT VVV')
+console.log(ThemeAmount)
+ctx.fillText(ThemeAmount.length , 50, 50)
+console.log('Мани: ' + Level)
+let out = fs.createWriteStream(pingedUser + 'tempTheme.png')
+let stream = canvas.createPNGStream()
+stream.pipe(out)
+out.on('finish', () =>  { console.log('The PNG file was created.') 
+
 
           console.log('123')
 
@@ -120,6 +192,9 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: body, top: 76, left: 76},
               { input: "./Images/circler.png", top: 76, left: 76},
+              { input: pingedUser + 'tempMoney.png', top: 160, left: 340},
+              { input: pingedUser + 'tempLvl.png', top: 160, left: 200},
+              { input: pingedUser + 'tempTheme.png', top: 160, left: 500},
               { input: pingedUser + 'temp.png', top: 74, left: 170}])
             // .composite([{ input: 'temp.png', top: 40, left: 10}])
             .toFile(pingedUser + '.png', function(err) {
@@ -127,13 +202,14 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
               msg.channel.send({files: [pingedUser + '.png']});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               fs.unlinkSync(pingedUser + "temp.png")
+              fs.unlinkSync(pingedUser + "tempMoney.png")
               });
 
-
-            
+});
+});
 
               });
-})
+})})
 
 
 
@@ -151,18 +227,29 @@ client.on('messageCreate', msg =>{
     } else {
 
 
-                if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints')) 
+                if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
       {
           // Removes the user from the set after a minute
           try{
           console.log(msg.author.tag + ' + 1 поинт актива')
           
-          
-          let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints', "utf8");
-          Points = parseInt(Points) + 1
+          let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
+          let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
+          let ActiveBadge = fs.readFileSync('./data/UserData/' + msg.author.id + '/badges/active', "utf8");
 
-          console.log('Поинты: ' + Points)
-           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/talkingPoints', Points.toString(), 'utf8')
+          console.log(ActiveBadge)
+          let ActiveMassive = ActiveBadge.split('\n', 5)
+          console.log(ActiveMassive)
+          Money = Number(Money) + Math.floor(Math.random() * 4) + 1;
+          let PointsString = '0.' + (Math.floor(Math.random() * 1) + 9).toString();
+          Points = Number(Points) + Number(PointsString)
+
+          console.log('Поинты: ' + Points + '|' + Money)
+           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Points.toString(), 'utf8')
+           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money.toString(), 'utf8')
+           fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/active', ActiveMassive[0] + '\n' + (Number(ActiveMassive[1]) + 1).toString(), 'utf8')
+           console.log('Внесено: ' + Money.toString())
+           console.log('Мани: ' + Money)
            }catch(err){console.log(err)}
       }
 
@@ -174,7 +261,7 @@ client.on('messageCreate', msg =>{
           // Removes the user from the set after a minute
           talkedRecently.delete(msg.author.id);
         }, 60000);
+  
     }
-    
     })
 client.login(process.env.DISCORD_TOKEN);
