@@ -3,9 +3,23 @@
     "index.js": [
       {
         "id": "2b258b29-e4c8-4def-9f0c-1a7c5547083c",
-        "line": 218,
-        "version": 8064,
-        "index": 7796
+        "line": 224,
+        "version": 8622,
+        "index": 8077
+      }
+    ],
+    "json.sqlite": [
+      {
+        "id": "7fbf42b7-a811-49fd-96be-9dfce60fac4f",
+        "line": 1,
+        "version": 1,
+        "index": 0
+      },
+      {
+        "id": "4789af53-1393-4782-890e-bbedb8c9febc",
+        "line": 2,
+        "version": 1,
+        "index": 101
       }
     ]
   }

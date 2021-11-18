@@ -78,6 +78,10 @@ if (msg.content.toLowerCase() == '/start')
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
+      fs.writeFileSync(filepath + '/integers/SummarXP', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
       
       msg.reply('Успешно!')
       }else
@@ -261,17 +265,37 @@ client.on('messageCreate', msg =>{
           let levelNeed = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
            
            
-           
+           NeededXP = 8
+           CycleNum = 0
+           active = true
+
            while (active == true)
            {
-             NeededXP = NeededXP * 1.5
+             if (NeededXP < 460) { NeededXP = NeededXP * 1.12 }else{NeededXP = 500; active == false } //break;
              CycleNum = CycleNum + 1
              if (CycleNum > levelNeed) { active = false }
              console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
            }
+          
+            let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
+
+           if (Number(Points) > NeededXP)
+           {
+             let totalXP = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', "utf8")
+             totalXP = Number(totalXP) + Number(Points)
+             fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', totalXP.toString(), 'utf8')
+
+              let lvl = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8")
+              lvl = Number(lvl) + 1
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', lvl.toString(), 'utf8')
+
+              Points = 0
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
+              msg.reply('Новый уровень! Уровень ' + lvl + 'Тотал опыт ' + totalXP)
+           }
            msg.reply(NeededXP.toString())
       }
-      //ЗАВЕРШИТЬ!!!!!1
+      //ЗАВЕРШИТЬ!!!!!1 upd: красава, завершил
 
 
 
@@ -285,3 +309,4 @@ client.on('messageCreate', msg =>{
     }
     })
 client.login(process.env.DISCORD_TOKEN);
+//тут был Сенко
