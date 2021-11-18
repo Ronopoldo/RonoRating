@@ -19,7 +19,9 @@ const { createCanvas, loadImage ,  registerFont} = require('canvas')
 registerFont('./fonts/main.ttf', {family: "Main"})
 const canvas = createCanvas(1024, 1024)
 const ctx = canvas.getContext('2d')
-
+let activeLvl = true
+           let NeededXP = 5
+           let CycleNum = -1
 client.on('messageCreate', msg => {
 
 if (msg.content.toLowerCase() == '/start')
@@ -69,6 +71,10 @@ if (msg.content.toLowerCase() == '/start')
               console.log('Данные были добавлены в конец файла!');
             });
       fs.writeFileSync(filepath + '/config/badge', 'NULL', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      fs.writeFileSync(filepath + '/integers/socialCredit', '1000', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
@@ -237,7 +243,7 @@ client.on('messageCreate', msg =>{
           let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
           let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
           let ActiveBadge = fs.readFileSync('./data/UserData/' + msg.author.id + '/badges/active', "utf8");
-
+          
           console.log(ActiveBadge)
           let ActiveMassive = ActiveBadge.split('\n', 5)
           console.log(ActiveMassive)
@@ -252,7 +258,20 @@ client.on('messageCreate', msg =>{
            console.log('Внесено: ' + Money.toString())
            console.log('Мани: ' + Money)
            }catch(err){console.log(err)}
+          let levelNeed = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
+           
+           
+           
+           while (active == true)
+           {
+             NeededXP = NeededXP * 1.5
+             CycleNum = CycleNum + 1
+             if (CycleNum > levelNeed) { active = false }
+             console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
+           }
+           msg.reply(NeededXP.toString())
       }
+      //ЗАВЕРШИТЬ!!!!!1
 
 
 
@@ -261,7 +280,7 @@ client.on('messageCreate', msg =>{
         setTimeout(() => {
           // Removes the user from the set after a minute
           talkedRecently.delete(msg.author.id);
-        }, 60000);
+        }, 1000);
   
     }
     })
