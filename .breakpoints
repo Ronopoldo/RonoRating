@@ -1,11 +1,11 @@
 {
   "files": {
-    "index.js": [
+    "data/UserData/544902183007813652/config/theme": [
       {
-        "id": "2b258b29-e4c8-4def-9f0c-1a7c5547083c",
-        "line": 224,
-        "version": 8622,
-        "index": 8077
+        "id": "67fd11ca-1525-4a49-b785-d44065c1285e",
+        "line": 1,
+        "version": 1,
+        "index": 0
       }
     ],
     "json.sqlite": [

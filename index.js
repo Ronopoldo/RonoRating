@@ -33,6 +33,7 @@ if (msg.content.toLowerCase() == '/start')
     try{
     if (!fs.existsSync(filepath)) 
       {
+        let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
         fs.mkdirSync(filepath, err => {console.log(err)})
         fs.mkdirSync(filepath + '/integers', err => {console.log(err)})
         fs.mkdirSync(filepath + '/collections', err => {console.log(err)})
@@ -79,6 +80,10 @@ if (msg.content.toLowerCase() == '/start')
               console.log('Данные были добавлены в конец файла!');
             });
       fs.writeFileSync(filepath + '/integers/SummarXP', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      fs.writeFileSync(filepath + '/collections/themeTime', CurrentDate, 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
@@ -195,9 +200,11 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
 
 
 
+let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme', "utf8");
+
 
           console.log('456')
-          sharp('./Images/Background/2.png')
+          sharp('./Images/Background/' + theme + '/image.png')
             .resize(1024, 1024)
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
@@ -208,9 +215,9 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
               { input: pingedUser + 'tempTheme.png', top: 160, left: 500},
               { input: pingedUser + 'temp.png', top: 74, left: 170}])
             // .composite([{ input: 'temp.png', top: 40, left: 10}])
-            .toFile(pingedUser + '.png', function(err) {
+            .toFile('./temp/' + pingedUser + '.png', function(err) {
               console.log("error: ", err)
-              msg.channel.send({files: [pingedUser + '.png']});
+              msg.channel.send({files: ['./temp/' + pingedUser + '.png']});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               fs.unlinkSync(pingedUser + "temp.png")
               fs.unlinkSync(pingedUser + "tempMoney.png")
@@ -230,6 +237,67 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
 
 });
 
+
+client.on('messageCreate', msg =>{
+if (fs.existsSync('./data/UserData/' + msg.author.id))
+{
+  try{
+  if (msg.content.toLowerCase().startsWith('/claim'))
+  {
+    let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
+    let filepath = "./data/UserData/" + msg.author.id;
+    let UserThemes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+    const args = msg.content.slice(`/био`).split(/ +/);
+    if (args[1] == 'бета')
+    {
+      if (UserThemes.includes('beta'))
+      {
+        msg.reply('У тебя уже есть эта тема!')
+      }else
+      {
+        fs.appendFileSync(filepath + '/collections/themeTime', '\n' + CurrentDate, 'utf8', (err) => { console.log(err) })
+        fs.appendFileSync(filepath + '/collections/userThemes', '\nbeta', 'utf8', (err) => { console.log(err) })
+        msg.reply('Тема успешно получена!')
+        console.log('Бета')
+      }
+    }
+  }
+  }catch(err){ msg.reply('Ошибка: ' + err) }
+}
+}); 
+
+
+client.on('messageCreate', msg =>{
+if (fs.existsSync('./data/UserData/' + msg.author.id))
+{
+  try{
+  const args = msg.content.slice(`/био`).split(/ +/);
+  if (msg.content.toLowerCase().startsWith('/set'))
+  {
+    let UserThemes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+    let ThemeMassive = UserThemes.split('\n');
+
+    let timeTheme = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
+    let timeMassive = timeTheme.split('\n');
+    if (fs.existsSync('./Images/Background/' + args[1]))
+    {
+      if (UserThemes.includes(args[1]))
+      {
+        fs.writeFileSync('./data/UserData/' + msg.author.id + '/config/theme', args[1], 'utf8')
+        let desc = fs.readFileSync('./Images/Background/' + args[1] + '/description', "utf8");
+        let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
+        let foundnum = ThemeMassive.indexOf(args[1])
+
+
+        msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + timeMassive[foundnum])
+        msg.channel.send({files: ["./Images/Background/" + args[1] + "/image.png"]})
+//
+      }else{ msg.reply('Не обманешь! Дебил')}
+    }else{msg.reply('Не найдено темы!')}
+  }
+  }catch(err){}
+}
+});
 
 
 
@@ -274,7 +342,7 @@ client.on('messageCreate', msg =>{
              if (NeededXP < 460) { NeededXP = NeededXP * 1.12 }else{NeededXP = 500; active == false } //break;
              CycleNum = CycleNum + 1
              if (CycleNum > levelNeed) { active = false }
-             console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
+            //  console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
            }
           
             let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
@@ -293,7 +361,7 @@ client.on('messageCreate', msg =>{
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
               msg.reply('Новый уровень! Уровень ' + lvl + 'Тотал опыт ' + totalXP)
            }
-           msg.reply(NeededXP.toString())
+          //  msg.reply(NeededXP.toString())
       }
       //ЗАВЕРШИТЬ!!!!!1 upd: красава, завершил
 
@@ -304,7 +372,7 @@ client.on('messageCreate', msg =>{
         setTimeout(() => {
           // Removes the user from the set after a minute
           talkedRecently.delete(msg.author.id);
-        }, 1000);
+        }, 60000);
   
     }
     })
