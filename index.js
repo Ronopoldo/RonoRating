@@ -42,8 +42,8 @@ client.on('messageCreate', msg => {
 
     if (show == 'true') { 
       let price = Number(fs.readFileSync('./Background/' + file + '/price', "utf8"))
-
-      shopNames[shopNames.length] = [file, price]
+      let displayName = fs.readFileSync('./Background/' + file + '/displayName', "utf8")
+      shopNames[shopNames.length] = [file, price, displayName]
       }
   });
 
@@ -56,27 +56,91 @@ shopNames.sort(function(a, b) {
   console.log(shopNames)
 
 
-    let totalArray = []
+    let totalArray = ['empty','empty','empty','empty']
+    let totalPrice = []
+    let totalName = []
 
     try {totalArray[0] = (shopNames[4*shopPage-4][0])}catch{}
     try {totalArray[1] = (shopNames[4*shopPage-3][0])}catch{}
     try {totalArray[2] = (shopNames[4*shopPage-2][0])}catch{}
     try {totalArray[3] = (shopNames[4*shopPage-1][0])}catch{}
+
+
+    try {totalPrice[0] = (shopNames[4*shopPage-4][1])}catch{}
+    try {totalPrice[1] = (shopNames[4*shopPage-3][1])}catch{}
+    try {totalPrice[2] = (shopNames[4*shopPage-2][1])}catch{}
+    try {totalPrice[3] = (shopNames[4*shopPage-1][1])}catch{}
+
+
+    try {totalName[0] = (shopNames[4*shopPage-4][2])}catch{}
+    try {totalName[1] = (shopNames[4*shopPage-3][2])}catch{}
+    try {totalName[2] = (shopNames[4*shopPage-2][2])}catch{}
+    try {totalName[3] = (shopNames[4*shopPage-1][2])}catch{}
+
+
     ctx.font = '50px "Main"'
-//Сенко вали, тут многомерные массивы - пиздец полный
+        ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.fillStyle = 'white';
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textAlign = 'center'
+  
+ctx.fillText(totalPrice[0] + ' монет', 290, 520)
+ctx.fillText(totalName[0], 290, 485)
+ctx.fillText(totalArray[0], 290, 185)
+
+if (totalName[1] != undefined)
+{
+  ctx.fillText(totalPrice[1] + ' монет', 734, 520)
+  ctx.fillText(totalName[1], 734, 485)
+  ctx.fillText(totalArray[1], 734, 185)
+}
+
+if (totalName[2] != undefined)
+{
+  ctx.fillText(totalPrice[2] + ' монет', 290, 975)
+  ctx.fillText(totalName[2], 290, 940)
+  ctx.fillText(totalArray[2], 290, 640)
+}
+
+if (totalName[3] != undefined)
+{
+  ctx.fillText(totalPrice[3] + ' монет', 734, 975)
+  ctx.fillText(totalName[3], 734, 940)
+  ctx.fillText(totalArray[3], 734, 640)
+}
+
+
+
+let out = fs.createWriteStream('shoptemp.png')
+let stream = canvas.createPNGStream()
+stream.pipe(out)
+out.on('finish', () =>  { console.log('The PNG file was created.')
+
+
+
+
+
+
 console.log('Тотал: ' + totalArray)
     console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4*shopPage-4])
 
-              sharp('./Images/Blank.png')
+              sharp('./Images/shop.png')
             .resize(1024, 1024)
             .composite([
-              { input: './Background/' + totalArray[0] + '/icon.png', top: 50, left: 50}])
+              { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},
+               {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
+               { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
+               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
+              { input: 'shoptemp.png', top: 0, left: 0}])
             .toFile('shop' + shopPage + '.png', function(err) {
               console.log(err)
               msg.channel.send({files: ['shop' + shopPage + '.png']});
               });
             })
-    
+     })
   }
 
 if (msg.content.toLowerCase() == '/start')
