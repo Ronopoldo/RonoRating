@@ -12,8 +12,9 @@ app.listen(port, () => console.log());
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
+const { MessageEmbed } = require('discord.js');
   let active = true
-
+let shopPage = 1
 const { createCanvas, loadImage ,  registerFont} = require('canvas')
 
 registerFont('./fonts/main.ttf', {family: "Main"})
@@ -23,6 +24,40 @@ let activeLvl = true
            let NeededXP = 5
            let CycleNum = -1
 client.on('messageCreate', msg => {
+
+
+  if (msg.content.toLowerCase().startsWith('/shop'))
+  {
+    const args = msg.content.slice(`/био`).split(/ +/);
+    if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1} else {shopPage = Number(args[1])}
+    console.log(shopPage)
+
+
+    let shopNames = []
+    fs.readdir('Background', (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+    let show = fs.readFileSync('./Background/' + file + '/forSale', "utf8");
+
+    if (show == 'true') { shopNames[shopNames.length] = file}
+  });
+  console.log(shopNames)
+});
+
+
+
+    ctx.font = '50px "Main"'
+
+              sharp('./Images/Blank.png')
+            .resize(1024, 1024)
+            .composite([
+              { input: './Background/gradient1/icon.png', top: 50, left: 50}])
+            .toFile('shop' + shopPage + '.png', function(err) {
+              console.log(err)
+              msg.channel.send({files: ['shop' + shopPage + '.png']});
+            })
+    
+  }
 
 if (msg.content.toLowerCase() == '/start')
   {
@@ -99,6 +134,7 @@ if (msg.content.toLowerCase() == '/start')
 
 if (msg.content.toLowerCase().startsWith('/card'))
   {
+    
         const args = msg.content.slice(`/био`).split(/ +/);
     if (args.length >= 2)
     {
@@ -134,6 +170,9 @@ if (msg.content.toLowerCase().startsWith('/card'))
      pingedUser = pingedUser.replace("!",'')
      pingedUser = pingedUser.replace(">",'')
    }else {pingedUser = 'Не найдено пользователей! Используйте упомянание или его id, чтобы указать пользователя'}
+
+   if (fs.existsSync('./data/UserData/' + pingedUser))
+   {
     client.users.fetch(pingedUser).then(User => 
   {
 
@@ -204,7 +243,7 @@ let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme'
 
 
           console.log('456')
-          sharp('./Images/Background/' + theme + '/image.png')
+          sharp('./Background/' + theme + '/image.png')
             .resize(1024, 1024)
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
@@ -232,13 +271,10 @@ let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme'
 
 
 
-        },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
+        },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})} else {msg.reply('Не существует')}
   }
 
-});
 
-
-client.on('messageCreate', msg =>{
 if (fs.existsSync('./data/UserData/' + msg.author.id))
 {
   try{
@@ -264,10 +300,33 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   }
   }catch(err){ msg.reply('Ошибка: ' + err) }
 }
-}); 
 
 
-client.on('messageCreate', msg =>{
+
+
+
+
+  if (msg.content == '/respecc')
+  {
+const respecc = new MessageEmbed()
+    .setColor('#000000')
+    .setTitle('Самый первый участник и администратор')
+    .setAuthor('rebasakh#8653', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCCEYxV1L1AihtG9emxwbjDQ')
+    .setDescription("**__<@628222177866678293>__ - самый первый администратор на сервере. Самый первый участник сервера, который был ещё до открытия. Ранняя поддержка сервера. Многочисленные пожертвования. Огромный вклад в развитие сервера.**")
+    .setThumbnail('https://images-ext-2.discordapp.net/external/eoi2qwXliGx_OcAgYfTYk90qTBboIMzABRhoOvERtLU/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/628222177866678293/b703e1b55114672eec6c9a8ed2292495.png')
+    .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
+
+
+msg.channel.send({ embeds: [respecc] });
+  }
+
+
+
+
+
+
+
+
 if (fs.existsSync('./data/UserData/' + msg.author.id))
 {
   try{
@@ -279,29 +338,29 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
 
     let timeTheme = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
     let timeMassive = timeTheme.split('\n');
-    if (fs.existsSync('./Images/Background/' + args[1]))
+    if (fs.existsSync('./Background/' + args[1]))
     {
       if (UserThemes.includes(args[1]))
       {
         fs.writeFileSync('./data/UserData/' + msg.author.id + '/config/theme', args[1], 'utf8')
-        let desc = fs.readFileSync('./Images/Background/' + args[1] + '/description', "utf8");
+        let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
         let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
         let foundnum = ThemeMassive.indexOf(args[1])
 
 
         msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + timeMassive[foundnum])
-        msg.channel.send({files: ["./Images/Background/" + args[1] + "/image.png"]})
+        msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]})
 //
       }else{ msg.reply('Не обманешь! Дебил')}
     }else{msg.reply('Не найдено темы!')}
   }
   }catch(err){}
 }
-});
 
 
 
-client.on('messageCreate', msg =>{
+
+
     if (talkedRecently.has(msg.author.id)) {
     } else {
 
@@ -376,5 +435,10 @@ client.on('messageCreate', msg =>{
   
     }
     })
+
+
+
+
+
 client.login(process.env.DISCORD_TOKEN);
 //тут был Сенко
