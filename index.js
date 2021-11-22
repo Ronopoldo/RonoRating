@@ -39,22 +39,42 @@ client.on('messageCreate', msg => {
     console.log(file);
     let show = fs.readFileSync('./Background/' + file + '/forSale', "utf8");
 
-    if (show == 'true') { shopNames[shopNames.length] = file}
+
+    if (show == 'true') { 
+      let price = Number(fs.readFileSync('./Background/' + file + '/price', "utf8"))
+
+      shopNames[shopNames.length] = [file, price]
+      }
   });
+
+shopNames.sort(function(a, b) {
+  return a[1] - b[1];
+})
+
+
+
   console.log(shopNames)
-});
 
 
+    let totalArray = []
 
+    try {totalArray[0] = (shopNames[4*shopPage-4][0])}catch{}
+    try {totalArray[1] = (shopNames[4*shopPage-3][0])}catch{}
+    try {totalArray[2] = (shopNames[4*shopPage-2][0])}catch{}
+    try {totalArray[3] = (shopNames[4*shopPage-1][0])}catch{}
     ctx.font = '50px "Main"'
+//Сенко вали, тут многомерные массивы - пиздец полный
+console.log('Тотал: ' + totalArray)
+    console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4*shopPage-4])
 
               sharp('./Images/Blank.png')
             .resize(1024, 1024)
             .composite([
-              { input: './Background/gradient1/icon.png', top: 50, left: 50}])
+              { input: './Background/' + totalArray[0] + '/icon.png', top: 50, left: 50}])
             .toFile('shop' + shopPage + '.png', function(err) {
               console.log(err)
               msg.channel.send({files: ['shop' + shopPage + '.png']});
+              });
             })
     
   }
