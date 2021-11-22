@@ -79,7 +79,7 @@ shopNames.sort(function(a, b) {
 
 
     ctx.font = '50px "Main"'
-        ctx.strokeStyle = 'black';
+    ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
     ctx.fillStyle = 'white';
 
@@ -87,29 +87,58 @@ shopNames.sort(function(a, b) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'center'
   
-ctx.fillText(totalPrice[0] + ' монет', 290, 520)
-ctx.fillText(totalName[0], 290, 485)
-ctx.fillText(totalArray[0], 290, 185)
+ctx.fillText(totalArray[0], 290, 520)
+ctx.fillText(totalPrice[0] + ' монет', 290, 185)
+ctx.fillText(totalName[0], 290, 220)
 
 if (totalName[1] != undefined)
 {
-  ctx.fillText(totalPrice[1] + ' монет', 734, 520)
-  ctx.fillText(totalName[1], 734, 485)
-  ctx.fillText(totalArray[1], 734, 185)
+  ctx.fillText(totalArray[1], 734, 520)
+  ctx.fillText(totalPrice[1] + ' монет', 734, 185)
+  ctx.fillText(totalName[1], 734, 220)
 }
 
 if (totalName[2] != undefined)
 {
-  ctx.fillText(totalPrice[2] + ' монет', 290, 975)
-  ctx.fillText(totalName[2], 290, 940)
-  ctx.fillText(totalArray[2], 290, 640)
+  ctx.fillText(totalArray[2], 290, 975)
+  ctx.fillText(totalPrice[2] + ' монет', 290, 640)
+  ctx.fillText(totalName[2], 290, 675)
 }
 
 if (totalName[3] != undefined)
 {
-  ctx.fillText(totalPrice[3] + ' монет', 734, 975)
-  ctx.fillText(totalName[3], 734, 940)
-  ctx.fillText(totalArray[3], 734, 640)
+  ctx.fillText(totalPrice[3], 734, 975)
+  ctx.fillText(totalPrice[3] + ' монет', 734, 640)
+  ctx.fillText(totalName[3], 734, 675)
+}
+
+
+
+
+
+ctx.strokeText(totalArray[0], 290, 520)
+ctx.strokeText(totalPrice[0] + ' монет', 290, 185)
+ctx.strokeText(totalName[0], 290, 220)
+
+if (totalName[1] != undefined)
+{
+  ctx.strokeText(totalArray[1], 734, 520)
+  ctx.strokeText(totalPrice[1] + ' монет', 734, 185)
+  ctx.strokeText(totalName[1], 734, 220)
+}
+
+if (totalName[2] != undefined)
+{
+  ctx.strokeText(totalArray[2], 290, 975)
+  ctx.strokeText(totalPrice[2] + ' монет', 290, 640)
+  ctx.strokeText(totalName[2], 290, 675)
+}
+
+if (totalName[3] != undefined)
+{
+  ctx.strokeText(totalPrice[3], 734, 975)
+  ctx.strokeText(totalPrice[3] + ' монет', 734, 640)
+  ctx.strokeText(totalName[3], 734, 675)
 }
 
 
