@@ -32,6 +32,7 @@ client.on('messageCreate', msg => {
     if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1} else {shopPage = Number(args[1])}
     console.log(shopPage)
 
+if (shopPage > 1) { shopPage = 1}
 
     let shopNames = []
     fs.readdir('Background', (err, files) => {
@@ -143,19 +144,26 @@ if (totalName[3] != undefined)
 
 
 
+
 let out = fs.createWriteStream('shoptemp.png')
 let stream = canvas.createPNGStream()
 stream.pipe(out)
 out.on('finish', () =>  { console.log('The PNG file was created.')
 
 
-
-
-
-
+let boughThemes = ['./Images/Blank.png','./Images/Blank.png','./Images/Blank.png','./Images/Blank.png']
+   let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+console.log(UserHave)
+  if (UserHave.includes(totalArray[0])) { boughThemes[0] = './Images/bought.png'}
+ if (UserHave.includes(totalArray[1])) { boughThemes[1] = './Images/bought.png'}
+  if (UserHave.includes(totalArray[2])) { boughThemes[2] = './Images/bought.png'}
+   if (UserHave.includes(totalArray[3])) { boughThemes[3] = './Images/bought.png'}
 console.log('Тотал: ' + totalArray)
+       
     console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4*shopPage-4])
 
+console.log('VVV Купля VVV')
+console.log(boughThemes)
               sharp('./Images/shop.png')
             .resize(1024, 1024)
             .composite([
@@ -163,12 +171,20 @@ console.log('Тотал: ' + totalArray)
                {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
                { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
                {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
+
+               {input: boughThemes[0], top: 145, left: 70},
+               {input: boughThemes[1], top: 145, left: 524},
+               {input: boughThemes[2], top: 600, left: 70},
+               {input: boughThemes[3], top: 600, left: 524},
+               
               { input: 'shoptemp.png', top: 0, left: 0}])
             .toFile('shop' + shopPage + '.png', function(err) {
               console.log(err)
               msg.channel.send({files: ['shop' + shopPage + '.png']});
               });
             })
+
+        
      })
   }
 
@@ -187,6 +203,7 @@ if (msg.content.toLowerCase() == '/start')
         fs.mkdirSync(filepath + '/collections', err => {console.log(err)})
         fs.mkdirSync(filepath + '/config', err => {console.log(err)})
         fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
+        fs.mkdirSync(filepath + '/themes', err => {console.log(err)})
               fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
@@ -231,7 +248,7 @@ if (msg.content.toLowerCase() == '/start')
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
-      fs.writeFileSync(filepath + '/collections/themeTime', CurrentDate, 'utf8', (err) => {
+      fs.writeFileSync(filepath + '/themes/default', CurrentDate, 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
@@ -393,9 +410,15 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   try{
   if (msg.content.toLowerCase().startsWith('/claim'))
   {
+
+
     let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
     let filepath = "./data/UserData/" + msg.author.id;
-    let UserThemes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+     fs.readdir('./data/UserData/' + msg.author.id + '/themes', (err, files) => {
+       
+  files.forEach(file => {
+        let UserThemes = []
+    UserThemes[UserThemes.length] = file
     const args = msg.content.slice(`/био`).split(/ +/);
     if (args[1] == 'бета')
     {
@@ -404,12 +427,13 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
         msg.reply('У тебя уже есть эта тема!')
       }else
       {
-        fs.appendFileSync(filepath + '/collections/themeTime', '\n' + CurrentDate, 'utf8', (err) => { console.log(err) })
-        fs.appendFileSync(filepath + '/collections/userThemes', '\nbeta', 'utf8', (err) => { console.log(err) })
+        fs.writeFileSync(filepath + '/themes/beta',CurrentDate, 'utf8', (err) => { console.log(err) })
         msg.reply('Тема успешно получена!')
         console.log('Бета')
+
       }
     }
+  })})
   }
   }catch(err){ msg.reply('Ошибка: ' + err) }
 }
@@ -422,11 +446,11 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   if (msg.content == '/respecc')
   {
 const respecc = new MessageEmbed()
-    .setColor('#000000')
-    .setTitle('Самый первый участник и администратор')
-    .setAuthor('rebasakh#8653', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCCEYxV1L1AihtG9emxwbjDQ')
-    .setDescription("**__<@628222177866678293>__ - самый первый администратор на сервере. Самый первый участник сервера, который был ещё до открытия. Ранняя поддержка сервера. Многочисленные пожертвования. Огромный вклад в развитие сервера.**")
-    .setThumbnail('https://images-ext-2.discordapp.net/external/eoi2qwXliGx_OcAgYfTYk90qTBboIMzABRhoOvERtLU/%3Fsize%3D4096/https/cdn.discordapp.com/avatars/628222177866678293/b703e1b55114672eec6c9a8ed2292495.png')
+    .setColor('#1e17ac')
+    .setTitle('Большой админский вклад')
+    .setAuthor('Bloowy__#8413', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCyhEUswdCB_33cQCubOXGaA')
+    .setDescription("**__<@560420311791828994>__ - админ из группы первого набора. Внёс большой вклад на сервер и модерировал в конце 2019 года.**")
+    .setThumbnail('https://cdn.discordapp.com/attachments/698853696817070164/914468581268398110/unnamed_18.jpg')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
 
@@ -446,26 +470,25 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   const args = msg.content.slice(`/био`).split(/ +/);
   if (msg.content.toLowerCase().startsWith('/set'))
   {
-    let UserThemes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
-    let ThemeMassive = UserThemes.split('\n');
-
-    let timeTheme = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
-    let timeMassive = timeTheme.split('\n');
+        fs.readdir('./data/UserData/' + msg.author.id + '/themes', (err, files) => {
+  files.forEach(file => {
+    let ThemeMassive = []
+    ThemeMassive[ThemeMassive.length] = file
     if (fs.existsSync('./Background/' + args[1]))
     {
-      if (UserThemes.includes(args[1]))
+      if (ThemeMassive.includes(args[1]))
       {
         fs.writeFileSync('./data/UserData/' + msg.author.id + '/config/theme', args[1], 'utf8')
         let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
-        let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/themeTime', "utf8");
-        let foundnum = ThemeMassive.indexOf(args[1])
+        let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1] , "utf8");
 
 
-        msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + timeMassive[foundnum])
+        msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + getdate)
         msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]})
 //
-      }else{ msg.reply('Не обманешь! Дебил')}
+      }
     }else{msg.reply('Не найдено темы!')}
+  })})
   }
   }catch(err){}
 }
