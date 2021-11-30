@@ -309,6 +309,13 @@ if (msg.content.toLowerCase().startsWith('/card'))
 
 
 
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.fillStyle = 'black';
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textAlign = 'left'
 
 let fontsize = 70
 let nameLength = User.tag.length
@@ -321,50 +328,26 @@ var request = require('request').defaults({ encoding: null });
 console.log('Адоптация:' + fontsize)
 
 //Юзер
+let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
+let Level = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
+let Themes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+let ThemeAmount = Themes.split('\n')
 ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 50, 50)
 console.log('Тег: ' + User.tag)
+ctx.fillText(Money, 400, 130)
+console.log('Мани: ' + Money)
+ctx.fillText(Level, 250, 130)
+console.log('Мани: ' + Level)
+console.log('VVV AMOUNT VVV')
+console.log(ThemeAmount)
+ctx.fillText(ThemeAmount.length , 100, 130)
+console.log('Мани: ' + Level)
+
 let out = fs.createWriteStream(pingedUser + 'temp.png')
 let stream = canvas.createPNGStream()
 stream.pipe(out)
 out.on('finish', () =>  { console.log('The PNG file was created.') 
-
-//Деньги
-let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.fillText(Money, 50, 50)
-console.log('Мани: ' + Money)
-let out = fs.createWriteStream(pingedUser + 'tempMoney.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.') 
-
-//Уровень
-let Level = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.fillText(Level, 50, 50)
-console.log('Мани: ' + Level)
-let out = fs.createWriteStream(pingedUser + 'tempLvl.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.') 
-
-
-//Кол-во тем
-let Themes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
-let ThemeAmount = Themes.split('\n')
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-console.log('VVV AMOUNT VVV')
-console.log(ThemeAmount)
-ctx.fillText(ThemeAmount.length , 50, 50)
-console.log('Мани: ' + Level)
-let out = fs.createWriteStream(pingedUser + 'tempTheme.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.') 
-
-
-          console.log('123')
 
 
 
@@ -379,9 +362,6 @@ let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme'
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: body, top: 76, left: 76},
               { input: "./Images/circler.png", top: 76, left: 76},
-              { input: pingedUser + 'tempMoney.png', top: 160, left: 340},
-              { input: pingedUser + 'tempLvl.png', top: 160, left: 200},
-              { input: pingedUser + 'tempTheme.png', top: 160, left: 500},
               { input: pingedUser + 'temp.png', top: 74, left: 170}])
             // .composite([{ input: 'temp.png', top: 40, left: 10}])
             .toFile('./temp/' + pingedUser + '.png', function(err) {
@@ -389,12 +369,6 @@ let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme'
               msg.channel.send({files: ['./temp/' + pingedUser + '.png']});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               fs.unlinkSync(pingedUser + "temp.png")
-              fs.unlinkSync(pingedUser + "tempMoney.png")
-              });
-
-});
-});
-
               });
 })})
 
@@ -446,7 +420,7 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   {
 const respecc = new MessageEmbed()
     .setColor('#000000')
-    .setTitle('Гигантская админская деятельность')
+    .setTitle('Гигантская активная админская деятельность')
     .setAuthor('BoriGHJIK#0758', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCHWr_jTKOb-wKCNsxPNRF1g')
     .setDescription("**__<@479295731564281867>__ - админ из группы первого набора. Вёл активную деятельность с конца 2019 года до середины 2020 года. Являлся долгое время главным админом и возглавлял работу стафа. Был заместителем Рони и в целом сделал наиогромнейший вклад в развитие серввера.**")
     .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/915204855084245002/unnamed_20.jpg?width=670&height=670')
