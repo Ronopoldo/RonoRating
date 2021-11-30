@@ -442,26 +442,18 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
 
 
 
-//https://www.youtube.com/channel/UCUBGqOalC5QaPhedr55Cl9A
   if (msg.content == '/respecc')
   {
-    msg.channel.messages.fetch(`914469017627004938`).then(message => {
-                
-
 const respecc = new MessageEmbed()
-    .setColor('#1e17ac')
-    .setTitle('Большой админский вклад')
-    .setAuthor('Bloowy__#8413', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCUBGqOalC5QaPhedr55Cl9A')
-    .setDescription("**__<@560420311791828994>__ - админ из группы первого набора. Внёс большой вклад на сервер и модерировал в конце 2019 года.**")
-    .setThumbnail('https://cdn.discordapp.com/attachments/698853696817070164/914468581268398110/unnamed_18.jpg')
+    .setColor('#000000')
+    .setTitle('Гигантская админская деятельность')
+    .setAuthor('BoriGHJIK#0758', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCHWr_jTKOb-wKCNsxPNRF1g')
+    .setDescription("**__<@479295731564281867>__ - админ из группы первого набора. Вёл активную деятельность с конца 2019 года до середины 2020 года. Являлся долгое время главным админом и возглавлял работу стафа. Был заместителем Рони и в целом сделал наиогромнейший вклад в развитие серввера.**")
+    .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/915204855084245002/unnamed_20.jpg?width=670&height=670')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
 
-message.edit({ embeds: [respecc] });
-
-            }).catch(err => {
-                console.error(err);
-            });
+msg.channel.send({ embeds: [respecc] });
   }
 
 
