@@ -419,11 +419,11 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   if (msg.content == '/respecc')
   {
 const respecc = new MessageEmbed()
-    .setColor('#000000')
-    .setTitle('Гигантская активная админская деятельность')
-    .setAuthor('BoriGHJIK#0758', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCHWr_jTKOb-wKCNsxPNRF1g')
-    .setDescription("**__<@479295731564281867>__ - админ из группы первого набора. Вёл активную деятельность с конца 2019 года до середины 2020 года. Являлся долгое время главным админом и возглавлял работу стафа. Был заместителем Рони и в целом сделал наиогромнейший вклад в развитие серввера.**")
-    .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/915204855084245002/unnamed_20.jpg?width=670&height=670')
+    .setColor('#1122ff')
+    .setTitle('Оплот гнева')
+    .setAuthor('Мистический Войн#7899', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png')
+    .setDescription('**__<@647440980831633420>__ - сделал огромный вклад в дела сервера. Находится на нём с 2019 года и по сей день. Являлся важным реформатором в истории Роносервера. Совершил несколько государственных переворотов (первый 6 марта). После этого создал свою партию "ОПЛОТ ГНЕВА", которая позже стала отдельной независимой организацией. Являлся владельцем и распоряжителем по делам Роносервера на время жизни на Звезде. Ввёл очень огромное количество реформ и изменений. Является близким другом Рони, с которым он знаком ещё до его карьеры, а также парнем <@593368946540019741>, которая рисует замечательные рисунки в <#671026327016701953>**')
+    .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/915719011101188167/unknown.png')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
 
