@@ -28,6 +28,8 @@ client.on('messageCreate', msg => {
 
   if (msg.content.toLowerCase().startsWith('/shop'))
   {
+                    if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
+      {
     const args = msg.content.slice(`/био`).split(/ +/);
     if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1} else {shopPage = Number(args[1])}
     console.log(shopPage)
@@ -87,10 +89,14 @@ shopNames.sort(function(a, b) {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'center'
-  
+
+
+if (totalName[0] != undefined)
+{
 ctx.fillText(totalArray[0], 290, 520)
 ctx.fillText(totalPrice[0] + ' монет', 290, 185)
 ctx.fillText(totalName[0], 290, 220)
+}
 
 if (totalName[1] != undefined)
 {
@@ -116,10 +122,12 @@ if (totalName[3] != undefined)
 
 
 
-
+if (totalName[0] != undefined)
+{
 ctx.strokeText(totalArray[0], 290, 520)
 ctx.strokeText(totalPrice[0] + ' монет', 290, 185)
 ctx.strokeText(totalName[0], 290, 220)
+}
 
 if (totalName[1] != undefined)
 {
@@ -187,6 +195,181 @@ console.log(boughThemes)
         
      })
   }
+  }
+
+
+if ((msg.content.toLowerCase().startsWith('/inv ')) || (msg.content.toLowerCase().startsWith('/inventory ')) || (msg.content.toLowerCase() == '/inventory') || (msg.content.toLowerCase() == '/inv'))
+  {
+                  if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
+      {
+
+    const args = msg.content.slice(`/био`).split(/ +/);
+      pingedUser = args[1] 
+      if (args[1] == undefined) { pingedUser = msg.member.id}
+      pingedUser = pingedUser.replace("<@",'')
+      pingedUser = pingedUser.replace("!",'')
+      pingedUser = pingedUser.replace(">",'')
+
+    let pg = 1
+    console.log('Unresolved Num: ' + pingedUser)
+    if (Number(pingedUser) != NaN){ msg.reply('Число прошло')
+   }else {pingedUser = msg.member.id}
+  if (args[2] != undefined) { pg = args[2] } else
+  {
+    if ((args[1] != undefined) && (args[1].length > 5)) 
+    {
+      // msg.reply('Вариант 1')
+      pg = 1
+      pingedUser = args[1]
+    }else
+    {
+            // msg.reply('Вариант 2')
+     pg = 1
+     pingedUser =  msg.member.id
+    }
+
+
+        if ((args[1] != undefined) && (args[1].length < 5)) 
+    {
+            // msg.reply('Вариант 3')
+      pg = args[1]
+      pingedUser = msg.member.id
+    }else
+    {
+            // msg.reply('Вариант 4')
+     pg = 1
+    }
+  }
+        pingedUser = pingedUser.replace("<@",'')
+      pingedUser = pingedUser.replace("!",'')
+      pingedUser = pingedUser.replace(">",'')
+
+console.log('АЙДИ: ' + pingedUser)
+   if (fs.existsSync('./data/UserData/' + pingedUser))
+   { 
+     // msg.reply('Вариант 5')
+     }else{
+      // msg.reply('Вариант 6' + pingedUser)
+     pingedUser = msg.member.id
+
+   }
+       msg.reply(pingedUser + '|' + pg)
+    client.users.fetch(pingedUser).then(User => 
+  {
+
+
+
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.fillStyle = 'black';
+
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.textAlign = 'left'
+    console.log(pingedUser)
+    console.log(args[5])
+    let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+
+  console.log('ARRAY: ' + UserHave)
+let totalArray = ['empty','empty','empty','empty']
+let totalName = []
+
+
+    try {totalArray[0] = (UserHave[4*pg-4])}catch{}
+    try {totalArray[1] = (UserHave[4*pg-3])}catch{}
+    try {totalArray[2] = (UserHave[4*pg-2])}catch{}
+    try {totalArray[3] = (UserHave[4*pg-1])}catch{}
+
+
+    try {totalName[0] = (UserHave[4*pg-4])}catch{}
+    try {totalName[1] = (UserHave[4*pg-3])}catch{}
+    try {totalName[2] = (UserHave[4*pg-2])}catch{}
+    try {totalName[3] = (UserHave[4*pg-1])}catch{}
+
+
+if (totalName[0] != undefined)
+{
+ctx.fillText(totalArray[0], 290, 520)
+ctx.fillText(totalName[0], 290, 220)
+}
+
+if (totalName[1] != undefined)
+{
+  ctx.fillText(totalArray[1], 734, 520)
+  ctx.fillText(totalName[1], 734, 220)
+}
+
+if (totalName[2] != undefined)
+{
+  ctx.fillText(totalArray[2], 290, 975)
+  ctx.fillText(totalName[2], 290, 675)
+}
+
+if (totalName[3] != undefined)
+{
+  ctx.fillText(totalPrice[3], 734, 975)
+  ctx.fillText(totalName[3], 734, 675)
+}
+
+
+
+
+if (totalName[0] != undefined)
+{
+ctx.strokeText(totalArray[0], 290, 520)
+ctx.strokeText(totalName[0], 290, 220)
+}
+
+if (totalName[1] != undefined)
+{
+  ctx.strokeText(totalArray[1], 734, 520)
+  ctx.strokeText(totalName[1], 734, 220)
+}
+
+if (totalName[2] != undefined)
+{
+  ctx.strokeText(totalArray[2], 290, 975)
+  ctx.strokeText(totalName[2], 290, 675)
+}
+
+if (totalName[3] != undefined)
+{
+  ctx.strokeText(totalPrice[3], 734, 975)
+  ctx.strokeText(totalName[3], 734, 675)
+}
+
+let out = fs.createWriteStream('invtemp.png')
+let stream = canvas.createPNGStream()
+stream.pipe(out)
+out.on('finish', () =>  { console.log('The PNG file was created.') 
+
+
+console.log('0]./Background/' + totalArray[0] + '/icon.png')
+console.log('1]./Background/' + totalArray[1] + '/icon.png')
+console.log('2]./Background/' + totalArray[2] + '/icon.png')
+console.log('3]./Background/' + totalArray[3] + '/icon.png')
+
+            sharp('./Images/shop.png')
+            .resize(1024, 1024)
+            .composite([
+              { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},
+               {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
+               { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
+               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539}
+               
+              // { input: 'invtemp.png', top: 0, left: 0}
+              ])
+            .toFile('inv' + pingedUser + '.png', function(err) {
+              console.log(err)
+              msg.channel.send({files: ['inv' + pingedUser + '.png']});
+              });
+        });
+    })
+  }
+}
+
+
 
 if (msg.content.toLowerCase() == '/start')
   {
@@ -220,7 +403,7 @@ if (msg.content.toLowerCase() == '/start')
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
-            fs.writeFileSync(filepath + '/config/theme', '0', 'utf8', (err) => {
+            fs.writeFileSync(filepath + '/config/theme', 'default', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
@@ -419,11 +602,11 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   if (msg.content == '/respecc')
   {
 const respecc = new MessageEmbed()
-    .setColor('#1122ff')
-    .setTitle('Оплот гнева')
-    .setAuthor('Мистический Войн#7899', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png')
-    .setDescription('**__<@647440980831633420>__ - сделал огромный вклад в дела сервера. Находится на нём с 2019 года и по сей день. Являлся важным реформатором в истории Роносервера. Совершил несколько государственных переворотов (первый 6 марта). После этого создал свою партию "ОПЛОТ ГНЕВА", которая позже стала отдельной независимой организацией. Являлся владельцем и распоряжителем по делам Роносервера на время жизни на Звезде. Ввёл очень огромное количество реформ и изменений. Является близким другом Рони, с которым он знаком ещё до его карьеры, а также парнем <@593368946540019741>, которая рисует замечательные рисунки в <#671026327016701953>**')
-    .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/915719011101188167/unknown.png')
+    .setColor('#7d1a39')
+    .setTitle('Хороший админ и активный член сервера')
+    .setAuthor('❄vitapich❄#1556', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png')
+    .setDescription('**__<@516248331450712077>__ - активный член сервера, на котором он находится с 2019 года. В марте 2020 года стал админом и после этого проявлял наиболее большой актив. Самый крупный можно найти на протяжении марта-июня 2020 года и мая-июля 2021 года. Является рекордсменом по голосовой активности и варьирует в районе второго места)**')
+    .setThumbnail('https://media.discordapp.net/attachments/661143573261189140/839681707208736798/29a4b1625b9ddcc0e54ac491abad68ca-1.png')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
 
