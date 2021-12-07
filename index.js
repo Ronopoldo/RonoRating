@@ -260,20 +260,23 @@ console.log('АЙДИ: ' + pingedUser)
 
 
 
+    ctx.font = '50px "Main"'
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
 
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.textAlign = 'left'
+    ctx.textAlign = 'center'
+
+
     console.log(pingedUser)
     console.log(args[5])
     let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
 
   console.log('ARRAY: ' + UserHave)
 let totalArray = ['empty','empty','empty','empty']
-let totalName = []
+let totalName = ['.','.','.','.']
 
 
     try {totalArray[0] = (UserHave[4*pg-4])}catch{}
@@ -282,62 +285,103 @@ let totalName = []
     try {totalArray[3] = (UserHave[4*pg-1])}catch{}
 
 
-    try {totalName[0] = (UserHave[4*pg-4])}catch{}
-    try {totalName[1] = (UserHave[4*pg-3])}catch{}
-    try {totalName[2] = (UserHave[4*pg-2])}catch{}
-    try {totalName[3] = (UserHave[4*pg-1])}catch{}
+    try {
+      if (fs.existsSync('./Background/' + totalArray[0]))
+      {
+        console.log('./Background/' + totalArray[0] + '/displayName')
+      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")}}catch(err){console.log(err)}
+    try {
+      if (fs.existsSync('./Background/' + totalArray[1]))
+      {
+        console.log('./Background/' + totalArray[1] + '/displayName')
+      totalName[1] = fs.readFileSync('./Background/' + totalArray[1] + '/displayName', "utf8")}}catch(err){}
+    try {
+      if (fs.existsSync('./Background/' + totalArray[2]))
+      {
+        console.log('./Background/' + totalArray[2] + '/displayName')
+      totalName[2] = fs.readFileSync('./Background/' + totalArray[2] + '/displayName', "utf8")}}catch(err){}
+    try {
+      if (fs.existsSync('./Background/' + totalArray[3]))
+      {
+        console.log('./Background/' + totalArray[3] + '/displayName')
+      totalName[3] = fs.readFileSync('./Background/' + totalArray[3] + '/displayName', "utf8")}}catch(err){}
 
 
-if (totalName[0] != undefined)
+
+      console.log('eeeeee:' + totalName)
+
+try{
+if (totalArray[0].toString() != 'undefined')
 {
 ctx.fillText(totalArray[0], 290, 520)
-ctx.fillText(totalName[0], 290, 220)
+ctx.fillText(totalName[0], 290, 170)
 }
+}catch{}
 
-if (totalName[1] != undefined)
+try{
+if (totalArray[1].toString() != 'undefined')
 {
   ctx.fillText(totalArray[1], 734, 520)
-  ctx.fillText(totalName[1], 734, 220)
+  ctx.fillText(totalName[1], 734, 170)
 }
+}catch{}
 
-if (totalName[2] != undefined)
+
+try{
+if (totalArray[2].toString() != 'undefined')
 {
   ctx.fillText(totalArray[2], 290, 975)
-  ctx.fillText(totalName[2], 290, 675)
+  ctx.fillText(totalName[2], 290, 625)
 }
+}catch{}
 
-if (totalName[3] != undefined)
+
+try{
+if (totalArray[3].toString() != 'undefined')
 {
-  ctx.fillText(totalPrice[3], 734, 975)
-  ctx.fillText(totalName[3], 734, 675)
+  ctx.fillText(totalArray[3], 734, 975)
+  ctx.fillText(totalName[3], 734, 625)
 }
+}catch{}
 
 
 
 
-if (totalName[0] != undefined)
+try{
+if (totalArray[0].toString() != 'undefined')
 {
 ctx.strokeText(totalArray[0], 290, 520)
-ctx.strokeText(totalName[0], 290, 220)
+ctx.strokeText(totalName[0], 290, 170)
 }
+}catch{}
 
-if (totalName[1] != undefined)
+
+try{
+if (totalArray[1].toString() != 'undefined')
 {
   ctx.strokeText(totalArray[1], 734, 520)
-  ctx.strokeText(totalName[1], 734, 220)
+  ctx.strokeText(totalName[1], 734, 170)
 }
+}catch{}
 
-if (totalName[2] != undefined)
+
+try{
+if (totalArray[2].toString() != 'undefined')
 {
   ctx.strokeText(totalArray[2], 290, 975)
-  ctx.strokeText(totalName[2], 290, 675)
+  ctx.strokeText(totalName[2], 290, 625)
 }
+}catch{}
 
-if (totalName[3] != undefined)
+
+try{
+if (totalArray[3].toString() != 'undefined')
 {
-  ctx.strokeText(totalPrice[3], 734, 975)
-  ctx.strokeText(totalName[3], 734, 675)
+  ctx.strokeText(totalArray[3], 734, 975)
+  ctx.strokeText(totalName[3], 734, 625)
 }
+}catch{}
+
 
 let out = fs.createWriteStream('invtemp.png')
 let stream = canvas.createPNGStream()
@@ -356,9 +400,9 @@ console.log('3]./Background/' + totalArray[3] + '/icon.png')
               { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},
                {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
                { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
-               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539}
+               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
                
-              // { input: 'invtemp.png', top: 0, left: 0}
+              { input: 'invtemp.png', top: 0, left: 0}
               ])
             .toFile('inv' + pingedUser + '.png', function(err) {
               console.log(err)
@@ -445,9 +489,16 @@ if (msg.content.toLowerCase() == '/start')
   }
 
 
-if (msg.content.toLowerCase().startsWith('/card'))
+if ((msg.content.toLowerCase().startsWith('/card')) || (msg.content.toLowerCase().startsWith('/preview')))
   {
-    
+    if (fs.existsSync('./data/UserData/' + msg.member.id))
+   {
+
+    let preview = false
+    if (msg.content.toLowerCase().startsWith('/preview')) { preview = true}
+    if (msg.content.toLowerCase().startsWith('/card')) { preview = false}
+
+
         const args = msg.content.slice(`/био`).split(/ +/);
     if (args.length >= 2)
     {
@@ -482,10 +533,10 @@ if (msg.content.toLowerCase().startsWith('/card'))
      pingedUser = pingedUser.replace("<@",'')
      pingedUser = pingedUser.replace("!",'')
      pingedUser = pingedUser.replace(">",'')
-   }else {pingedUser = 'Не найдено пользователей! Используйте упомянание или его id, чтобы указать пользователя'}
+   }else {}
 
    if (fs.existsSync('./data/UserData/' + pingedUser))
-   {
+   { }else{pingedUser = msg.member.id}
     client.users.fetch(pingedUser).then(User => 
   {
 
@@ -514,11 +565,16 @@ console.log('Адоптация:' + fontsize)
 let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
 let Level = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
 let Themes = fs.readFileSync('./data/UserData/' + msg.author.id + '/collections/userThemes', "utf8");
+
+
+
+
 let ThemeAmount = Themes.split('\n')
 ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 50, 50)
 console.log('Тег: ' + User.tag)
 ctx.fillText(Money, 400, 130)
+console.log('ДЕНЬГИ ВНЕСЕНЫ ' + Money)
 console.log('Мани: ' + Money)
 ctx.fillText(Level, 250, 130)
 console.log('Мани: ' + Level)
@@ -537,30 +593,48 @@ out.on('finish', () =>  { console.log('The PNG file was created.')
 
 let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme', "utf8");
 
-
+if (preview == true) {
+  let fullarray = fs.readdirSync('Background')
+  console.log('FULLARRAY: ' + fullarray)
+  if (fullarray.includes(args[1].toLowerCase()))
+  {
+    theme = args[1].toLowerCase()
+  }else{msg.reply('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
+}
           console.log('456')
-          sharp('./Background/' + theme + '/image.png')
+
+sharp.cache(false);
+let image = sharp('./Background/' + theme + '/image.png');
+
+sharp.cache(false);
+          
+          image
             .resize(1024, 1024)
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: body, top: 76, left: 76},
               { input: "./Images/circler.png", top: 76, left: 76},
-              { input: pingedUser + 'temp.png', top: 74, left: 170}])
-            // .composite([{ input: 'temp.png', top: 40, left: 10}])
-            .toFile('./temp/' + pingedUser + '.png', function(err) {
+              { input: './' + pingedUser + 'temp.png', top: 74, left: 170}])
+            .webp( {quality: 90})
+            .toBuffer()
+            .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.channel.send({files: ['./temp/' + pingedUser + '.png']});
+              msg.channel.send({files: [outputBuffer]});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               fs.unlinkSync(pingedUser + "temp.png")
               });
+
+
+
+
 })})
 
 
 
 
-        },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})} else {msg.reply('Не существует')}
+        },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }
-
+  }
 
 if (fs.existsSync('./data/UserData/' + msg.author.id))
 {
@@ -599,14 +673,72 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
 
 
 
+
+
+if (fs.existsSync('./data/UserData/' + msg.author.id))
+{
+  try{
+  if (msg.content.toLowerCase().startsWith('/buy'))
+  {
+    if (fs.existsSync('./data/UserData/' + msg.member.id))
+   {
+
+    let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
+    let filepath = "./data/UserData/" + msg.author.id;
+     let UserThemes = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+let ShopThemes = fs.readdirSync('./Background')
+
+    const args = msg.content.slice(`/био`).split(/ +/);
+    if (UserThemes.includes(args[1].toLowerCase()))
+    {
+      msg.reply('У тебя уже есть эта тема!')
+    }else
+    {
+      if (ShopThemes.includes(args[1].toLowerCase()))
+      {
+        let status = fs.readFileSync('./Background/' + args[1].toLowerCase() + '/forSale', "utf8");
+        if (status == 'true')
+        {
+          let price = Number(fs.readFileSync('./Background/' + args[1].toLowerCase() + '/price', "utf8"));
+          console.log('PRICE: ' + price)
+          let userBalance = Number(fs.readFileSync('./data/UserData/' + msg.member.id + '/integers/money', "utf8"));
+          console.log('BALANCE: ' + userBalance)
+          if (userBalance < price)
+          {
+            msg.reply('Прости, но похоже, что у тебя недостаточно средств на покупку этой темы!')
+          }else
+          {
+            let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON();
+            fs.writeFileSync('./data/UserData/' + msg.member.id + '/themes/' + args[1].toLowerCase(),CurrentDate, 'utf8', (err) => { console.log(err) })
+            userBalance = userBalance - price
+            fs.writeFileSync('./data/UserData/' + msg.member.id + '/integers/money',userBalance.toString(), 'utf8', (err) => { console.log(err) })
+            msg.reply('Покупка темы прошла успешно!!\nПоставь её командой `/set ' + args[1].toLowerCase() + '` :3')
+          }
+        }else{
+          msg.reply('Эта тема не продаётся!')
+        }
+
+      }else
+      {
+        msg.reply('Темы не существует! Проверь написание')
+      }
+    }
+  }
+  }
+  }catch(err){ msg.reply('Хей! Скорее всего у тебя неправильный ввод! Ввод доолжен быть в формате `/buy <ID ТЕМЫ>`\nОшибка: ' + err) }
+}
+
+
+
+
   if (msg.content == '/respecc')
   {
 const respecc = new MessageEmbed()
-    .setColor('#7d1a39')
+    .setColor('#ADD8E6')
     .setTitle('Хороший админ и активный член сервера')
-    .setAuthor('❄vitapich❄#1556', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png')
-    .setDescription('**__<@516248331450712077>__ - активный член сервера, на котором он находится с 2019 года. В марте 2020 года стал админом и после этого проявлял наиболее большой актив. Самый крупный можно найти на протяжении марта-июня 2020 года и мая-июля 2021 года. Является рекордсменом по голосовой активности и варьирует в районе второго места)**')
-    .setThumbnail('https://media.discordapp.net/attachments/661143573261189140/839681707208736798/29a4b1625b9ddcc0e54ac491abad68ca-1.png')
+    .setAuthor('NeksiCola#8756', 'https://media.discordapp.net/attachments/698853696817070164/911547857159467059/prize-clipart-transparent-background-4-removebg-preview.png', 'https://www.youtube.com/channel/UCtLSPDoaGHKI2VvZFN-BdXQ')
+    .setDescription('**__<@609701912643764244>__ - самый адекватный и добрый член сервера (по мнению большинства). Находится на нём с июня 2020 года, но наибольшую активность начал проявлять летом 2021 года. Является одним из самых снисходительных админов и практически не имеет врагов.**')
+    .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/917743627797663744/41acc11dce25bc3cfbe0707148870782f7477a01r1-644-835v2_hq_2.jpg')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
 
@@ -626,10 +758,8 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
   const args = msg.content.slice(`/био`).split(/ +/);
   if (msg.content.toLowerCase().startsWith('/set'))
   {
-        fs.readdir('./data/UserData/' + msg.author.id + '/themes', (err, files) => {
-  files.forEach(file => {
-    let ThemeMassive = []
-    ThemeMassive[ThemeMassive.length] = file
+
+    let ThemeMassive = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
     if (fs.existsSync('./Background/' + args[1]))
     {
       if (ThemeMassive.includes(args[1]))
@@ -638,14 +768,13 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
         let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
         let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1] , "utf8");
 
-
         msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + getdate)
         msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]})
 //
-      }
+      }else{
+        msg.reply('У тебя нету этой темы!')}
     }else{msg.reply('Не найдено темы!')}
-  })})
-  }
+}
   }catch(err){}
 }
 
