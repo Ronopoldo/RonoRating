@@ -18,10 +18,16 @@
     ],
     "index.js": [
       {
+        "id": "d9410dc1-818a-4cac-93cf-a8d8b383d8ae",
+        "line": 12,
+        "version": 23529,
+        "index": 434
+      },
+      {
         "id": "7772c4a5-d2d2-47e4-928a-38d79553bcec",
-        "line": 218,
-        "version": 22866,
-        "index": 7123
+        "line": 29,
+        "version": 23011,
+        "index": 1052
       }
     ],
     "json.sqlite": [
