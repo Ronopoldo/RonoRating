@@ -1,10 +1,9 @@
-//Полное создание всех файлов, сбор информации о балансе, уровне и тп при сообщении и вывод этого всего через /card 
+//Стартовая настройка проекта 
 const express = require('express');
 const app = express();
 const port = 3000;
 const fs = require("fs");
 const axios = require("axios");
-const Canvacord = require("canvacord");
 const sharp = require("sharp");
 const talkedRecently = new Set();
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
@@ -15,7 +14,8 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const { MessageEmbed } = require('discord.js');
   let active = true
 let shopPage = 1
-const { createCanvas, loadImage ,  registerFont} = require('canvas')
+const { createCanvas, loadImage ,  registerFont} = require('canvas');
+
 
 registerFont('./fonts/main.ttf', {family: "Main"})
 const canvas = createCanvas(1024, 1024)
@@ -23,468 +23,40 @@ const ctx = canvas.getContext('2d')
 let activeLvl = true
            let NeededXP = 5
            let CycleNum = -1
+
+const test = require("./src/test");
+const shopCommand = require("./src/shop");
+const invCommand = require("./src/inventory");
+const startCommand = require("./src/start");
+const calculateUserData = require("./src/calculateUserData");
+
+// Обработчик входящих сообщений
 client.on('messageCreate', msg => {
 
+// Входящее сообщение
+let incMessage = msg.content.toLowerCase(); 
+// Аргументы
+let args = msg.content.split(/ +/);
+// Команда приложению
+let command = args[0];
 
-  if (msg.content.toLowerCase().startsWith('/shop'))
-  {
-                    if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
-      {
-    const args = msg.content.slice(`/био`).split(/ +/);
-    if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1} else {shopPage = Number(args[1])}
-    console.log(shopPage)
-
-if (shopPage > 1) { shopPage = 1}
-
-    let shopNames = []
-    fs.readdir('Background', (err, files) => {
-  files.forEach(file => {
-    console.log(file);
-    let show = fs.readFileSync('./Background/' + file + '/forSale', "utf8");
-
-
-    if (show == 'true') { 
-      let price = Number(fs.readFileSync('./Background/' + file + '/price', "utf8"))
-      let displayName = fs.readFileSync('./Background/' + file + '/displayName', "utf8")
-      shopNames[shopNames.length] = [file, price, displayName]
-      }
-  });
-
-shopNames.sort(function(a, b) {
-  return a[1] - b[1];
-})
-
-
-
-  console.log(shopNames)
-
-
-    let totalArray = ['empty','empty','empty','empty']
-    let totalPrice = []
-    let totalName = []
-
-    try {totalArray[0] = (shopNames[4*shopPage-4][0])}catch{}
-    try {totalArray[1] = (shopNames[4*shopPage-3][0])}catch{}
-    try {totalArray[2] = (shopNames[4*shopPage-2][0])}catch{}
-    try {totalArray[3] = (shopNames[4*shopPage-1][0])}catch{}
-
-
-    try {totalPrice[0] = (shopNames[4*shopPage-4][1])}catch{}
-    try {totalPrice[1] = (shopNames[4*shopPage-3][1])}catch{}
-    try {totalPrice[2] = (shopNames[4*shopPage-2][1])}catch{}
-    try {totalPrice[3] = (shopNames[4*shopPage-1][1])}catch{}
-
-
-    try {totalName[0] = (shopNames[4*shopPage-4][2])}catch{}
-    try {totalName[1] = (shopNames[4*shopPage-3][2])}catch{}
-    try {totalName[2] = (shopNames[4*shopPage-2][2])}catch{}
-    try {totalName[3] = (shopNames[4*shopPage-1][2])}catch{}
-
-
-    ctx.font = '50px "Main"'
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.fillStyle = 'white';
-
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.textAlign = 'center'
-
-
-if (totalName[0] != undefined)
-{
-ctx.fillText(totalArray[0], 290, 520)
-ctx.fillText(totalPrice[0] + ' монет', 290, 185)
-ctx.fillText(totalName[0], 290, 220)
+switch(command) {
+   case "/start": 
+    startCommand.startCommand(fs, msg);
+    break;
+  case "/test": 
+    test.test(msg);
+    break;
+  case "/shop": 
+    shopCommand.shopCommand(fs, msg, ctx, sharp, canvas);
+    break;
+  case "/inv":
+  case "/inventory": 
+    invCommand.invCommand(fs, msg, ctx, sharp, canvas, client);
+    break;
+  default:
+    break;
 }
-
-if (totalName[1] != undefined)
-{
-  ctx.fillText(totalArray[1], 734, 520)
-  ctx.fillText(totalPrice[1] + ' монет', 734, 185)
-  ctx.fillText(totalName[1], 734, 220)
-}
-
-if (totalName[2] != undefined)
-{
-  ctx.fillText(totalArray[2], 290, 975)
-  ctx.fillText(totalPrice[2] + ' монет', 290, 640)
-  ctx.fillText(totalName[2], 290, 675)
-}
-
-if (totalName[3] != undefined)
-{
-  ctx.fillText(totalPrice[3], 734, 975)
-  ctx.fillText(totalPrice[3] + ' монет', 734, 640)
-  ctx.fillText(totalName[3], 734, 675)
-}
-
-
-
-
-if (totalName[0] != undefined)
-{
-ctx.strokeText(totalArray[0], 290, 520)
-ctx.strokeText(totalPrice[0] + ' монет', 290, 185)
-ctx.strokeText(totalName[0], 290, 220)
-}
-
-if (totalName[1] != undefined)
-{
-  ctx.strokeText(totalArray[1], 734, 520)
-  ctx.strokeText(totalPrice[1] + ' монет', 734, 185)
-  ctx.strokeText(totalName[1], 734, 220)
-}
-
-if (totalName[2] != undefined)
-{
-  ctx.strokeText(totalArray[2], 290, 975)
-  ctx.strokeText(totalPrice[2] + ' монет', 290, 640)
-  ctx.strokeText(totalName[2], 290, 675)
-}
-
-if (totalName[3] != undefined)
-{
-  ctx.strokeText(totalPrice[3], 734, 975)
-  ctx.strokeText(totalPrice[3] + ' монет', 734, 640)
-  ctx.strokeText(totalName[3], 734, 675)
-}
-
-
-
-
-canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
-
-
-let boughThemes = ['./Images/Blank.png','./Images/Blank.png','./Images/Blank.png','./Images/Blank.png']
-   let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
-console.log(UserHave)
-  if (UserHave.includes(totalArray[0])) { boughThemes[0] = './Images/bought.png'}
- if (UserHave.includes(totalArray[1])) { boughThemes[1] = './Images/bought.png'}
-  if (UserHave.includes(totalArray[2])) { boughThemes[2] = './Images/bought.png'}
-   if (UserHave.includes(totalArray[3])) { boughThemes[3] = './Images/bought.png'}
-console.log('Тотал: ' + totalArray)
-       
-    console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4*shopPage-4])
-
-console.log('VVV Купля VVV')
-console.log(boughThemes)
-sharp.cache(false);
-              sharp('./Images/shop.png')
-            .resize(1024, 1024)
-            .composite([
-              { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},
-               {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
-               { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
-               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
-
-               {input: boughThemes[0], top: 145, left: 70},
-               {input: boughThemes[1], top: 145, left: 524},
-               {input: boughThemes[2], top: 600, left: 70},
-               {input: boughThemes[3], top: 600, left: 524},
-               
-              { input: out, top: 0, left: 0}])
-            .toBuffer()
-            .then(function(outputBuffer) {
-              console.log(err)
-              msg.channel.send({files: [outputBuffer]});
-              });
-            })
-
-        
-     })
-  }
-  }
-
-
-if ((msg.content.toLowerCase().startsWith('/inv ')) || (msg.content.toLowerCase().startsWith('/inventory ')) || (msg.content.toLowerCase() == '/inventory') || (msg.content.toLowerCase() == '/inv'))
-  {
-                  if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
-      {
-
-    const args = msg.content.slice(`/био`).split(/ +/);
-      pingedUser = args[1] 
-      if (args[1] == undefined) { pingedUser = msg.member.id}
-      pingedUser = pingedUser.replace("<@",'')
-      pingedUser = pingedUser.replace("!",'')
-      pingedUser = pingedUser.replace(">",'')
-
-    let pg = 1
-    console.log('Unresolved Num: ' + pingedUser)
-    if (Number(pingedUser) != NaN){ msg.reply('Число прошло')
-   }else {pingedUser = msg.member.id}
-  if (args[2] != undefined) { pg = args[2] } else
-  {
-    if ((args[1] != undefined) && (args[1].length > 5)) 
-    {
-      // msg.reply('Вариант 1')
-      pg = 1
-      pingedUser = args[1]
-    }else
-    {
-            // msg.reply('Вариант 2')
-     pg = 1
-     pingedUser =  msg.member.id
-    }
-
-
-        if ((args[1] != undefined) && (args[1].length < 5)) 
-    {
-            // msg.reply('Вариант 3')
-      pg = args[1]
-      pingedUser = msg.member.id
-    }else
-    {
-            // msg.reply('Вариант 4')
-     pg = 1
-    }
-  }
-        pingedUser = pingedUser.replace("<@",'')
-      pingedUser = pingedUser.replace("!",'')
-      pingedUser = pingedUser.replace(">",'')
-
-console.log('АЙДИ: ' + pingedUser)
-   if (fs.existsSync('./data/UserData/' + pingedUser))
-   { 
-     // msg.reply('Вариант 5')
-     }else{
-      // msg.reply('Вариант 6' + pingedUser)
-     pingedUser = msg.member.id
-
-   }
-       msg.reply(pingedUser + '|' + pg)
-    client.users.fetch(pingedUser).then(User => 
-  {
-
-
-
-
-    ctx.font = '50px "Main"'
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.fillStyle = 'white';
-
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.textAlign = 'center'
-
-
-    console.log(pingedUser)
-    console.log(args[5])
-    let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
-
-  console.log('ARRAY: ' + UserHave)
-let totalArray = ['empty','empty','empty','empty']
-let totalName = ['.','.','.','.']
-
-
-    try {totalArray[0] = (UserHave[4*pg-4])}catch{}
-    try {totalArray[1] = (UserHave[4*pg-3])}catch{}
-    try {totalArray[2] = (UserHave[4*pg-2])}catch{}
-    try {totalArray[3] = (UserHave[4*pg-1])}catch{}
-
-
-    try {
-      if (fs.existsSync('./Background/' + totalArray[0]))
-      {
-        console.log('./Background/' + totalArray[0] + '/displayName')
-      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")}}catch(err){console.log(err)}
-    try {
-      if (fs.existsSync('./Background/' + totalArray[1]))
-      {
-        console.log('./Background/' + totalArray[1] + '/displayName')
-      totalName[1] = fs.readFileSync('./Background/' + totalArray[1] + '/displayName', "utf8")}}catch(err){}
-    try {
-      if (fs.existsSync('./Background/' + totalArray[2]))
-      {
-        console.log('./Background/' + totalArray[2] + '/displayName')
-      totalName[2] = fs.readFileSync('./Background/' + totalArray[2] + '/displayName', "utf8")}}catch(err){}
-    try {
-      if (fs.existsSync('./Background/' + totalArray[3]))
-      {
-        console.log('./Background/' + totalArray[3] + '/displayName')
-      totalName[3] = fs.readFileSync('./Background/' + totalArray[3] + '/displayName', "utf8")}}catch(err){}
-
-
-
-      console.log('eeeeee:' + totalName)
-
-try{
-if (totalArray[0].toString() != 'undefined')
-{
-ctx.fillText(totalArray[0], 290, 520)
-ctx.fillText(totalName[0], 290, 170)
-}
-}catch{}
-
-try{
-if (totalArray[1].toString() != 'undefined')
-{
-  ctx.fillText(totalArray[1], 734, 520)
-  ctx.fillText(totalName[1], 734, 170)
-}
-}catch{}
-
-
-try{
-if (totalArray[2].toString() != 'undefined')
-{
-  ctx.fillText(totalArray[2], 290, 975)
-  ctx.fillText(totalName[2], 290, 625)
-}
-}catch{}
-
-
-try{
-if (totalArray[3].toString() != 'undefined')
-{
-  ctx.fillText(totalArray[3], 734, 975)
-  ctx.fillText(totalName[3], 734, 625)
-}
-}catch{}
-
-
-
-
-try{
-if (totalArray[0].toString() != 'undefined')
-{
-ctx.strokeText(totalArray[0], 290, 520)
-ctx.strokeText(totalName[0], 290, 170)
-}
-}catch{}
-
-
-try{
-if (totalArray[1].toString() != 'undefined')
-{
-  ctx.strokeText(totalArray[1], 734, 520)
-  ctx.strokeText(totalName[1], 734, 170)
-}
-}catch{}
-
-
-try{
-if (totalArray[2].toString() != 'undefined')
-{
-  ctx.strokeText(totalArray[2], 290, 975)
-  ctx.strokeText(totalName[2], 290, 625)
-}
-}catch{}
-
-
-try{
-if (totalArray[3].toString() != 'undefined')
-{
-  ctx.strokeText(totalArray[3], 734, 975)
-  ctx.strokeText(totalName[3], 734, 625)
-}
-}catch{}
-
-
-canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
-
-
-console.log('0]./Background/' + totalArray[0] + '/icon.png')
-console.log('1]./Background/' + totalArray[1] + '/icon.png')
-console.log('2]./Background/' + totalArray[2] + '/icon.png')
-console.log('3]./Background/' + totalArray[3] + '/icon.png')
-sharp.cache(false);
-            sharp('./Images/shop.png')
-            .resize(1024, 1024)
-            .composite([
-              { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},
-               {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
-               { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
-               {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
-               
-              { input: out, top: 0, left: 0}
-              ])
-            .toBuffer()
-            .then(function(outputBuffer) {
-              console.log(err)
-              msg.channel.send({files: [outputBuffer]});
-              });
-        });
-    })
-  }
-}
-
-
-
-if (msg.content.toLowerCase() == '/start')
-  {
-
-
-    let filepath = "./data/UserData/" + msg.author.id;
-    console.log(filepath)
-    try{
-    if (!fs.existsSync(filepath)) 
-      {
-        let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
-        fs.mkdirSync(filepath, err => {console.log(err)})
-        fs.mkdirSync(filepath + '/integers', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/collections', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/config', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/themes', err => {console.log(err)})
-              fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/integers/money', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-                        fs.writeFileSync(filepath + '/integers/exp', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-                        fs.writeFileSync(filepath + '/config/language', 'RU', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/config/theme', 'default', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-                        fs.writeFileSync(filepath + '/collections/userThemes', 'default', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/integers/lvl', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/badges/active', '0\n0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/config/badge', 'NULL', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/socialCredit', '1000', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/SummarXP', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/themes/default', CurrentDate, 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      
-      msg.reply('Успешно!')
-      }else
-      {
-        msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!')
-      }
-    }catch(err){}
-  }
-
 
 if ((msg.content.toLowerCase().startsWith('/card')) || (msg.content.toLowerCase().startsWith('/preview')))
   {
@@ -773,87 +345,8 @@ if (fs.existsSync('./data/UserData/' + msg.author.id))
 }
 
 
-
-
-
-    if (talkedRecently.has(msg.author.id)) {
-    } else {
-
-
-                if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
-      {
-          // Removes the user from the set after a minute
-          try{
-          console.log(msg.author.tag + ' + 1 поинт актива')
-          
-          let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
-          let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
-          let ActiveBadge = fs.readFileSync('./data/UserData/' + msg.author.id + '/badges/active', "utf8");
-          
-          console.log(ActiveBadge)
-          let ActiveMassive = ActiveBadge.split('\n', 5)
-          console.log(ActiveMassive)
-          Money = Number(Money) + Math.floor(Math.random() * 4) + 1;
-          let PointsString = '0.' + (Math.floor(Math.random() * 1) + 9).toString();
-          Points = Number(Points) + Number(PointsString)
-
-          console.log('Поинты: ' + Points + '|' + Money)
-           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Points.toString(), 'utf8')
-           fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money.toString(), 'utf8')
-           fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/active', ActiveMassive[0] + '\n' + (Number(ActiveMassive[1]) + 1).toString(), 'utf8')
-           console.log('Внесено: ' + Money.toString())
-           console.log('Мани: ' + Money)
-           }catch(err){console.log(err)}
-          let levelNeed = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
-           
-           
-           NeededXP = 8
-           CycleNum = 0
-           active = true
-
-           while (active == true)
-           {
-             if (NeededXP < 460) { NeededXP = NeededXP * 1.12 }else{NeededXP = 500; active == false } //break;
-             CycleNum = CycleNum + 1
-             if (CycleNum > levelNeed) { active = false }
-            //  console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
-           }
-          
-            let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
-
-           if (Number(Points) > NeededXP)
-           {
-             let totalXP = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', "utf8")
-             totalXP = Number(totalXP) + Number(Points)
-             fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', totalXP.toString(), 'utf8')
-
-              let lvl = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8")
-              lvl = Number(lvl) + 1
-              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', lvl.toString(), 'utf8')
-
-              Points = 0
-              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
-              msg.reply('Новый уровень! Уровень ' + lvl + 'Тотал опыт ' + totalXP)
-           }
-          //  msg.reply(NeededXP.toString())
-      }
-      //ЗАВЕРШИТЬ!!!!!1 upd: красава, завершил
-
-
-
-
-                    talkedRecently.add(msg.author.id);
-        setTimeout(() => {
-          // Removes the user from the set after a minute
-          talkedRecently.delete(msg.author.id);
-        }, 60000);
-  
-    }
-    })
-
-
-
-
+  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);    
+})
 
 client.login(process.env.DISCORD_TOKEN);
 //тут был Сенко
