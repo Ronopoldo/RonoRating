@@ -153,10 +153,7 @@ if (totalName[3] != undefined)
 
 
 
-let out = fs.createWriteStream('shoptemp.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.')
+canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
 
 
 let boughThemes = ['./Images/Blank.png','./Images/Blank.png','./Images/Blank.png','./Images/Blank.png']
@@ -172,6 +169,7 @@ console.log('Тотал: ' + totalArray)
 
 console.log('VVV Купля VVV')
 console.log(boughThemes)
+sharp.cache(false);
               sharp('./Images/shop.png')
             .resize(1024, 1024)
             .composite([
@@ -185,10 +183,11 @@ console.log(boughThemes)
                {input: boughThemes[2], top: 600, left: 70},
                {input: boughThemes[3], top: 600, left: 524},
                
-              { input: 'shoptemp.png', top: 0, left: 0}])
-            .toFile('shop' + shopPage + '.png', function(err) {
+              { input: out, top: 0, left: 0}])
+            .toBuffer()
+            .then(function(outputBuffer) {
               console.log(err)
-              msg.channel.send({files: ['shop' + shopPage + '.png']});
+              msg.channel.send({files: [outputBuffer]});
               });
             })
 
@@ -383,17 +382,14 @@ if (totalArray[3].toString() != 'undefined')
 }catch{}
 
 
-let out = fs.createWriteStream('invtemp.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.') 
+canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
 
 
 console.log('0]./Background/' + totalArray[0] + '/icon.png')
 console.log('1]./Background/' + totalArray[1] + '/icon.png')
 console.log('2]./Background/' + totalArray[2] + '/icon.png')
 console.log('3]./Background/' + totalArray[3] + '/icon.png')
-
+sharp.cache(false);
             sharp('./Images/shop.png')
             .resize(1024, 1024)
             .composite([
@@ -402,11 +398,12 @@ console.log('3]./Background/' + totalArray[3] + '/icon.png')
                { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
                {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
                
-              { input: 'invtemp.png', top: 0, left: 0}
+              { input: out, top: 0, left: 0}
               ])
-            .toFile('inv' + pingedUser + '.png', function(err) {
+            .toBuffer()
+            .then(function(outputBuffer) {
               console.log(err)
-              msg.channel.send({files: ['inv' + pingedUser + '.png']});
+              msg.channel.send({files: [outputBuffer]});
               });
         });
     })
@@ -524,7 +521,7 @@ if ((msg.content.toLowerCase().startsWith('/card')) || (msg.content.toLowerCase(
 
     if (args.length > 2)
     {    
-      msg.reply('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упомянание')
+      msg.reply('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упоминание')
     }
 
 
@@ -583,10 +580,8 @@ console.log(ThemeAmount)
 ctx.fillText(ThemeAmount.length , 100, 130)
 console.log('Мани: ' + Level)
 
-let out = fs.createWriteStream(pingedUser + 'temp.png')
-let stream = canvas.createPNGStream()
-stream.pipe(out)
-out.on('finish', () =>  { console.log('The PNG file was created.') 
+// let out = fs.createWriteStream(pingedUser + 'temp.png')
+canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
 
 
 
@@ -614,14 +609,13 @@ sharp.cache(false);
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: body, top: 76, left: 76},
               { input: "./Images/circler.png", top: 76, left: 76},
-              { input: './' + pingedUser + 'temp.png', top: 74, left: 170}])
-            .webp( {quality: 90})
+              { input: out, top: 74, left: 170}])
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
               msg.channel.send({files: [outputBuffer]});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
-              fs.unlinkSync(pingedUser + "temp.png")
+              // fs.unlinkSync(pingedUser + "temp.png")
               });
 
 
