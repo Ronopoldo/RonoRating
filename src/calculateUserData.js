@@ -42,10 +42,15 @@ function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) 
             //  console.log(NeededXP + '|' + CycleNum + '|' + levelNeed)
            }
           
+          console.log('ЭКСПА: ' + NeededXP)
             let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
 
            if (Number(Points) > NeededXP)
            {
+             let lastLvl = '0'
+             try{lastLvl  = fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/activity', "utf8")}catch(err){}
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/activity', (Number(lastLvl)+1).toString(), 'utf8')
+
              let totalXP = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', "utf8")
              totalXP = Number(totalXP) + Number(Points)
              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/SummarXP', totalXP.toString(), 'utf8')

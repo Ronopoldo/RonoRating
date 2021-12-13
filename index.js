@@ -18,6 +18,8 @@ const { createCanvas, loadImage ,  registerFont} = require('canvas');
 
 
 registerFont('./fonts/main.ttf', {family: "Main"})
+registerFont('./fonts/Rounded.otf', {family: "ArialRound"})
+
 const canvas = createCanvas(1024, 1024)
 const ctx = canvas.getContext('2d')
 let activeLvl = true

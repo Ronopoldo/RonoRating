@@ -5,15 +5,12 @@ function claimCommand(fs, msg, ctx, sharp, canvas) {
 
     let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
     let filepath = "./data/UserData/" + msg.author.id;
-     fs.readdir('./data/UserData/' + msg.author.id + '/themes', (err, files) => {
+    let userThemes = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
        
-  files.forEach(file => {
-        let UserThemes = []
-    UserThemes[UserThemes.length] = file
     const args = msg.content.slice(`/био`).split(/ +/);
     if (args[1] == 'бета')
     {
-      if (UserThemes.includes('beta'))
+      if (userThemes.includes('beta'))
       {
         msg.reply('У тебя уже есть эта тема!')
       }else
@@ -22,9 +19,11 @@ function claimCommand(fs, msg, ctx, sharp, canvas) {
         msg.reply('Тема успешно получена!')
         console.log('Бета')
 
+        let owned = Number(fs.readFileSync('./Background/beta/owned', "utf8"));
+            fs.writeFileSync('./Background/beta/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
       }
     }
-  })})
+  
   }catch(err){ msg.reply('Ошибка: ' + err) }
 }
 }

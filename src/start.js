@@ -12,6 +12,7 @@ function startCommand(fs, msg) {
         fs.mkdirSync(filepath + '/config', err => {console.log(err)})
         fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
         fs.mkdirSync(filepath + '/themes', err => {console.log(err)})
+        fs.mkdirSync(filepath + '/tasks', err => {console.log(err)})
               fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');

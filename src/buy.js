@@ -31,6 +31,12 @@ let ShopThemes = fs.readdirSync('./Background')
           }else
           {
             let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON();
+            
+            let owned = Number(fs.readFileSync('./Background/' + args[1].toLowerCase() + '/owned', "utf8"));
+            fs.writeFileSync('./Background/' + args[1].toLowerCase() + '/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
+
+            msg.reply(owned.toString())
+
             fs.writeFileSync('./data/UserData/' + msg.member.id + '/themes/' + args[1].toLowerCase(),CurrentDate, 'utf8', (err) => { console.log(err) })
             userBalance = userBalance - price
             fs.writeFileSync('./data/UserData/' + msg.member.id + '/integers/money',userBalance.toString(), 'utf8', (err) => { console.log(err) })
