@@ -36,6 +36,7 @@ const claimCommand = require("./src/claim");
 const buyCommand = require("./src/buy")
 const setCommand = require("./src/set")
 const respeccCommand = require("./src/respecc")
+const giftCommand = require("./src/gift")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
 
@@ -80,6 +81,9 @@ switch(command) {
   break;
   case "/respecc":
   respeccCommand.respeccCommand(msg, MessageEmbed)
+  break;
+  case "/gift":
+  giftCommand.giftCommand(msg, fs, client, args)
   break;
 }
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);    
