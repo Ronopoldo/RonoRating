@@ -12,7 +12,7 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
 
     let pg = 1
     console.log('Unresolved Num: ' + pingedUser)
-    if (Number(pingedUser) != NaN){ msg.reply('Число прошло')
+    if (Number(pingedUser) != NaN){ 
    }else {pingedUser = msg.member.id}
   if (args[2] != undefined) { pg = args[2] } else
   {
@@ -53,7 +53,7 @@ console.log('АЙДИ: ' + pingedUser)
      pingedUser = msg.member.id
 
    }
-       msg.reply(pingedUser + '|' + pg)
+      //  msg.reply(pingedUser + '|' + pg)
     client.users.fetch(pingedUser).then(User => 
   {
 
@@ -191,7 +191,7 @@ console.log('1]./Background/' + totalArray[1] + '/icon.png')
 console.log('2]./Background/' + totalArray[2] + '/icon.png')
 console.log('3]./Background/' + totalArray[3] + '/icon.png')
 sharp.cache(false);
-            sharp('./Images/shop.png')
+            sharp('./Images/inventory.png')
             .resize(1024, 1024)
             .composite([
               { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85},

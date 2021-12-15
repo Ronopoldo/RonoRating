@@ -38,6 +38,8 @@ console.log(pingedUser)
      Guild.members.cache.find(user => user.id === pingedUser).roles.add(role);
      msg.reply('<@' + pingedUser + '>')
      msg.channel.send('https://media.discordapp.net/attachments/698853696817070164/920043674275037244/SPACITEOnDerzitMenya.gif')
+        let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
+      fs.writeFileSync('./data/UserData/' + msg.member.id + '/themes/2022', CurrentDate)
      msg.channel.send('Подарок успешно подарен! <@' + pingedUser + '> получает лимитированную роль, а ты лимитированную тему "2022"! Проверь её при помощи `/inv`')
     fs.appendFileSync('./data/giftedArray', msg.member.id + ' | ')
  }else{

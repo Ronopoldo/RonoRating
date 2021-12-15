@@ -82,7 +82,7 @@ let fontsize = 70
 
   NeededXP = Math.floor(NeededXP)
 
-        msg.reply(currentXP.toString() + '/' + NeededXP.toString())
+        // msg.reply(currentXP.toString() + '/' + NeededXP.toString())
         ctx.fillText(NeededXP, 458, 400)
         ctx.strokeText(NeededXP, 458, 400)
 
@@ -148,14 +148,14 @@ let Themes = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes', "utf
 ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 220, 124)
 console.log('Тег: ' + User.tag)
-ctx.fillText(Money, 570, 204)
+ctx.fillText(Money, 270, 208)
 console.log('ДЕНЬГИ ВНЕСЕНЫ ' + Money)
 console.log('Мани: ' + Money)
-ctx.fillText(Level, 420, 204)
+ctx.fillText(Level, 430, 208)
 console.log('Мани: ' + Level)
 console.log('VVV AMOUNT VVV')
 console.log(Themes)
-ctx.fillText(Themes.length , 270, 204)
+ctx.fillText(Themes.length , 580, 208)
 console.log('Мани: ' + Level)
 
 // let out = fs.createWriteStream(pingedUser + 'temp.png')
