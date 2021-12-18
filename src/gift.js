@@ -42,6 +42,11 @@ console.log(pingedUser)
       fs.writeFileSync('./data/UserData/' + msg.member.id + '/themes/2022', CurrentDate)
      msg.channel.send('Подарок успешно подарен! <@' + pingedUser + '> получает лимитированную роль, а ты лимитированную тему "2022"! Проверь её при помощи `/inv`')
     fs.appendFileSync('./data/giftedArray', msg.member.id + ' | ')
+
+    let owned = Number(fs.readFileSync('./Background/2022/owned', "utf8"));
+            fs.writeFileSync('./Background/2022/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
+
+
  }else{
  if (msg.author.id == pingedUser) { msg.reply('Чё? Самый умный тут?')}else{msg.reply('Пользователь не обнаружен!')}
  }

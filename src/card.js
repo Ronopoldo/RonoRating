@@ -49,6 +49,8 @@ function cardCommand(fs, msg, ctx, sharp, canvas, client) {
     client.users.fetch(pingedUser).then(User => 
   {
 
+    msg.channel.send('Загружаем...')
+
 
 //АЧВИКИ
 ctx.font = '30px "ArialRound"'
@@ -131,8 +133,14 @@ ctx.font = '50px "Main"'
 fontsize = 70
 let nameLength = User.tag.length
 var request = require('request').defaults({ encoding: null });
- request.get(User.avatarURL({ format: "png"}, {size: 128}), function (err, res, body) {
+ request.get(User.displayAvatarURL({ format: "png"}, {size: 128}), function (err, res, body) {
 
+image = sharp(body)
+  .resize(128,128)
+  .toBuffer()
+.then(function(body1) {
+              console.log("error: ", err)
+ 
 
   console.log('Адоптируем...')
   fontsize = 70 - (nameLength/3)*4
@@ -164,7 +172,7 @@ canvas.toBuffer((err, out) => { console.log('The PNG file was created.')
 
 
 
-let theme = fs.readFileSync('./data/UserData/' + msg.author.id + '/config/theme', "utf8");
+let theme = fs.readFileSync('./data/UserData/' + pingedUser + '/config/theme', "utf8");
 
 if (preview == true) {
   let fullarray = fs.readdirSync('Background')
@@ -181,6 +189,13 @@ if (preview == true) {
 sharp.cache(false);
 let image = sharp('./Background/' + theme + '/image.png');
 
+if (fs.existsSync('./Background/' + theme + '/GIF'))
+{
+  image = sharp('./Background/' + theme + '/GIF/image.gif');
+}
+
+
+
 sharp.cache(false);
           
           image
@@ -188,7 +203,7 @@ sharp.cache(false);
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: './tasks/activeBG.png', top: 275, left: 50},
-              { input: body, top: 76, left: 76},
+              { input: body1, top: 76, left: 76},
               { input: './tasks/bar.png', top: 345, left: 185},
               { input: activeImg, top: 286, left: 61}, //11
               { input: "./Images/circler.png", top: 76, left: 76},
@@ -200,20 +215,23 @@ sharp.cache(false);
               msg.channel.send({files: [outputBuffer]});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               // fs.unlinkSync(pingedUser + "temp.png")
-              });
+              })
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
         });      
 
 
 
-})})
+})})})
 
 
 
 
         },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }
+
+   
   }
-}
+  }
 
 module.exports = { cardCommand }
