@@ -59,9 +59,26 @@ function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) 
               lvl = Number(lvl) + 1
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', lvl.toString(), 'utf8')
 
+
+
+let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
+            NewMoney = 50
+           CycleNum = 0
+           active = true
+           while (active == true)
+           {
+             if (NewMoney < 460) { NewMoney = NewMoney * 1.12 }else{NewMoney = 500; active == false } //break;
+             CycleNum = CycleNum + 1
+             if (CycleNum > levelNeed) { active = false }
+           }
+
+
+              Money1 = Number(Money1) + Math.floor(NewMoney)
               Points = 0
+
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', (Math.floor(Money1)).toString(), 'utf8')
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
-              msg.reply('Новый уровень! Уровень ' + lvl + 'Тотал опыт ' + totalXP)
+              msg.reply(':tada:Новый уровень!:tada:\nУровень: ' + (Number(lvl)+1).toString() + '\nТотал опыт: ' + Math.floor(totalXP) + '\nПолучено монет: ' + Math.floor(NewMoney))
            }
           //  msg.reply(NeededXP.toString())
       }
