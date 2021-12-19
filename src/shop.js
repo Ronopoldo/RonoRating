@@ -5,7 +5,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas) {
     if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1} else {shopPage = Number(args[1])}
     console.log(shopPage)
 
-if (shopPage > 1) { shopPage = 1}
+if (shopPage > 2) { shopPage = 1}
 
     let shopNames = []
     fs.readdir('Background', (err, files) => {
@@ -135,7 +135,7 @@ console.log(UserHave)
   if (UserHave.includes(totalArray[2])) { boughThemes[2] = './Images/bought.png'}
    if (UserHave.includes(totalArray[3])) { boughThemes[3] = './Images/bought.png'}
 console.log('Тотал: ' + totalArray)
-       
+        console.log(shopPage)
     console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4*shopPage-4])
 
 console.log('VVV Купля VVV')
@@ -158,7 +158,7 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log(err)
-              msg.channel.send({files: [outputBuffer]});
+              msg.reply({files: [outputBuffer]});
               })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
             })

@@ -9,6 +9,7 @@ function giftCommand(msg, fs, client, args) {
        let choppedArray = giftedArray.split(' | ')
         console.log(choppedArray)
 
+
         if (giftedArray.includes(msg.member.id))
         {
           msg.reply('Дарить подарок можно только один раз!')
@@ -39,7 +40,13 @@ console.log(pingedUser)
      msg.reply('<@' + pingedUser + '>')
      msg.channel.send('https://media.discordapp.net/attachments/698853696817070164/920043674275037244/SPACITEOnDerzitMenya.gif')
         let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
-      fs.writeFileSync('./data/UserData/' + msg.member.id + '/themes/2022', CurrentDate)
+
+        let user = client.users.cache.get(pingedUser);
+
+          console.log(user.tag)
+
+
+      fs.appendFileSync('./data/UserData/' + msg.member.id + '/themes/2022', '\n' + CurrentDate + ' за подарок ' + user.tag + ' (' + pingedUser + ')')
      msg.channel.send('Подарок успешно подарен! <@' + pingedUser + '> получает лимитированную роль, а ты лимитированную тему "2022"! Проверь её при помощи `/inv`')
     fs.appendFileSync('./data/giftedArray', msg.member.id + ' | ')
 

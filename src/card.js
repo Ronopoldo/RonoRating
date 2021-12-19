@@ -67,7 +67,7 @@ let fontsize = 70
 
 //Актив макс уровень
              let lastLvl = '0'
-             try{lastLvl  = fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/activity', "utf8")}catch(err){}
+             try{lastLvl  = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/activity', "utf8")}catch(err){}
 
           const currentXP = Math.floor(fs.readFileSync('./data/UserData/' + pingedUser + '/integers/exp', "utf8"))
           const levelNeed = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/lvl', "utf8");
@@ -147,9 +147,9 @@ image = sharp(body)
 console.log('Адоптация:' + fontsize)
 
 //Юзер
-let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
-let Level = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
-let Themes = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes', "utf8");
+let Money = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/money', "utf8");
+let Level = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/lvl', "utf8");
+let Themes = fs.readdirSync('./data/UserData/' + pingedUser + '/themes', "utf8");
 
 
 
@@ -212,7 +212,7 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.channel.send({files: [outputBuffer]});
+              msg.reply({files: [outputBuffer]});
               ctx.clearRect(0, 0, canvas.width, canvas.height);
               // fs.unlinkSync(pingedUser + "temp.png")
               })

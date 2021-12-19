@@ -11,7 +11,7 @@ function setCommand(fs, msg, ctx, sharp, canvas, args) {
         let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
         let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1] , "utf8");
 
-        msg.reply('**__Тема успешно установлена!!__**\nОписание: ' + desc + '\nПолучена: ' + getdate)
+        msg.reply('**__Тема успешно установлена!!__**\nОписание: `' + desc + '`\n\n\nПолучена: \n`' + getdate + '`')
         msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]})
 //
       }else{

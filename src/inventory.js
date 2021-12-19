@@ -204,7 +204,8 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log(err)
-              msg.channel.send({files: [outputBuffer]});
+              
+              msg.reply({files: [outputBuffer]});
               })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
         });
