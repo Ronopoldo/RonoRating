@@ -116,7 +116,7 @@ if (totalName[2] != undefined)
 
 if (totalName[3] != undefined)
 {
-  ctx.strokeText(totalPrice[3], 734, 975)
+  ctx.strokeText(totalArray[3], 734, 975)
   ctx.strokeText(totalPrice[3] + ' монет', 734, 640)
   ctx.strokeText(totalName[3], 734, 675)
 }
