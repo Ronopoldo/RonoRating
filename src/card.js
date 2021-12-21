@@ -3,12 +3,16 @@ function cardCommand(fs, msg, ctx, sharp, canvas, client) {
     if (fs.existsSync('./data/UserData/' + msg.member.id))
    {
 
-    let preview = false
-    if (msg.content.toLowerCase().startsWith('/preview')) { preview = true}
-    if (msg.content.toLowerCase().startsWith('/card')) { preview = false}
+
 
 
         const args = msg.content.slice(`/био`).split(/ +/);
+
+            let preview = false
+    if (msg.content.toLowerCase().startsWith('/preview')) { preview = true}
+
+    
+    if (msg.content.toLowerCase().startsWith('/card')) { preview = false}
     if (args.length >= 2)
     {
       pingedUser = args[1]
@@ -174,6 +178,9 @@ canvas.toBuffer((err, out) => { console.log('The PNG file was created.')
 
 let theme = fs.readFileSync('./data/UserData/' + pingedUser + '/config/theme', "utf8");
 
+
+
+
 if (preview == true) {
   let fullarray = fs.readdirSync('Background')
   console.log('FULLARRAY: ' + fullarray)
@@ -184,6 +191,16 @@ if (preview == true) {
   }else{msg.reply('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
   }
 }
+
+
+
+
+if (args[1] == 'hentai' ) { 
+  msg.reply ('Сори, но иди ты!')
+  theme = 'default'
+  }
+
+
           console.log('456')
 
 sharp.cache(false);
@@ -212,8 +229,8 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.reply({files: [outputBuffer]});
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              msg.channel.send({files: [outputBuffer]});
+              ctx.clearRect(0, 0, canvas.width, canvas.height)
               // fs.unlinkSync(pingedUser + "temp.png")
               })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
@@ -222,7 +239,12 @@ sharp.cache(false);
 
 
 
-})})})
+})
+   .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+        });
+ 
+ 
+ })
 
 
 
