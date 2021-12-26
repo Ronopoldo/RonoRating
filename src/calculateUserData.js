@@ -86,11 +86,18 @@ InputMassive[0] = CurrentDate.getMonth()
 
 let lastActiveLvl = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve', "utf8"));
 let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
+let rewards = [0,50,100,150,200,400,500,550,600,1000,700,1000,5000]
 if (InputMassive[2] >= activeDays[lastActiveLvl])
 {
+  let Money2 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
+  Money2 = Number(Money2) + rewards[lastActiveLvl]
+fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money2.toString(), 'utf8')
+
+
   lastActiveLvl = lastActiveLvl + 1
   fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve', lastActiveLvl.toString(), 'utf8')
-  msg.reply(':tada: **__Поздравляю!__**\nВы получили новый ' + lastActiveLvl + ' уровень в категории "Ежедневный актив"')
+  msg.reply(':tada: **__Поздравляю!__**\nВы получили новый ' + lastActiveLvl + ' уровень в категории "Ежедневный актив"\nПолучено монет: ' + rewards[lastActiveLvl-1])
+
 }
 
 
