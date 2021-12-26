@@ -120,6 +120,59 @@ ctx.textAlign = 'left'
       .toBuffer()
             .then(function(outputBufferAct) {
 
+//Актив дни подряд
+let lastActiveLvl  = 0
+let lastActive = '0 0 0'
+let InputMassive = ['0', '0', '0']
+try{
+lastActiveLvl = Number(fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/lastActve', "utf8"));
+lastActive = fs.readFileSync('./data/UserData/' + pingedUser + '/badges/lastActve', "utf8");
+InputMassive = lastActive.split(' ', 3);
+}catch(err){
+  lastActiveLvl = 0
+  InputMassive = ['0','0','0']
+}
+let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
+
+ctx.font = '30px "ArialRound"'
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'right'
+
+let fontsize = 70
+
+
+        ctx.fillText(activeDays[lastActiveLvl + 1], 962, 400)
+        ctx.strokeText(activeDays[lastActiveLvl + 1], 962, 400)
+
+ctx.textAlign = 'left'
+        ctx.fillText(InputMassive[2], 689, 400)
+        ctx.strokeText(InputMassive[2], 689, 400)
+
+ctx.textAlign = 'center'
+        ctx.fillText(lastActiveLvl + ' уровень', 827, 400)
+
+
+        ctx.font = '33px "ArialRound"'
+
+    ctx.strokeStyle = 'white';
+ctx.textAlign = 'left'
+        ctx.fillText('Повседневность', 689, 320)
+        ctx.strokeText('Повседневность', 689, 320)
+
+sharp('./tasks/lastActiveBar.png')
+        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[2] / activeDays[lastActiveLvl + 1] * 269 + 1 ), height: 30 })
+      .toBuffer()
+            .then(function(outputBufferAct1) {
+
+
+
+
+
+
+
+
 
 
 
@@ -212,14 +265,39 @@ if (fs.existsSync('./Background/' + theme + '/GIF'))
 }
 
 
-
+//              
 sharp.cache(false);
           
+
+          if (theme !== 'glitch')
+          {
           image
             .resize(1024, 1024)
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: './tasks/activeBG.png', top: 275, left: 50},
+              { input: './tasks/lastActiveBG.png', top: 275, left: 554},
+              { input: body1, top: 76, left: 76},
+              { input: './tasks/bar.png', top: 345, left: 185},
+              { input: activeImg, top: 286, left: 61}, //11
+              { input: './tasks/lastActive/basic.png', top: 286, left: 565},
+              { input: "./Images/circler.png", top: 76, left: 76},
+              {input: outputBufferAct,  top: 345, left: 185},
+              {input: outputBufferAct1,  top: 345, left: 689},
+              { input: out, top: 0, left: 0}])
+            .toBuffer()
+            .then(function(outputBuffer) {
+              console.log("error: ", err)
+              msg.channel.send({files: [outputBuffer]});
+              ctx.clearRect(0, 0, canvas.width, canvas.height)
+              // fs.unlinkSync(pingedUser + "temp.png")
+              })
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+          }else{
+            image
+            .composite([
+              { input: './Images/Borders/5.png', top: 50, left: 50},
+              { input: './tasks/activeBG.png', top: 666, left: 50},
               { input: body1, top: 76, left: 76},
               { input: './tasks/bar.png', top: 345, left: 185},
               { input: activeImg, top: 286, left: 61}, //11
@@ -234,7 +312,7 @@ sharp.cache(false);
               // fs.unlinkSync(pingedUser + "temp.png")
               })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
-
+          }
         });      
 
 
@@ -245,6 +323,8 @@ sharp.cache(false);
  
  
  })
+
+  })
 
 
 

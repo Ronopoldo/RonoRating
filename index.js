@@ -36,6 +36,7 @@ const claimCommand = require("./src/claim");
 const buyCommand = require("./src/buy")
 const setCommand = require("./src/set")
 const respeccCommand = require("./src/respecc")
+const oplotCommand = require("./src/oplot")
 const giftCommand = require("./src/gift")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
@@ -45,7 +46,7 @@ let incMessage = msg.content.toLowerCase();
 // Аргументы
 let args = msg.content.split(/ +/);
 // Команда приложению
-let command = args[0];
+let command = args[0].toLowerCase();
 
 
 try
@@ -84,6 +85,10 @@ switch(command) {
   break;
   case "/gift":
   giftCommand.giftCommand(msg, fs, client, args)
+  break;
+
+  case "/oplot":
+  oplotCommand.oplotCommand(msg, fs, client, args)
   break;
 }
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);    

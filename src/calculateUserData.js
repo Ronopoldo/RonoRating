@@ -5,9 +5,105 @@ function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) 
 
                 if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
       {
+
           // Removes the user from the set after a minute
           try{
           console.log(msg.author.tag + ' + 1 поинт актива')
+
+
+
+  let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
+  let InputMassive = []
+
+if (fs.existsSync('./data/UserData/' + msg.author.id + '/badges/lastActve'))
+{}else{
+  console.log('ПЕРВИЧНАЯ ЗАПИСЬ!')
+  InputMassive[0] = CurrentDate.getMonth()
+  InputMassive[1] = CurrentDate.getDate()
+  InputMassive[2] = '1'
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', Number(InputMassive[0]) + ' ' + Number(InputMassive[1]) + ' ' + Number(InputMassive[2]), 'utf8')
+    
+fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve','0', 'utf8')
+}
+
+let lastActive = fs.readFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', "utf8");
+InputMassive = lastActive.split(' ', 3);
+console.log('LastActive: ')
+console.log(InputMassive)
+console.log(CurrentDate.getMonth() + ' ' + CurrentDate.getDate())
+console.log()
+console.log(Number(CurrentDate.getDate()))
+console.log(Number(InputMassive[1]) + 1)
+
+if ((Number(CurrentDate.getDate()) == (Number(InputMassive[1]) + 1)) && (CurrentDate.getMonth() == Number(InputMassive[0]).toString()))
+{
+  console.log('Сценарий 1')
+  InputMassive[0] = CurrentDate.getMonth()
+  InputMassive[1] = CurrentDate.getDate()
+  InputMassive[2] = Number(InputMassive[2]) + 1
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', Number(InputMassive[0]) + ' ' + Number(InputMassive[1]) + ' ' + Number(InputMassive[2]), 'utf8')
+
+}else
+{
+  console.log('Сценарий 2')
+  if (((CurrentDate.getDate() == '28') || (CurrentDate.getDate() == '29') || (CurrentDate.getDate() == '30') || (CurrentDate.getDate() == '31')) && ((CurrentDate.getMonth() == Number(InputMassive[0]) + 1) || ((CurrentDate.getMonth() == '0') && (Number(InputMassive[0]) == 11))))
+  {
+    console.log('Сценарий 2.1')
+  InputMassive[0] = CurrentDate.getMonth()
+  InputMassive[1] = CurrentDate.getDate()
+  InputMassive[2] = Number(InputMassive[2]) + 1
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', InputMassive[0] + ' ' + InputMassive[1] + ' ' + InputMassive[2], 'utf8')
+  }else
+  {console.log('Сценарий 2.2')
+
+  if ((Number(CurrentDate.getDate()) > (Number(InputMassive[1]) + 1)) && (CurrentDate.getMonth() == Number(InputMassive[0]).toString()))
+  {
+console.log('Сценарий 3.1')
+InputMassive[0] = CurrentDate.getMonth()
+  InputMassive[1] = CurrentDate.getDate()
+  InputMassive[2] = '1'
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', Number(InputMassive[0]) + ' ' + Number(InputMassive[1]) + ' ' + Number(InputMassive[2]), 'utf8')
+  }else
+  {
+console.log('Сценарий 3.3')
+  }
+
+      if (CurrentDate.getMonth() !== Number(InputMassive[0]))
+    {
+      console.log('Сценарий 3.2')
+InputMassive[0] = CurrentDate.getMonth()
+  InputMassive[1] = CurrentDate.getDate()
+  InputMassive[2] = '1'
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve', Number(InputMassive[0]) + ' ' + Number(InputMassive[1]) + ' ' + Number(InputMassive[2]), 'utf8')
+    }else
+    {console.log('Сценарий 3.3')}
+  
+
+
+  
+  }
+}
+
+let lastActiveLvl = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve', "utf8"));
+let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
+if (InputMassive[2] >= activeDays[lastActiveLvl])
+{
+  lastActiveLvl = lastActiveLvl + 1
+  fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve', lastActiveLvl.toString(), 'utf8')
+  msg.reply(':tada: **__Поздравляю!__**\nВы получили новый ' + lastActiveLvl + ' уровень в категории "Ежедневный актив"')
+}
+
+
+
+
+
+
+
+
+
+
+
+
           
           let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
           let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
@@ -58,6 +154,11 @@ function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) 
               let lvl = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8")
               lvl = Number(lvl) + 1
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', lvl.toString(), 'utf8')
+
+
+
+
+
 
 
 
