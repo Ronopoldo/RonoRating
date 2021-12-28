@@ -38,8 +38,10 @@ const setCommand = require("./src/set")
 const respeccCommand = require("./src/respecc")
 const oplotCommand = require("./src/oplot")
 const giftCommand = require("./src/gift")
+const voiceActivity = require("./src/voiceActivity")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
+
 
 // Входящее сообщение
 let incMessage = msg.content.toLowerCase(); 
@@ -56,7 +58,7 @@ switch(command) {
     startCommand.startCommand(fs, msg);
     break;
   case "/test": 
-    test.test(msg);
+    test.test(msg, fs);
     break;
   case "/shop": 
     shopCommand.shopCommand(fs, msg, ctx, sharp, canvas);
@@ -91,14 +93,43 @@ switch(command) {
   oplotCommand.oplotCommand(msg, fs, client, args)
   break;
 }
-  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);    
+  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
+  
 }catch(err){
   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
 }}
 )
 
+client.on("ready", function()
+{
+  voiceActivity.voiceActivity(fs, client);
+})
+
+
 client.login(process.env.DISCORD_TOKEN);
 //тут был Сенко
+
+//П
+
+const { VoiceManager } = require("discord-voice");
+// Create a new instance of the manager class
+const manager = new VoiceManager(client, {
+    userStorage: "./users.json",
+    configStorage: "./configs.json",
+    checkMembersEvery: 5000,
+    default: {
+        trackBots: false,
+        trackAllChannels: true
+    }
+});
+// We now have a voiceManager property to access the manager everywhere!
+client.voiceManager = manager;
+
+
+
+
+
+
 
 
 

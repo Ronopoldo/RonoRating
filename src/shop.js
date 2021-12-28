@@ -65,15 +65,14 @@ msg.channel.send('Загружаем...')
 if (totalName[0] != undefined)
 {
 ctx.fillText(totalArray[0], 290, 520)
+ctx.fillText(totalPrice[0] + ' монет', 290, 185)
 ctx.fillText(totalName[0], 290, 220)
-ctx.fillText(totalPrice[0] + ' монет', 290, 250)
-
 }
 
 if (totalName[1] != undefined)
 {
   ctx.fillText(totalArray[1], 734, 520)
-  ctx.fillText(totalPrice[1] + ' монет', 290, 640)
+  ctx.fillText(totalPrice[1] + ' монет', 734, 185)
   ctx.fillText(totalName[1], 734, 220)
 }
 
@@ -97,14 +96,14 @@ if (totalName[3] != undefined)
 if (totalName[0] != undefined)
 {
 ctx.strokeText(totalArray[0], 290, 520)
-ctx.strokeText(totalPrice[0] + ' монет', 290, 340)
+ctx.strokeText(totalPrice[0] + ' монет', 290, 185)
 ctx.strokeText(totalName[0], 290, 220)
 }
 
 if (totalName[1] != undefined)
 {
   ctx.strokeText(totalArray[1], 734, 520)
-  ctx.strokeText(totalPrice[1] + ' монет', 290, 640)
+  ctx.strokeText(totalPrice[1] + ' монет', 734, 185)
   ctx.strokeText(totalName[1], 734, 220)
 }
 

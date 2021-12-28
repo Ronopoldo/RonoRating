@@ -1,5 +1,6 @@
-function test(msg) {
-  msg.reply("Test ok");
+function test(msg, fs) {
+  let userThemes = fs.readdirSync('./data/UserData/')
+  console.log(userThemes)
 }
 
 module.exports = { test }

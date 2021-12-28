@@ -19,8 +19,8 @@
   "homepage": "https://github.com/Ronopoldo/RonoRating#readme",
   "dependencies": {
     "axios": "^0.24.0",
-    "canvacord": "^5.2.3",
     "canvas": "^2.8.0",
+    "discord-voice": "^2.0.6",
     "discord.js": "^13.2.0",
     "express": "^4.17.1",
     "node": "^16.10.0",
