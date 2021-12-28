@@ -1,19 +1,27 @@
-function voiceActivity(fs, client) {
+function voiceActivity(fs, client, chID) {
 
   setInterval(function() {
 
-  let ChillCenter = client.channels.cache.get('647198455936319528')
+  let ChillCenter = client.channels.cache.get(chID)
   ChillCenter.members.forEach(element => 
     {
 
-      if (fs.existsSync('./data/UserData/' + element.id))
+      if ((fs.existsSync('./data/UserData/' + element.id)) && (element.voice.selfDeaf == false))
    {
 
       let userActivity = fs.readFileSync('./data/UserData/' + element.id + '/integers/voice')
       console.log(element.id)
-      userActivity = Number(userActivity) + 1
+      let plusAmount = 1
+
+      if ((element.voice.selfMute == true) || (element.voice.serverMute == true)) { plusAmount = plusAmount * 0.5 }
+
+
+      if (element.voice.streaming == true) { plusAmount * 1.5 }
+
+
+      userActivity = Number(userActivity) + plusAmount
       fs.writeFileSync('./data/UserData/' + element.id + '/integers/voice' ,userActivity.toString())
-      console.log(element.user.tag + ' + 1 минута ГС; всего: ' + userActivity)
+      console.log(element.user.tag + ' + ' + plusAmount + ' минута ГС; всего: ' + userActivity)
 
       let lvlArray = [0.5,1,1.5,2,3,4,5,10,15,20,25,30,45,50,75,90,120,150,180,220,280,320,390,460,500,600,750,800,900,1000]
 
@@ -35,7 +43,7 @@ function voiceActivity(fs, client) {
         fs.writeFileSync('./data/UserData/' + element.id + '/integers/money', Money.toString())
         fs.writeFileSync('./data/UserData/' + element.id + '/tasks/voice', currentLvl.toString())
         
-        element.user.send('**__Поздравляю с новым уровнем в категории "Голосовая активность"!__**\nНовый уровень: `' + currentLvl.toString() + '`\nЧасов в голосовых каналах: `' + (userActivity/60).toFixed(1).toString() + '`\nПолучено монет: `' + (rewards[currentLvl]).toString() + '`\n\nИскренне\nРоносервер')
+        element.user.send('**__Поздравляю с новым уровнем в категории "Голосовая активность"!__**\nНовый уровень: `' + currentLvl.toString() + '`\nЧасов в голосовых каналах: `' + (userActivity/60).toFixed(1).toString() + '`\nПолучено монет: `' + (rewards[currentLvl]).toString() + '`\n\nИскренне\nРоносервер').catch(error => {})
       }
       
 

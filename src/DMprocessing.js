@@ -10,7 +10,7 @@ if (typeCh == 'DM')
     const guild = client.guilds.cache.get("544902879534907392");
           let publicashionCh = guild.channels.cache.get("925312597211897856")
           try{
-            publicashionCh.send('`' + msg.author.tag + '(' + msg.author.id + '):`\n' + msg.content)
+            publicashionCh.send('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\nДМ с ' + msg.channel.recipient.tag + '\n\n`' + msg.author.tag + '(' + msg.author.id + '):`\n' + msg.content)
             msg.attachments.forEach(attachment => {
       const ImageLink = attachment.url;
       publicashionCh.send(ImageLink)

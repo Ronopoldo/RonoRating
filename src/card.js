@@ -114,8 +114,13 @@ ctx.textAlign = 'left'
           activeImg = './tasks/activity/basic.png'
         }
 
+
+
+
         let actwidth = Math.floor(270 * (currentXP / NeededXP) + 1)
+             if (actwidth >= 270) {actwidth = 269}
       sharp('./tasks/fullBar.png')
+ 
         .extract({ left: 0, top: 0, width: actwidth, height: 30 })
       .toBuffer()
             .then(function(outputBufferAct) {
@@ -329,6 +334,8 @@ sharp.cache(false);
               { input: './tasks/voice/default.png', top: 462, left: 50},
               { input: body1, top: 76, left: 76},
               { input: './tasks/bar.png', top: 345, left: 185},
+              { input: './tasks/bar.png', top: 345, left: 689},
+              { input: './tasks/bar.png', top: 532, left: 185},
               { input: activeImg, top: 286, left: 61}, //11outputBufferAct2
               { input: './tasks/lastActive/basic.png', top: 286, left: 565},
               { input: './tasks/voice/icon.png', top: 473, left: 60},
@@ -371,12 +378,16 @@ sharp.cache(false);
 
 })
    .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
-        });
+        })
+       
  
             })
+            .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })
+ .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
   })
+  .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
 
 

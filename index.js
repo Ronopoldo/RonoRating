@@ -67,8 +67,8 @@ let args = msg.content.split(/ +/);
 let command = args[0].toLowerCase();
 
 
-// try
-// {
+try
+{
 switch(command) {
    case "/start": 
     startCommand.startCommand(fs, msg);
@@ -108,18 +108,20 @@ switch(command) {
   case "/oplot":
   oplotCommand.oplotCommand(msg, fs, client, args)
   break;
-
 }
-// }catch(err){
-//   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
-// }
+  
+}catch(err){
+  msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
+}
 }
 )
 
-
 client.on("ready", function()
 {
-  voiceActivity.voiceActivity(fs, client);
+  voiceActivity.voiceActivity(fs, client, '647198455936319528');
+  voiceActivity.voiceActivity(fs, client, '648243049909977110');
+  voiceActivity.voiceActivity(fs, client, '544902879534907396');
+  voiceActivity.voiceActivity(fs, client, '647052644380180480');
 })
 
 
@@ -128,16 +130,52 @@ client.on("ready", function()
 //     if (message.channel.type == 'dm'){ console.log('WOW')}
 // });
 
-
+try{
 client.on('messageCreate', msg => {
   try{
   DMprocessing.DMprocessing(msg, client, msg.channel)
   }catch(err){}
 });
-
+}catch(err){}
 
 client.login(process.env.DISCORD_TOKEN);
 //тут был Сенко
 
 //П
 
+
+
+
+
+
+
+
+
+
+
+(function(console){
+
+console.save = function(data, filename){
+
+    if(!data) {
+        console.error('Console.save: No data')
+        return;
+    }
+
+    if(!filename) filename = 'console.json'
+
+    if(typeof data === "object"){
+        data = JSON.stringify(data, undefined, 4)
+    }
+
+    var blob = new Blob([data], {type: 'text/json'}),
+        e    = document.createEvent('MouseEvents'),
+        a    = document.createElement('a')
+
+    a.download = filename
+    a.href = window.URL.createObjectURL(blob)
+    a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
+    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+    a.dispatchEvent(e)
+ }
+})(console)
