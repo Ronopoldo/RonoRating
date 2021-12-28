@@ -13,6 +13,7 @@ function startCommand(fs, msg) {
         fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
         fs.mkdirSync(filepath + '/themes', err => {console.log(err)})
         fs.mkdirSync(filepath + '/tasks', err => {console.log(err)})
+      fs.writeFileSync(filepath + '/tasks/voice', '0')
               fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
@@ -53,6 +54,10 @@ function startCommand(fs, msg) {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
+      fs.writeFileSync(filepath + '/integers/voice', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
       fs.writeFileSync(filepath + '/integers/SummarXP', '0', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
@@ -67,7 +72,8 @@ function startCommand(fs, msg) {
       {
         msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!')
       }
-    }catch(err){}
+    }catch(err){
+    console.log(err)}
 }
 
 module.exports = { startCommand }

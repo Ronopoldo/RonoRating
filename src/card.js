@@ -1,6 +1,6 @@
 function cardCommand(fs, msg, ctx, sharp, canvas, client) {
   {
-    if (fs.existsSync('./data/UserData/' + msg.member.id))
+    if (fs.existsSync('./data/UserData/' + msg.author.id))
    {
 
 
@@ -49,7 +49,7 @@ function cardCommand(fs, msg, ctx, sharp, canvas, client) {
    }else {}
 
    if (fs.existsSync('./data/UserData/' + pingedUser))
-   { }else{pingedUser = msg.member.id}
+   { }else{pingedUser = msg.author.id}
     client.users.fetch(pingedUser).then(User => 
   {
 
@@ -168,10 +168,59 @@ sharp('./tasks/lastActiveBar.png')
 
 
 
+///////////////ГС АКТИВ
+let currentLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/voice')
+        let userActivity = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/voice')
+
+        
+let lvlArray = [0.5,1,1.5,2,3,4,5,10,15,20,25,30,45,50,75,90,120,150,180,220,280,320,390,460,500,600,750,800,900,1000]
+
+      let rewards = [50,100,300,400,800,1200,3000, 7000, 7000, 8500, 9000, 9000,9000,10000,11000,15000,16000,17000,18000,19000,20000,25000,25000,25000,25000,25000,25000,40000,40000,250000]
+
+
+      ctx.font = '30px "ArialRound"'
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'right'
+
+let fontsize = 70
+
+
+        ctx.fillText(lvlArray[currentLvl], 458, 587)
+        ctx.strokeText(lvlArray[currentLvl], 458, 587)
+
+ctx.textAlign = 'left'
+        ctx.fillText((userActivity/60).toFixed(1), 175, 587)
+        ctx.strokeText((userActivity/60).toFixed(1), 175, 587)
+
+ctx.textAlign = 'center'
+        ctx.fillText(currentLvl + ' уровень', 323, 587)
+
+
+        ctx.font = '33px "ArialRound"'
 
 
 
+console.log('SECRET NUM: ' + Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1))
 
+    ctx.strokeStyle = 'white';
+ctx.textAlign = 'left'
+        ctx.fillText('Голосовой актив', 185, 507)
+        ctx.strokeText('Голосовой актив', 185, 507)
+        
+        let vwidth = Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
+
+if (vwidth >= 270) {vwidth = 269}
+
+
+sharp('./tasks/voiceBar.png')
+
+
+
+      .extract({ left: 0, top: 0, width: vwidth, height: 30 })
+      .toBuffer()
+            .then(function(outputBufferAct2) {
 
 
 
@@ -277,13 +326,16 @@ sharp.cache(false);
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: './tasks/activeBG.png', top: 275, left: 50},
               { input: './tasks/lastActiveBG.png', top: 275, left: 554},
+              { input: './tasks/voice/default.png', top: 462, left: 50},
               { input: body1, top: 76, left: 76},
               { input: './tasks/bar.png', top: 345, left: 185},
-              { input: activeImg, top: 286, left: 61}, //11
+              { input: activeImg, top: 286, left: 61}, //11outputBufferAct2
               { input: './tasks/lastActive/basic.png', top: 286, left: 565},
+              { input: './tasks/voice/icon.png', top: 473, left: 60},
               { input: "./Images/circler.png", top: 76, left: 76},
               {input: outputBufferAct,  top: 345, left: 185},
               {input: outputBufferAct1,  top: 345, left: 689},
+              {input: outputBufferAct2,  top: 532, left: 185},
               { input: out, top: 0, left: 0}])
             .toBuffer()
             .then(function(outputBuffer) {
@@ -321,7 +373,7 @@ sharp.cache(false);
    .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
         });
  
- 
+            })
  })
 
   })

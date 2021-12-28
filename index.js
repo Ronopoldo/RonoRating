@@ -10,10 +10,22 @@ app.get('/', function(request, response){ response.send(`Монитор акти
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_PRESENCES] });
+let client; {
+    client = new Discord.Client({
+        partials: ['MESSAGE', 'REACTION', 'CHANNEL'],
+        intents: [
+            "GUILDS",
+            "GUILD_MEMBERS",
+            "GUILD_VOICE_STATES",
+            "GUILD_PRESENCES",
+            "GUILD_MESSAGES",
+            "DIRECT_MESSAGES",
+        ],
+    })
+}
 const { MessageEmbed } = require('discord.js');
   let active = true
-let shopPage = 1
+let shopPage = 1 
 const { createCanvas, loadImage ,  registerFont} = require('canvas');
 
 
@@ -39,9 +51,13 @@ const respeccCommand = require("./src/respecc")
 const oplotCommand = require("./src/oplot")
 const giftCommand = require("./src/gift")
 const voiceActivity = require("./src/voiceActivity")
+const DMprocessing = require("./src/DMprocessing")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
+  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
 
+  
+ 
 
 // Входящее сообщение
 let incMessage = msg.content.toLowerCase(); 
@@ -51,8 +67,8 @@ let args = msg.content.split(/ +/);
 let command = args[0].toLowerCase();
 
 
-try
-{
+// try
+// {
 switch(command) {
    case "/start": 
     startCommand.startCommand(fs, msg);
@@ -93,11 +109,12 @@ switch(command) {
   oplotCommand.oplotCommand(msg, fs, client, args)
   break;
 }
-  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
+
   
-}catch(err){
-  msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
-}}
+// }catch(err){
+//   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
+// }
+}
 )
 
 client.on("ready", function()
@@ -106,24 +123,23 @@ client.on("ready", function()
 })
 
 
+// client.on('message', message => {
+//   console.log('321321123321')
+//     if (message.channel.type == 'dm'){ console.log('WOW')}
+// });
+
+
+client.on('messageCreate', msg => {
+  DMprocessing.DMprocessing(msg, client, msg.channel)
+});
+
+
 client.login(process.env.DISCORD_TOKEN);
 //тут был Сенко
 
 //П
 
-const { VoiceManager } = require("discord-voice");
-// Create a new instance of the manager class
-const manager = new VoiceManager(client, {
-    userStorage: "./users.json",
-    configStorage: "./configs.json",
-    checkMembersEvery: 5000,
-    default: {
-        trackBots: false,
-        trackAllChannels: true
-    }
-});
-// We now have a voiceManager property to access the manager everywhere!
-client.voiceManager = manager;
+
 
 
 

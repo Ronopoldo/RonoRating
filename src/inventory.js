@@ -5,7 +5,7 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
 
     const args = msg.content.slice(`/био`).split(/ +/);
       pingedUser = args[1] 
-      if (args[1] == undefined) { pingedUser = msg.member.id}
+      if (args[1] == undefined) { pingedUser = msg.author.id}
       pingedUser = pingedUser.replace("<@",'')
       pingedUser = pingedUser.replace("!",'')
       pingedUser = pingedUser.replace(">",'')
@@ -13,7 +13,7 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
     let pg = 1
     console.log('Unresolved Num: ' + pingedUser)
     if (Number(pingedUser) != NaN){ 
-   }else {pingedUser = msg.member.id}
+   }else {pingedUser = msg.author.id}
   if (args[2] != undefined) { pg = args[2] } else
   {
     if ((args[1] != undefined) && (args[1].length > 5)) 
@@ -25,7 +25,7 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
     {
             // msg.reply('Вариант 2')
      pg = 1
-     pingedUser =  msg.member.id
+     pingedUser =  msg.author.id
     }
 
 
@@ -33,7 +33,7 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
     {
             // msg.reply('Вариант 3')
       pg = args[1]
-      pingedUser = msg.member.id
+      pingedUser = msg.author.id
     }else
     {
             // msg.reply('Вариант 4')
