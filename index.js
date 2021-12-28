@@ -74,7 +74,7 @@ switch(command) {
     startCommand.startCommand(fs, msg);
     break;
   case "/test": 
-    test.test(msg, fs);
+    test.test(msg, fs, args);
     break;
   case "/shop": 
     shopCommand.shopCommand(fs, msg, ctx, sharp, canvas);
@@ -108,14 +108,14 @@ switch(command) {
   case "/oplot":
   oplotCommand.oplotCommand(msg, fs, client, args)
   break;
-}
 
-  
+}
 // }catch(err){
 //   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
 // }
 }
 )
+
 
 client.on("ready", function()
 {
@@ -130,7 +130,9 @@ client.on("ready", function()
 
 
 client.on('messageCreate', msg => {
+  try{
   DMprocessing.DMprocessing(msg, client, msg.channel)
+  }catch(err){}
 });
 
 
@@ -139,39 +141,3 @@ client.login(process.env.DISCORD_TOKEN);
 
 //П
 
-
-
-
-
-
-
-
-
-
-
-(function(console){
-
-console.save = function(data, filename){
-
-    if(!data) {
-        console.error('Console.save: No data')
-        return;
-    }
-
-    if(!filename) filename = 'console.json'
-
-    if(typeof data === "object"){
-        data = JSON.stringify(data, undefined, 4)
-    }
-
-    var blob = new Blob([data], {type: 'text/json'}),
-        e    = document.createEvent('MouseEvents'),
-        a    = document.createElement('a')
-
-    a.download = filename
-    a.href = window.URL.createObjectURL(blob)
-    a.dataset.downloadurl =  ['text/json', a.download, a.href].join(':')
-    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-    a.dispatchEvent(e)
- }
-})(console)

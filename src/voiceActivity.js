@@ -35,7 +35,7 @@ function voiceActivity(fs, client) {
         fs.writeFileSync('./data/UserData/' + element.id + '/integers/money', Money.toString())
         fs.writeFileSync('./data/UserData/' + element.id + '/tasks/voice', currentLvl.toString())
         
-        element.user.send('Поздравляю с новым уровнем в категории "Голосовая активность"!\nНовый уровень: ' + currentLvl.toString() + '\nЧасов в голосовых каналах: ' + (userActivity/60).toString() + '\nПолучено монет: ' + (rewards[currentLvl]).toString() + '\n\nИскренне\nРоносервер')
+        element.user.send('**__Поздравляю с новым уровнем в категории "Голосовая активность"!__**\nНовый уровень: `' + currentLvl.toString() + '`\nЧасов в голосовых каналах: `' + (userActivity/60).toFixed(1).toString() + '`\nПолучено монет: `' + (rewards[currentLvl]).toString() + '`\n\nИскренне\nРоносервер')
       }
       
 

@@ -20,7 +20,7 @@
       {
         "id": "dfd82b00-386e-41b4-9e92-1a6efe0cc927",
         "line": 1,
-        "version": 9,
+        "version": 41,
         "index": 0
       }
     ],
@@ -66,6 +66,14 @@
         "line": 81,
         "version": 381,
         "index": 2506
+      }
+    ],
+    "src/test.js": [
+      {
+        "id": "3327fd60-ab4d-43fc-b935-4493770f17c4",
+        "line": 9,
+        "version": 509,
+        "index": 247
       }
     ]
   }

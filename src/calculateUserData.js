@@ -1,4 +1,6 @@
 function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) {
+  if (msg.channel.type !== 'dm')
+  {
      if (talkedRecently.has(msg.author.id)) {
     } else {
 
@@ -202,6 +204,7 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
         }, 60000);
   
     }
+}
 }
 
 module.exports = { calculateUserData }
