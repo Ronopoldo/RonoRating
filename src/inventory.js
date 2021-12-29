@@ -14,32 +14,41 @@ function invCommand(fs, msg, ctx, sharp, canvas, client)
     console.log('Unresolved Num: ' + pingedUser)
     if (Number(pingedUser) != NaN){ 
    }else {pingedUser = msg.author.id}
-  if (args[2] != undefined) { pg = args[2] } else
-  {
-    if ((args[1] != undefined) && (args[1].length > 5)) 
+
+   
+  if (args[2] != undefined) {
+    if (args[2] > 5)
     {
-      // msg.reply('Вариант 1')
-      pg = 1
+      console.log('Script 1')
+      pg = args[1]
+      pingedUser = args[2]
+    }else
+    {
+      console.log('Script 2')
+      pg = args[2]
+      pingedUser = args[1]
+    }
+   } else
+   {
+
+     
+
+         if (args[1] > 5)
+    {
+      console.log('Script 3')
       pingedUser = args[1]
     }else
     {
-            // msg.reply('Вариант 2')
-     pg = 1
-     pingedUser =  msg.author.id
-    }
-
-
-        if ((args[1] != undefined) && (args[1].length < 5)) 
-    {
-            // msg.reply('Вариант 3')
+      console.log('Script 4')
       pg = args[1]
-      pingedUser = msg.author.id
-    }else
-    {
-            // msg.reply('Вариант 4')
-     pg = 1
     }
+
   }
+
+if (args[1] == undefined) {
+pingedUser = msg.author.id
+pg = 1
+}
         pingedUser = pingedUser.replace("<@",'')
       pingedUser = pingedUser.replace("!",'')
       pingedUser = pingedUser.replace(">",'')
@@ -70,9 +79,10 @@ console.log('АЙДИ: ' + pingedUser)
     ctx.textAlign = 'center'
 
 
-    console.log(pingedUser)
+    console.log('________________' 
+    + pingedUser)
     console.log(args[5])
-    let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+    let UserHave = fs.readdirSync('./data/UserData/' + pingedUser + '/themes')
 
   console.log('ARRAY: ' + UserHave)
 let totalArray = ['empty','empty','empty','empty']
@@ -205,9 +215,9 @@ sharp.cache(false);
             .then(function(outputBuffer) {
               console.log(err)
               
-              msg.channel.send({files: [outputBuffer]})
+              msg.reply({files: [outputBuffer]}).catch(err => {});
               })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {}) });
         });
     })
   }

@@ -11,12 +11,12 @@ function setCommand(fs, msg, ctx, sharp, canvas, args) {
         let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
         let getdate = fs.readFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1] , "utf8");
 
-        msg.reply('**__Тема успешно установлена!!__**\nОписание: `' + desc + '`\n\n\nПолучена: \n`' + getdate + '`')
-        msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]})
+        msg.reply('**__Тема успешно установлена!!__**\nОписание: `' + desc + '`\n\n\nПолучена: \n`' + getdate + '`').catch(err => {});
+        msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]}).catch(err => {});
 //
       }else{
-        msg.reply('У тебя нету этой темы!')}
-    }else{msg.reply('Не найдено темы!')}
+        msg.reply('У тебя нету этой темы!').catch(err => {});}
+    }else{msg.reply('Не найдено темы!').catch(err => {});}
   }catch(err){}
   }
 }

@@ -190,7 +190,7 @@ let lvlArray = [0.5,1,1.5,2,3,4,5,10,15,20,25,30,45,50,75,90,120,150,180,220,280
     ctx.textAlign = 'right'
 
 let fontsize = 70
-
+if (currentLvl > 29) { currentLvl = 29 }
 
         ctx.fillText(lvlArray[currentLvl], 458, 587)
         ctx.strokeText(lvlArray[currentLvl], 458, 587)
@@ -216,7 +216,7 @@ ctx.textAlign = 'left'
         
         let vwidth = Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
-if (vwidth >= 270) {vwidth = 269}
+if ((vwidth >= 270) || (vwidth<1)) {vwidth = 269}
 
 
 sharp('./tasks/voiceBar.png')
@@ -275,7 +275,7 @@ ctx.font = '40px "ArialRound"'
 let outputMoney = Money.toString()
 
 if (Money.toString().length > 3) {
-outputMoney = (Math.floor(Money/100)/10).toString() + 'K'
+outputMoney = (Math.floor(Money/100)/10).toString() + 'k'
 }
 
 if (Money.toString().length > 6) {
@@ -393,7 +393,7 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.channel.send({files: [outputBuffer]});
+              msg.reply({files: [outputBuffer]}).catch(err => {});;
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               // fs.unlinkSync(pingedUser + "temp.png")
               })
@@ -403,7 +403,7 @@ sharp.cache(false);
             .composite([
               { input: './Images/Borders/5.png', top: 50, left: 50},
               { input: './tasks/activeBG.png', top: 666, left: 50},
-              { input: body1, top: 76, left: 76},
+              { input: body, top: 76, left: 76},
               { input: './tasks/bar.png', top: 345, left: 185},
               { input: activeImg, top: 286, left: 61}, //11
               { input: "./Images/circler.png", top: 76, left: 76},

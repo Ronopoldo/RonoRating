@@ -23,6 +23,22 @@ let client; {
         ],
     })
 }
+
+var gulp = require('gulp');
+var ignoreErrors = require('gulp-ignore-errors');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+
+gulp.task('default', function() {
+  gulp.src('demo.js')
+  .concat()
+  .pipe(ignoreErrors())
+  .pipe(uglify())
+  .pipe(gulp.dest('output'));
+});
+
+
+
 const { MessageEmbed } = require('discord.js');
   let active = true
 let shopPage = 1 
@@ -52,6 +68,7 @@ const oplotCommand = require("./src/oplot")
 const giftCommand = require("./src/gift")
 const voiceActivity = require("./src/voiceActivity")
 const DMprocessing = require("./src/DMprocessing")
+const balCommand = require("./src/bal")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -105,8 +122,13 @@ switch(command) {
   giftCommand.giftCommand(msg, fs, client, args)
   break;
 
-  case "/oplot":
+  case "/jojo":
   oplotCommand.oplotCommand(msg, fs, client, args)
+  break;
+
+  case "/balance":
+  case "/bal":
+  balCommand.balCommand(msg, fs, args, client, MessageEmbed)
   break;
 }
   
@@ -122,6 +144,7 @@ client.on("ready", function()
   voiceActivity.voiceActivity(fs, client, '648243049909977110');
   voiceActivity.voiceActivity(fs, client, '544902879534907396');
   voiceActivity.voiceActivity(fs, client, '647052644380180480');
+
 })
 
 

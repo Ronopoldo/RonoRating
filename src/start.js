@@ -67,10 +67,10 @@ function startCommand(fs, msg) {
               console.log('Данные были добавлены в конец файла!');
             });
       
-      msg.reply('Успешно!')
+      msg.reply('Успешно!').catch(err => {});
       }else
       {
-        msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!')
+        msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!').catch(err => {});
       }
     }catch(err){
     console.log(err)}

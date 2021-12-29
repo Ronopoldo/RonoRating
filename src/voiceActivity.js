@@ -16,7 +16,10 @@ function voiceActivity(fs, client, chID) {
       if ((element.voice.selfMute == true) || (element.voice.serverMute == true)) { plusAmount = plusAmount * 0.5 }
 
 
-      if (element.voice.streaming == true) { plusAmount * 1.5 }
+      if (element.voice.streaming == true) { plusAmount = plusAmount * 1.5 }
+
+      if (element.id == '849254300030599208') { plusAmount = 1000
+      }
 
 
       userActivity = Number(userActivity) + plusAmount
@@ -50,6 +53,14 @@ function voiceActivity(fs, client, chID) {
    }else{console.log(element.id + ' не зареган')}
     }); 
     
+
+      let Themes = fs.readdirSync('./Background', "utf8");
+  client.user.setPresence({ status: "idle" });
+client.user.setActivity(' за Вами) В базе данных бота уже ' + Themes.length + ' тем', { type: 'WATCHING' }); 
+client.user.setStatus('idle')
+  console.log('тип рабет 2')
+
+  
 }, 60000);
 
 }

@@ -59,10 +59,10 @@ function oplotCommand(msg, fs, client, args) {
           let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
 
 
-        fs.writeFileSync('./data/UserData/' + pingedUser + '/themes/oplot', CurrentDate)
+        fs.writeFileSync('./data/UserData/' + pingedUser + '/themes/sakudio', CurrentDate)
 
-            let owned = Number(fs.readFileSync('./Background/oplot/owned', "utf8"));
-            fs.writeFileSync('./Background/oplot/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
+            let owned = Number(fs.readFileSync('./Background/sakudio/owned', "utf8"));
+            fs.writeFileSync('./Background/sakudio/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
 
         
 msg.reply('Успено выдано пользователю <@' + pingedUser + '>\nСЛАВА ОПЛОТУ!')

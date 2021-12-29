@@ -98,7 +98,7 @@ fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money2.
 
   lastActiveLvl = lastActiveLvl + 1
   fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/lastActve', lastActiveLvl.toString(), 'utf8')
-  msg.reply(':tada: **__Поздравляю!__**\nВы получили новый ' + lastActiveLvl + ' уровень в категории "Ежедневный актив"\nПолучено монет: ' + rewards[lastActiveLvl-1])
+  msg.reply(':tada: **__Поздравляю!__**\nВы получили новый ' + lastActiveLvl + ' уровень в категории "Ежедневный актив"\nПолучено монет: ' + rewards[lastActiveLvl-1]).catch(err => {});
 
 }
 
@@ -188,7 +188,7 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
 
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', (Math.floor(Money1)).toString(), 'utf8')
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
-              msg.reply(':tada:Новый уровень!:tada:\nУровень: ' + (Number(lvl)+1).toString() + '\nТотал опыт: ' + Math.floor(totalXP) + '\nПолучено монет: ' + Math.floor(NewMoney))
+              msg.reply(':tada:Новый уровень!:tada:\nУровень: ' + (Number(lvl)+1).toString() + '\nТотал опыт: ' + Math.floor(totalXP) + '\nПолучено монет: ' + Math.floor(NewMoney)).catch(err => {});
            }
           //  msg.reply(NeededXP.toString())
       }

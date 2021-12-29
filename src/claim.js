@@ -12,11 +12,11 @@ function claimCommand(fs, msg, ctx, sharp, canvas) {
     {
       if (userThemes.includes('2022pixel'))
       {
-        msg.reply('У тебя уже есть эта тема!')
+        msg.reply('У тебя уже есть эта тема!').catch(err => {});
       }else
       {
         fs.writeFileSync(filepath + '/themes/2022pixel',CurrentDate, 'utf8', (err) => { console.log(err) })
-        msg.reply('Тема успешно получена!')
+        msg.reply('Тема успешно получена!').catch(err => {});
         console.log('Бета')
 
         let owned = Number(fs.readFileSync('./Background/2022pixel/owned', "utf8"));
@@ -24,7 +24,7 @@ function claimCommand(fs, msg, ctx, sharp, canvas) {
       }
     }
   
-  }catch(err){ msg.reply('Ошибка: ' + err) }
+  }catch(err){ msg.reply('Ошибка: ' + err).catch(err => {}); }
 }
 }
 
