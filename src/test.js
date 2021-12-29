@@ -4,16 +4,16 @@ function test(msg, fs,args) {
   // userThemes.forEach(element => 
   //   {
 
-  //     if (fs.existsSync('./data/UserData/' + element + '/tasks'))
+  //     if (fs.existsSync('./data/UserData/' + element + '/cardBadges'))
   //  {}else{
-  //     fs.mkdirSync('./data/UserData/' + element + '/tasks', err => {console.log(err)})
+  //     fs.mkdirSync('./data/UserData/' + element + '/cardBadges', err => {console.log(err)})
   //  }
-  //     fs.writeFileSync('./data/UserData/' + element + '/tasks/voice', '0')
+  //     fs.writeFileSync('./data/UserData/' + element + '/cardBadges/nothing', '')
     
   //   console.log(element + ' written')
   //   }); 
 
-msg.reply('')
+msg.reply('cardBadges')
 
   // if (msg.author.id == '544902183007813652')
   // {

@@ -69,6 +69,8 @@ const giftCommand = require("./src/gift")
 const voiceActivity = require("./src/voiceActivity")
 const DMprocessing = require("./src/DMprocessing")
 const balCommand = require("./src/bal")
+const badgesCommand = require("./src/badges")
+const setbadgeCommand = require("./src/setbadge")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -112,6 +114,9 @@ switch(command) {
   case "/buy":
   buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
   break;
+  case "/setbadge":
+  setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args)
+  break;
   case "/set":
   setCommand.setCommand(fs, msg, ctx, sharp, canvas, args)
   break;
@@ -129,6 +134,10 @@ switch(command) {
   case "/balance":
   case "/bal":
   balCommand.balCommand(msg, fs, args, client, MessageEmbed)
+  break;
+
+  case "/badges":
+  badgesCommand.badgesCommand(msg, fs, args, client)
   break;
 }
   

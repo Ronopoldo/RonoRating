@@ -248,6 +248,12 @@ var request = require('request').defaults({ encoding: null });
 
  
 
+
+
+let Badge = fs.readFileSync('./data/UserData/' + pingedUser + '/config/badge', "utf8");
+let badgePath = './Badges/' + Badge + '.png'
+
+
   console.log('Адоптируем...')
   fontsize = 70 - (nameLength/3)*4
 console.log('Адоптация:' + fontsize)
@@ -382,7 +388,7 @@ sharp.cache(false);
               { input: activeImg, top: 286, left: 61}, //11outputBufferAct2
               { input: './tasks/lastActive/basic.png', top: 286, left: 565},
               { input: './tasks/voice/icon.png', top: 473, left: 60},
-              
+              { input: badgePath, top: 60, left: 800},
               
               
 
