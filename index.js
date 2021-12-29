@@ -71,6 +71,7 @@ const DMprocessing = require("./src/DMprocessing")
 const balCommand = require("./src/bal")
 const badgesCommand = require("./src/badges")
 const setbadgeCommand = require("./src/setbadge")
+const setbadge2Command = require("./src/setbadge2")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -115,7 +116,11 @@ switch(command) {
   buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
   break;
   case "/setbadge":
+  case "/setbadge1":
   setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args)
+  break;
+  case "/setbadge2":
+  setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args)
   break;
   case "/set":
   setCommand.setCommand(fs, msg, ctx, sharp, canvas, args)

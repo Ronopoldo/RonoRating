@@ -8,7 +8,7 @@ function test(msg, fs,args) {
   //  {}else{
   //     fs.mkdirSync('./data/UserData/' + element + '/cardBadges', err => {console.log(err)})
   //  }
-  //     fs.writeFileSync('./data/UserData/' + element + '/cardBadges/nothing', '')
+  //     fs.writeFileSync('./data/UserData/' + element + '/config/badge2', '')
     
   //   console.log(element + ' written')
   //   }); 

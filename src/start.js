@@ -51,6 +51,10 @@ function startCommand(fs, msg) {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
+            fs.writeFileSync(filepath + '/config/badge2', 'NULL', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
       fs.writeFileSync(filepath + '/integers/socialCredit', '1000', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
