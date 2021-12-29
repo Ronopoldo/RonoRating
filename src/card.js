@@ -222,7 +222,6 @@ if (vwidth >= 270) {vwidth = 269}
 sharp('./tasks/voiceBar.png')
 
 
-
       .extract({ left: 0, top: 0, width: vwidth, height: 30 })
       .toBuffer()
             .then(function(outputBufferAct2) {
@@ -244,13 +243,9 @@ ctx.font = '50px "Main"'
 fontsize = 70
 let nameLength = User.tag.length
 var request = require('request').defaults({ encoding: null });
- request.get(User.displayAvatarURL({ format: "png"}, {size: 128}), function (err, res, body) {
+ request.get(User.displayAvatarURL({ format: "png"}, {size: 300}), function (err, res, body) {
 
-image = sharp(body)
-  .resize(128,128)
-  .toBuffer()
-.then(function(body1) {
-              console.log("error: ", err)
+
  
 
   console.log('Адоптируем...')
@@ -265,14 +260,42 @@ let Themes = fs.readdirSync('./data/UserData/' + pingedUser + '/themes', "utf8")
 
 
 ctx.font = fontsize + 'px "Main"'
-ctx.fillText(User.tag, 220, 124)
+ctx.fillText(User.tag, 245, 110)
 console.log('Тег: ' + User.tag)
-ctx.fillText(Money, 270, 208)
-console.log('ДЕНЬГИ ВНЕСЕНЫ ' + Money)
-console.log('Мани: ' + Money)
-ctx.fillText(Level, 430, 208)
+
+ctx.font = '40px "ArialRound"'
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'left'
+
+
+
+
+let outputMoney = Money.toString()
+
+if (Money.toString().length > 3) {
+outputMoney = (Math.floor(Money/100)/10).toString() + 'K'
+}
+
+if (Money.toString().length > 6) {
+outputMoney = (Math.floor(Money/1000/1000)/10).toString() + 'M'
+}
+
+
+
+
+
+
+
+ctx.fillText(outputMoney, 275, 168)
+console.log('ДЕНЬГИ ВНЕСЕНЫ ' + outputMoney)
+console.log('Мани: ' + outputMoney)
+ctx.fillText(Level, 275, 218)
 console.log('Мани: ' + Level)
 console.log('VVV AMOUNT VVV')
+ctx.font = '85px "ArialRound"'
+ctx.textAlign = 'right'
 console.log(Themes)
 ctx.fillText(Themes.length , 580, 208)
 console.log('Мани: ' + Level)
@@ -319,6 +342,24 @@ if (fs.existsSync('./Background/' + theme + '/GIF'))
 }
 
 
+sharp(body)
+.resize(171, 171)
+.composite([
+
+{ input: "./Images/testcircler3.png", top: 0, left: 0, blend: 'darken'},
+
+])
+
+
+.toBuffer()
+            .then(function(body2) {
+
+
+sharp(body2)
+.composite([{ input: "./Images/testcircler3.png", top: 0, left: 0, blend: 'xor'},])
+.toBuffer()
+            .then(function(body3) {
+
 //              
 sharp.cache(false);
           
@@ -328,18 +369,23 @@ sharp.cache(false);
           image
             .resize(1024, 1024)
             .composite([
-              { input: './Images/Borders/5.png', top: 50, left: 50},
+              { input: './Images/NEWBG.png', top: 50, left: 50},
               { input: './tasks/activeBG.png', top: 275, left: 50},
               { input: './tasks/lastActiveBG.png', top: 275, left: 554},
               { input: './tasks/voice/default.png', top: 462, left: 50},
-              { input: body1, top: 76, left: 76},
+
+              { input: body3, top: 55, left: 55},
+
               { input: './tasks/bar.png', top: 345, left: 185},
               { input: './tasks/bar.png', top: 345, left: 689},
               { input: './tasks/bar.png', top: 532, left: 185},
               { input: activeImg, top: 286, left: 61}, //11outputBufferAct2
               { input: './tasks/lastActive/basic.png', top: 286, left: 565},
               { input: './tasks/voice/icon.png', top: 473, left: 60},
-              { input: "./Images/circler.png", top: 76, left: 76},
+              
+              
+              
+
               {input: outputBufferAct,  top: 345, left: 185},
               {input: outputBufferAct1,  top: 345, left: 689},
               {input: outputBufferAct2,  top: 532, left: 185},
@@ -372,12 +418,20 @@ sharp.cache(false);
               })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }
+
+          })
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+  
+
+
+          
+          })
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
         });      
 
 
 
-})
-   .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+
         })
        
  
@@ -397,6 +451,7 @@ sharp.cache(false);
 
    
   }
+  
   }
 
 module.exports = { cardCommand }
