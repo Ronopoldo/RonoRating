@@ -72,7 +72,7 @@ function startCommand(fs, msg) {
               console.log('Данные были добавлены в конец файла!');
             });
 
-            fs.writeFileSync(filepath + '/cardBadges/nothing')
+            fs.writeFileSync(filepath + '/cardBadges/nothing', '')
 
       
       msg.reply('Успешно!').catch(err => {});

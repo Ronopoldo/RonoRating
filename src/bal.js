@@ -35,3 +35,4 @@ msg.reply({ embeds: [respecc] }).catch(err => {});;
 }
 }
 module.exports = { balCommand }
+

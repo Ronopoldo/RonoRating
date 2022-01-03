@@ -121,8 +121,8 @@ fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money2.
           console.log(ActiveBadge)
           let ActiveMassive = ActiveBadge.split('\n', 5)
           console.log(ActiveMassive)
-          Money = Number(Money) + Math.floor(Math.random() * 4) + 1;
-          let PointsString = '0.' + (Math.floor(Math.random() * 1) + 9).toString();
+          Money = Number(Money) + Math.floor(Math.random() * 5) + 1;
+          let PointsString = '0.' + (Math.floor(Math.random() * 1) + 11).toString();
           Points = Number(Points) + Number(PointsString)
 
           console.log('Поинты: ' + Points + '|' + Money)
