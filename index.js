@@ -71,6 +71,7 @@ const balCommand = require("./src/bal")
 const badgesCommand = require("./src/badges")
 const setbadgeCommand = require("./src/setbadge")
 const setbadge2Command = require("./src/setbadge2")
+const transferCommand = require("./src/transfer")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -145,6 +146,9 @@ switch(command) {
   case "/badges":
   badgesCommand.badgesCommand(msg, fs, args, client)
   break;
+  
+  case "/transfer":
+  transferCommand.transfer(msg, fs)
 }
   
 }catch(err){

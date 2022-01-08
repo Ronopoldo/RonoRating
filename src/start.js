@@ -23,6 +23,16 @@ function startCommand(fs, msg) {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
+
+    fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/totalXp', '0')
+    fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', '0')
+    fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/global', '0')
+    fs.writeFileSync('./data/UserData/' + msg.author.id + '/DATATRANSFERCONFIRMATION', 'ПОЛУЧЕНО ПРИ РЕГИСТРАЦИИ')
+
+
+
+
+
                         fs.writeFileSync(filepath + '/integers/exp', '0', 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');

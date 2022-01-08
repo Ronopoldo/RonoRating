@@ -133,6 +133,89 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
            fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/active', ActiveMassive[0] + '\n' + (Number(ActiveMassive[1]) + 1).toString(), 'utf8')
            console.log('Внесено: ' + Money.toString())
            console.log('Мани: ' + Money)
+
+
+//////////////////////////СУММАР ЭКСПИ
+          if (fs.existsSync('./data/UserData/' + msg.author.id + '/DATATRANSFERCONFIRMATION'))
+          {
+            
+            let curExpPath = './data/UserData/' + msg.author.id + '/integers/totalXp'
+            let xp = fs.readFileSync(curExpPath)
+            let normalXp = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp')
+            let daystreak = fs.readFileSync('./data/UserData/' + msg.author.id + '/badges/lastActve') + ''
+
+            let dayStreakClear = Number(daystreak.split(' ')[2])
+
+
+            let multiplier = 4
+            if (dayStreakClear < 60)
+            {
+              multiplier = dayStreakClear * 0.05  + 1
+            }
+
+            multiplier = multiplier * 2.25
+
+            normalXp = Number(normalXp) + multiplier
+            xp = Number(xp) + multiplier
+            fs.writeFileSync(curExpPath, xp.toString())
+            fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp.toString())
+            // msg.reply(dayStreakClear.toString())
+            // msg.reply(multiplier.toString())
+            // msg.reply(xp.toString())
+
+
+
+
+            /////УРОВНИ И ДЕНЬГИ
+
+            let globalLvl = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/global'))
+
+
+            let neededExp = 12
+            let active1 = true
+            let counterGlobal = 0
+            let globalMoney = 25
+            while (active1 == true)
+            {
+              neededExp = neededExp * 1.12
+              globalMoney = globalMoney * 1.1
+              counterGlobal = counterGlobal + 1
+              if (counterGlobal >= globalLvl)
+              {
+                active1 = false
+              }
+            }
+
+            if (neededExp > 450) { neededExp = 450 }
+            console.log(neededExp + ' - нужный опыт')
+            if (neededExp < Number(normalXp))
+            {
+              let money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money')
+              money = Number(money) + globalMoney
+              console.log('МАНИ ' + money)
+              console.log( Number(money))
+              console.log(globalMoney)
+              normalXp = Number(normalXp) - neededExp
+              globalLvl = globalLvl + 1
+
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/global', globalLvl.toString()) // Уровень
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', money.toString()) // Деньги
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp.toString()) //Экспи в ноль
+
+              msg.reply(':tada:Новый ГЛОБАЛЬНЫЙ уровень!:tada:\nУровень: ' + globalLvl.toString() + '\nТотал опыт: ' + Math.floor(xp) + '\nПолучено монет: ' + Math.floor(globalMoney)).catch(err => {});
+            }
+
+
+
+
+
+          }else{
+            msg.reply('Хей! Тебе не добавляется глобальный опыт!\nСрочно перенеси свой текущий командой `/transfer`\n\nPS - команду будет выключена в ближайшее время и те, кто не перенёс опыт, остануться без него')
+          }
+          
+
+
+
           }
            }catch(err){console.log(err)}
           let levelNeed = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
@@ -194,6 +277,11 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
               msg.reply(':tada:Новый уровень!:tada:\nУровень: ' + (Number(lvl)+1).toString() + '\nТотал опыт: ' + Math.floor(totalXP) + '\nПолучено монет: ' + Math.floor(NewMoney)).catch(err => {});
            }
           //  msg.reply(NeededXP.toString())
+
+
+
+
+
       }
       //ЗАВЕРШИТЬ!!!!!1 upd: красава, завершил
 

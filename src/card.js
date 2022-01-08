@@ -231,6 +231,63 @@ sharp('./tasks/voiceBar.png')
 
 
 
+///////////////АКТИВ ГЛОБАЛ
+      ctx.font = '20px "ArialRound"'
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'left'
+
+let fontsize = 45
+
+
+let grandPath = './Images/Blank.png'
+let barSize = 1
+
+if (fs.existsSync('./data/UserData/' + pingedUser + '/DATATRANSFERCONFIRMATION'))
+{
+  let currentGlobalLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/global')
+  let currentGlobalExp = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/grandXp')
+  grandPath = './Images/grandbar.png'
+  barSize = 
+  ctx.fillText(Math.floor((Number(currentGlobalExp)).toString()), 132,255)
+
+  let neededExp = 12
+  let active1 = true
+  let counterGlobal = 0
+  let globalMoney = 25
+  while (active1 == true)
+  {
+    neededExp = neededExp * 1.12
+    counterGlobal = counterGlobal + 1
+    if (counterGlobal >= currentGlobalLvl+1)
+    {
+      active1 = false
+    }
+
+    
+  }
+barSize = Math.floor(neededExp / currentGlobalExp)
+
+if ((barSize >=520) || (barSize == 0)) { barSize = 519 }
+
+
+}
+
+
+sharp(grandPath)
+
+
+      .extract({ left: 0, top: 0, width: barSize, height: 7 })
+      .toBuffer()
+            .then(function(grandBuffer) {
+
+
+
+
+
+
+
 
 
     ctx.strokeStyle = 'black';
@@ -262,7 +319,13 @@ console.log('Адоптация:' + fontsize)
 
 //Юзер
 let Money = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/money', "utf8");
-let Level = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/lvl', "utf8");
+
+let Level = '0'
+
+if (fs.existsSync('./data/UserData/' + pingedUser + '/tasks/global'))
+{
+  Level = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/global', "utf8");
+}
 let Themes = fs.readdirSync('./data/UserData/' + pingedUser + '/themes', "utf8");
 
 
@@ -397,6 +460,9 @@ sharp.cache(false);
               {input: outputBufferAct,  top: 345, left: 185},
               {input: outputBufferAct1,  top: 345, left: 689},
               {input: outputBufferAct2,  top: 532, left: 185},
+              {input: './Images/emptybar.png',  top: 230, left: 132},
+              {input: grandBuffer,  top: 230, left: 132},
+              
               { input: out, top: 0, left: 0}])
             .toBuffer()
             .then(function(outputBuffer) {
@@ -416,6 +482,7 @@ sharp.cache(false);
               { input: activeImg, top: 286, left: 61}, //11
               { input: "./Images/circler.png", top: 76, left: 76},
               {input: outputBufferAct,  top: 345, left: 185},
+              // {input: grandBuffer, top: 10, left: 10},
               { input: out, top: 0, left: 0}])
             .toBuffer()
             .then(function(outputBuffer) {
@@ -435,6 +502,7 @@ sharp.cache(false);
           
           })
               .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              
         });      
 
 
@@ -442,7 +510,9 @@ sharp.cache(false);
 
         })
        
- 
+            })
+ .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+
             })
             .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })

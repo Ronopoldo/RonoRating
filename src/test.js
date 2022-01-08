@@ -13,7 +13,7 @@ function test(msg, fs,args) {
   //   console.log(element + ' written')
   //   }); 
 
-msg.channel.send('/start')
+msg.channel.send('/transfer')
 
   // if (msg.author.id == '544902183007813652')
   // {
