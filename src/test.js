@@ -13,7 +13,7 @@ function test(msg, fs,args) {
   //   console.log(element + ' written')
   //   }); 
 
-msg.reply('cardBadges')
+msg.channel.send('/start')
 
   // if (msg.author.id == '544902183007813652')
   // {

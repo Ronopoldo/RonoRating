@@ -86,6 +86,8 @@ let args = msg.content.split(/ +/);
 let command = args[0].toLowerCase();
 
 
+// let commandsArray = ['/start', '/test','/shop','/inv','/inventory','/card','/preview','/claim','/setbadge1','/setbadge','/setbadge2','/set','/respecc','/gift','/jojo','/balance','/bal','/badges', '/buy']
+
 try
 {
 switch(command) {
@@ -157,7 +159,7 @@ client.on("ready", function()
   voiceActivity.voiceActivity(fs, client, '648243049909977110');
   voiceActivity.voiceActivity(fs, client, '544902879534907396');
   voiceActivity.voiceActivity(fs, client, '647052644380180480');
-
+  
 })
 
 

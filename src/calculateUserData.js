@@ -112,7 +112,9 @@ fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money2.
 
 
 
-
+let allowedChannels = ['647050821594251264','671026327016701953','649003708948021268','647052231400620032','664559620207017996','796869930397728778']
+          if (allowedChannels.includes(msg.channel.id))
+          {
           
           let Money = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8");
           let Points = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/exp', "utf8");
@@ -131,6 +133,7 @@ fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', Money2.
            fs.writeFileSync('./data/UserData/' + msg.author.id + '/badges/active', ActiveMassive[0] + '\n' + (Number(ActiveMassive[1]) + 1).toString(), 'utf8')
            console.log('Внесено: ' + Money.toString())
            console.log('Мани: ' + Money)
+          }
            }catch(err){console.log(err)}
           let levelNeed = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/lvl', "utf8");
            
@@ -196,7 +199,7 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
 
 
 
-
+    }
                     talkedRecently.add(msg.author.id);
         setTimeout(() => {
           // Removes the user from the set after a minute
@@ -205,6 +208,6 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
   
     }
 }
-}
+
 
 module.exports = { calculateUserData }
