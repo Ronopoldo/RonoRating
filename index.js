@@ -72,6 +72,7 @@ const badgesCommand = require("./src/badges")
 const setbadgeCommand = require("./src/setbadge")
 const setbadge2Command = require("./src/setbadge2")
 const transferCommand = require("./src/transfer")
+const exportCommand = require("./src/export")
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -149,6 +150,9 @@ switch(command) {
   
   case "/transfer":
   transferCommand.transfer(msg, fs)
+
+  case "/export":
+  exportCommand.exportCmd(msg, fs)
 }
   
 }catch(err){

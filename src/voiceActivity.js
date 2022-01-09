@@ -90,7 +90,7 @@ let multiplier = 4
             let globalMoney = 25
             while (active1 == true)
             {
-              neededExp = neededExp * 1.12
+              neededExp = neededExp * 1.2
               globalMoney = globalMoney * 1.1
               counterGlobal = counterGlobal + 1
               if (counterGlobal >= globalLvl)

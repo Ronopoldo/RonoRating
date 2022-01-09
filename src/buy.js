@@ -11,17 +11,17 @@ function buyCommand(fs, msg, ctx, sharp, canvas) {
 let ShopThemes = fs.readdirSync('./Background')
 
     const args = msg.content.slice(`/био`).split(/ +/);
-    if (UserThemes.includes(args[1].toLowerCase()))
+    if (UserThemes.includes(args[1]))
     {
       msg.reply('У тебя уже есть эта тема!').catch(err => {});
     }else
     {
-      if (ShopThemes.includes(args[1].toLowerCase()))
+      if (ShopThemes.includes(args[1]))
       {
-        let status = fs.readFileSync('./Background/' + args[1].toLowerCase() + '/forSale', "utf8");
+        let status = fs.readFileSync('./Background/' + args[1] + '/forSale', "utf8");
         if (status == 'true')
         {
-          let price = Number(fs.readFileSync('./Background/' + args[1].toLowerCase() + '/price', "utf8"));
+          let price = Number(fs.readFileSync('./Background/' + args[1] + '/price', "utf8"));
           console.log('PRICE: ' + price)
           let userBalance = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8"));
           console.log('BALANCE: ' + userBalance)
@@ -32,15 +32,15 @@ let ShopThemes = fs.readdirSync('./Background')
           {
             let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON();
             
-            let owned = Number(fs.readFileSync('./Background/' + args[1].toLowerCase() + '/owned', "utf8"));
-            fs.writeFileSync('./Background/' + args[1].toLowerCase() + '/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
+            let owned = Number(fs.readFileSync('./Background/' + args[1] + '/owned', "utf8"));
+            fs.writeFileSync('./Background/' + args[1] + '/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
 
             // msg.reply(owned.toString())
 
-            fs.writeFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1].toLowerCase(),CurrentDate, 'utf8', (err) => { console.log(err) })
+            fs.writeFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1],CurrentDate, 'utf8', (err) => { console.log(err) })
             userBalance = userBalance - price
             fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money',userBalance.toString(), 'utf8', (err) => { console.log(err) })
-            msg.reply('Покупка темы прошла успешно!!\nПоставь её командой `/set ' + args[1].toLowerCase() + '` :3').catch(err => {});
+            msg.reply('Покупка темы прошла успешно!!\nПоставь её командой `/set ' + args[1] + '` :3').catch(err => {});
           }
         }else{
           msg.reply('Эта тема не продаётся!').catch(err => {});

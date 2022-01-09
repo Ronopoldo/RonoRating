@@ -177,7 +177,7 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
             let globalMoney = 25
             while (active1 == true)
             {
-              neededExp = neededExp * 1.12
+              neededExp = neededExp * 1.2
               globalMoney = globalMoney * 1.1
               counterGlobal = counterGlobal + 1
               if (counterGlobal >= globalLvl)
@@ -195,12 +195,17 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
               console.log('МАНИ ' + money)
               console.log( Number(money))
               console.log(globalMoney)
-              normalXp = Number(normalXp) - neededExp
+              let normalXp1 = Number(normalXp) - neededExp
+
+              console.log('VVVVVVVVV')
+              console.log(neededExp)
+              console.log(normalXp)
+              console.log(normalXp1)
               globalLvl = globalLvl + 1
 
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/global', globalLvl.toString()) // Уровень
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', money.toString()) // Деньги
-              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp.toString()) //Экспи в ноль
+              fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp1.toString()) //Экспи в ноль
 
               msg.reply(':tada:Новый ГЛОБАЛЬНЫЙ уровень!:tada:\nУровень: ' + globalLvl.toString() + '\nТотал опыт: ' + Math.floor(xp) + '\nПолучено монет: ' + Math.floor(globalMoney)).catch(err => {});
             }
