@@ -150,9 +150,11 @@ switch(command) {
   
   case "/transfer":
   transferCommand.transfer(msg, fs)
+  break;
 
   case "/export":
   exportCommand.exportCmd(msg, fs)
+  break;
 }
   
 }catch(err){
