@@ -157,6 +157,7 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
 
             normalXp = Number(normalXp) + multiplier
             xp = Number(xp) + multiplier
+            console.log(xp + '/' + multiplier)
             fs.writeFileSync(curExpPath, xp.toString())
             fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp.toString())
             // msg.reply(dayStreakClear.toString())

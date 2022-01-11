@@ -149,6 +149,17 @@ client.user.setPresence({ status: "idle" });
   });
   }
 
+    
+    
+
+
+
+      
+
+
+
+    
+
   }, 60000);
 
 }

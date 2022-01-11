@@ -258,22 +258,26 @@ if (fs.existsSync('./data/UserData/' + pingedUser + '/DATATRANSFERCONFIRMATION')
   let globalMoney = 25
   while (active1 == true)
   {
-    neededExp = neededExp * 1.12
-    counterGlobal = counterGlobal + 1
-    if (counterGlobal >= currentGlobalLvl+1)
+    neededExp = neededExp * 1.2
+    counterGlobal = Number(counterGlobal) + 1
+    if (counterGlobal >= Number(currentGlobalLvl)+1)
     {
       active1 = false
     }
-
-    
+// console.log(counterGlobal)
   }
-barSize = Math.floor(neededExp / currentGlobalExp)
 
+  if (neededExp > 450) { neededExp = 450 }
+  
+  console.log('NEEDED / CURRENT ' + neededExp + '/' + currentGlobalExp)
+barSize = currentGlobalExp / neededExp
+
+console.log('bar1' + barSize)
 if ((barSize >=520) || (barSize == 0)) { barSize = 519 }
-
+console.log('bar1' + barSize)
 
 }
-
+barSize = Math.floor(520 * barSize)
 
 sharp(grandPath)
 
@@ -346,11 +350,11 @@ ctx.font = '40px "ArialRound"'
 let outputMoney = Money.toString()
 
 if (Money.toString().length > 3) {
-outputMoney = (Math.floor(Money/100)/10).toString() + 'k'
+outputMoney = (Math.floor(Money/10/10)/10).toString() + 'k'
 }
 
 if (Money.toString().length > 6) {
-outputMoney = (Math.floor(Money/1000/1000)/10).toString() + 'M'
+outputMoney = (Math.floor(Money/1000/10)/100).toString() + 'M'
 }
 
 
