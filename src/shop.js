@@ -24,7 +24,11 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
       console.log(shopNames)
-      msg.channel.send('Загружаем...').catch(err => { });
+      if (msg.author.id != '899380887282675743') {
+        msg.reply('Загружаем...').catch(err => { }); //, components: [row] 
+      } else {
+        msg.edit('Загружаем...').catch(err => { });
+      }
 
       let totalArray = ['empty', 'empty', 'empty', 'empty']
       let totalPrice = []
@@ -130,18 +134,70 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
         console.log('VVV Купля VVV');
         console.log(boughThemes);
 
-        const btn1 = new MessageButton()
-          .setCustomId((shopPage + 1).toString())
-          .setLabel('След.')
+        let isDisabled = false
+        if (shopPage == 1) { isDisabled = true }
+        let beginName = '1'
+        let activateBegin = false
+
+
+                let btn3 = new MessageButton()
+          .setCustomId(beginName.toString())
+          .setDisabled(activateBegin)
+          .setLabel('В начало')
           .setStyle('PRIMARY');
+
+        console.log((Number(shopPage)))
+        if (shopPage == 1 || shopPage == 2) {
+          btn3 = new MessageButton()
+          .setCustomId('FAILEDBEGIN')
+          .setDisabled(true)
+          .setLabel('В начало')
+          .setStyle('SECONDARY');
+        }
+        console.log('a')
+
+        let endName = (Math.floor(shopNames.length / 4)).toString()
+        let activateEnd = false
+
+
+let btn4 = new MessageButton()
+          .setCustomId(endName)
+          .setDisabled(activateEnd)
+          .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
+          .setStyle('PRIMARY');
+
+        if ((shopPage == Math.floor(shopNames.length / 4)) || (shopPage == (Math.floor(shopNames.length / 4) - 1))) {
+ btn4 = new MessageButton()
+          .setCustomId('FAILEDEND')
+          .setDisabled(true)
+          .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
+          .setStyle('SECONDARY');
+
+        }
+
+        const btn1 = new MessageButton()
+          .setCustomId((Number(shopPage) + 1).toString())
+          .setLabel('Вперёд')
+          .setStyle('SUCCESS');
+
 
         const btn2 = new MessageButton()
-          .setCustomId((shopPage - 1).toString())
-          .setLabel('Пред.')
-          .setStyle('PRIMARY');
+          .setCustomId((Number(shopPage) - 1).toString())
+          .setDisabled(isDisabled)
+          .setLabel('Назад')
+          .setStyle('SUCCESS');
 
+
+
+
+
+
+        
+
+
+        msg.reply(shopPage + '.' + btn1.customId + ' | ' + btn2.customId + ' | ' + btn3.customId + ' | ' + btn4.customId)
         const row = new MessageActionRow()
-          .addComponents(btn2, btn1);
+          .addComponents(btn3, btn2, btn1, btn4);
 
         // msg.reply({ content: 'Pong!', components: [row] });
 
@@ -164,9 +220,22 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
           .then(function(outputBuffer) {
             console.log(err)
             if (msg.author.id != '899380887282675743') {
-              msg.reply({ files: [outputBuffer]}).catch(err => { }); //, components: [row] 
+              console.log('123')
+              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { }); //, components: [row] 
             } else {
-              msg.edit({ files: [outputBuffer] }).catch(err => { });
+              console.log('456')
+
+              //               let findImage = msg.attachments.find(attachment => attachment.name.endsWith('png') || attachment.name.endsWith('jpg') || attachment.name.endsWith('gif'))
+              // if (findImage != null) {
+              //   msg.reply('1')
+              // }
+
+              msg.removeAttachments()
+              // content: 'Страница: ' + shopPage,
+
+              msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
+
+              console.log('789')
             }
           })
           .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });

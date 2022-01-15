@@ -82,7 +82,9 @@ const exportCommand = require("./src/export")
 client.on('interactionCreate', i => {
 	if (!i.isButton()) return;
   let pageIndex = i.customId;
-  
+i.deferUpdate();
+
+i.user.id == 
     shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex);
 	
   if (i.customId === 'next111') {
