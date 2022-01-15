@@ -4,7 +4,7 @@
       {
         "id": "164c999f-1ff9-4ac5-b96e-dd5316336d4c",
         "line": 1,
-        "version": 15,
+        "version": 1,
         "index": 0
       }
     ],
@@ -40,6 +40,14 @@
         "index": 0
       }
     ],
+    "index.js": [
+      {
+        "id": "47752989-19ac-4802-ac25-6aaea569687f",
+        "line": 31,
+        "version": 1,
+        "index": 925
+      }
+    ],
     "json.sqlite": [
       {
         "id": "7fbf42b7-a811-49fd-96be-9dfce60fac4f",
@@ -66,13 +74,13 @@
       {
         "id": "f4791d61-d3d9-46e8-af0d-eeb00b933cfe",
         "line": 74,
-        "version": 4,
+        "version": 1,
         "index": 2358
       },
       {
         "id": "b0797deb-703c-458d-86f0-85c7007b97fa",
         "line": 81,
-        "version": 4,
+        "version": 1,
         "index": 2449
       }
     ],
@@ -80,7 +88,7 @@
       {
         "id": "3327fd60-ab4d-43fc-b935-4493770f17c4",
         "line": 9,
-        "version": 188,
+        "version": 1,
         "index": 252
       }
     ]

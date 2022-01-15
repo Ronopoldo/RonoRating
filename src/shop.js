@@ -15,7 +15,7 @@ if (shopPage > 100) { shopPage = 1}
 
 
     if (show == 'true') { 
-      let price = Number(fs.readFileSync('./Background/' + file + '/price', "utf8"))
+      let price = fs.readFileSync('./Background/' + file + '/price', "utf8")
       let displayName = fs.readFileSync('./Background/' + file + '/displayName', "utf8")
       shopNames[shopNames.length] = [file, price, displayName]
       }

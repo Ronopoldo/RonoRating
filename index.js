@@ -131,13 +131,13 @@ switch(command) {
   case "/respecc":
   respeccCommand.respeccCommand(msg, MessageEmbed)
   break;
-  case "/gift":
-  giftCommand.giftCommand(msg, fs, client, args)
-  break;
+//  case "/gift":
+   //giftCommand.giftCommand(msg, fs, client, args)
+ // break;
 
   case "/jojo":
-  oplotCommand.oplotCommand(msg, fs, client, args)
-  break;
+oplotCommand.oplotCommand(msg, fs, client, args)
+ break;
 
   case "/balance":
   case "/bal":

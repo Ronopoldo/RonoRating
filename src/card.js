@@ -273,12 +273,13 @@ if (fs.existsSync('./data/UserData/' + pingedUser + '/DATATRANSFERCONFIRMATION')
 barSize = currentGlobalExp / neededExp
 
 console.log('bar1' + barSize)
-if ((barSize >=520) || (barSize == 0)) { barSize = 519 }
-console.log('bar1' + barSize)
+
 
 }
 barSize = Math.floor(520 * barSize)
-
+console.log('ЙО!' + barSize)
+if ((barSize >519) || (barSize < 1)) { barSize = 519 }
+console.log('bar1' + barSize)
 sharp(grandPath)
 
 
@@ -348,6 +349,8 @@ ctx.font = '40px "ArialRound"'
 
 
 let outputMoney = Money.toString()
+Money = Math.floor(Money)
+
 
 if (Money.toString().length > 3) {
 outputMoney = (Math.floor(Money/10/10)/10).toString() + 'k'
@@ -356,6 +359,8 @@ outputMoney = (Math.floor(Money/10/10)/10).toString() + 'k'
 if (Money.toString().length > 6) {
 outputMoney = (Math.floor(Money/1000/10)/100).toString() + 'M'
 }
+
+
 
 
 

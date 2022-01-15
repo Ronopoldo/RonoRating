@@ -124,7 +124,7 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
           let ActiveMassive = ActiveBadge.split('\n', 5)
           console.log(ActiveMassive)
           Money = Number(Money) + Math.floor(Math.random() * 5) + 1;
-          let PointsString = '0.' + (Math.floor(Math.random() * 1) + 11).toString();
+          let PointsString = '0.' + (Math.floor(Math.random() * 1) +8).toString();
           Points = Number(Points) + Number(PointsString)
 
           console.log('Поинты: ' + Points + '|' + Money)
