@@ -8,7 +8,7 @@ const talkedRecently = new Set();
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
-const { Client, Intents } = require('discord.js');
+const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js');
 let client; {
     client = new Discord.Client({
         partials: ['MESSAGE', 'REACTION', 'CHANNEL'],
@@ -73,6 +73,28 @@ const setbadgeCommand = require("./src/setbadge")
 const setbadge2Command = require("./src/setbadge2")
 const transferCommand = require("./src/transfer")
 const exportCommand = require("./src/export")
+
+
+// client.on('clickButton', async (button) => {
+//    console.log('OKOKOK');
+// })
+
+client.on('interactionCreate', i => {
+	if (!i.isButton()) return;
+  let pageIndex = i.customId;
+  
+    shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex);
+	
+  if (i.customId === 'next111') {
+   
+   // await i.deferUpdate();
+	//	await wait(4000);
+	//	await i.editReply({ content: 'A button was clicked!', components: [] });
+	}
+	console.log(i);
+});
+
+
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
@@ -97,10 +119,16 @@ switch(command) {
     startCommand.startCommand(fs, msg);
     break;
   case "/test": 
-    test.test(msg, fs, args);
+    test.test(msg, client, args, MessageActionRow, MessageButton);
     break;
   case "/shop": 
-    shopCommand.shopCommand(fs, msg, ctx, sharp, canvas);
+
+      if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
+    console.log(shopPage)
+
+    if (shopPage > 100) { shopPage = 1 }
+
+    shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage);
     break;
   case "/inv":
   case "/inventory": 

@@ -1,32 +1,20 @@
-function test(msg, fs,args) {
-  // let userThemes = fs.readdirSync('./data/UserData/')
-  // console.log(userThemes)
-  // userThemes.forEach(element => 
-  //   {
+function test(msg, client, args, MessageActionRow, MessageButton) {
 
-  //     if (fs.existsSync('./data/UserData/' + element + '/cardBadges'))
-  //  {}else{
-  //     fs.mkdirSync('./data/UserData/' + element + '/cardBadges', err => {console.log(err)})
-  //  }
-  //     fs.writeFileSync('./data/UserData/' + element + '/config/badge2', '')
-    
-  //   console.log(element + ' written')
-  //   }); 
+    const btn1 = new MessageButton()
+					.setCustomId('next111')
+					.setLabel('Next111')
+					.setStyle('PRIMARY');
 
-msg.channel.send('/transfer')
+    const btn2 = new MessageButton()
+					.setCustomId('previous111')
+					.setLabel('Previous111')
+					.setStyle('PRIMARY');
 
-  // if (msg.author.id == '544902183007813652')
-  // {
+		const row = new MessageActionRow()
+			.addComponents(btn1, btn2);
 
-  //   let pingedUser = args[1]
-  //     pingedUser = pingedUser.replace("<@",'')
-  //     pingedUser = pingedUser.replace("!",'')
-  //     pingedUser = pingedUser.replace(">",'')
+		msg.reply({ content: 'Pong!', components: [row] });
 
 
-  //   msg.reply(args[1] + args[2])
-  //   fs.writeFileSync('./data/UserData/' + pingedUser + '/integers/voice', args[2])
-  //   msg.reply(args[2] + ' гс для <@' + pingedUser + '>')
-  // }else{msg.reply('КЫШ АТСЕДА')}
 }
 module.exports = { test }
