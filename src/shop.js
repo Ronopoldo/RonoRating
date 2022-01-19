@@ -1,4 +1,4 @@
-function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage) {
+function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID) {
   if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) {
 
 
@@ -121,7 +121,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
         let boughThemes = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.png', './Images/Blank.png']
-        let UserHave = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+        let UserHave = fs.readdirSync('./data/UserData/' + iniciatorID + '/themes')
         console.log(UserHave)
         if (UserHave.includes(totalArray[0])) { boughThemes[0] = './Images/bought.png' }
         if (UserHave.includes(totalArray[1])) { boughThemes[1] = './Images/bought.png' }
@@ -133,7 +133,6 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
         console.log('VVV Купля VVV');
         console.log(boughThemes);
-
         let isDisabled = false
         let isDisabledEnd = false
         if (shopPage == 1) { isDisabled = true }
@@ -143,7 +142,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
                 let btn3 = new MessageButton()
-          .setCustomId(beginName.toString())
+          .setCustomId("SHOP " + iniciatorID + ' ' + beginName.toString())
           .setDisabled(activateBegin)
           .setLabel('В начало')
           .setStyle('PRIMARY');
@@ -163,7 +162,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
 let btn4 = new MessageButton()
-          .setCustomId(endName)
+          .setCustomId("SHOP " + iniciatorID + ' ' + endName)
           .setDisabled(activateEnd)
           .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
           .setStyle('PRIMARY');
@@ -178,14 +177,14 @@ let btn4 = new MessageButton()
         }
 
         const btn1 = new MessageButton()
-          .setCustomId((Number(shopPage) + 1).toString())
+          .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) + 1).toString())
           .setLabel('Вперёд')
           .setDisabled(isDisabledEnd)
           .setStyle('SUCCESS');
 
 
         const btn2 = new MessageButton()
-          .setCustomId((Number(shopPage) - 1).toString())
+          .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) - 1).toString())
           .setDisabled(isDisabled)
           .setLabel('Назад')
           .setStyle('SUCCESS');

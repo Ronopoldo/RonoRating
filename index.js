@@ -83,11 +83,15 @@ client.on('interactionCreate', i => {
 	if (!i.isButton()) return;
   // let pageIndex = i.customId.split(/ +/)[1];
 i.deferUpdate();
-let pageIndex = i.customId
+let iniciator = i.customId.split(/ +/)[1]
+let pageIndex = i.customId.split(/ +/)[2]
 
 // if (i.user.id == i.customId.split(/ +/)[0]);
-    shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex);
-	
+
+if (iniciator == i.user.id)
+{
+    shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex, iniciator);
+}
   if (i.customId === 'next111') {
    
    // await i.deferUpdate();
@@ -131,7 +135,7 @@ switch(command) {
 
     if (shopPage > 100) { shopPage = 1 }
 
-    shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage);
+    shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id);
     break;
   case "/inv":
   case "/inventory": 
