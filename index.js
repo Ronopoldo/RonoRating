@@ -81,10 +81,11 @@ const exportCommand = require("./src/export")
 
 client.on('interactionCreate', i => {
 	if (!i.isButton()) return;
-  let pageIndex = i.customId;
+  // let pageIndex = i.customId.split(/ +/)[1];
 i.deferUpdate();
+let pageIndex = i.customId
 
-i.user.id == 
+// if (i.user.id == i.customId.split(/ +/)[0]);
     shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex);
 	
   if (i.customId === 'next111') {
@@ -93,7 +94,7 @@ i.user.id ==
 	//	await wait(4000);
 	//	await i.editReply({ content: 'A button was clicked!', components: [] });
 	}
-	console.log(i);
+	// console.log(i);
 });
 
 

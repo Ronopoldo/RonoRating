@@ -135,7 +135,9 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
         console.log(boughThemes);
 
         let isDisabled = false
+        let isDisabledEnd = false
         if (shopPage == 1) { isDisabled = true }
+        if (shopPage == Math.floor(shopNames.length / 4)) { isDisabledEnd = true }
         let beginName = '1'
         let activateBegin = false
 
@@ -178,6 +180,7 @@ let btn4 = new MessageButton()
         const btn1 = new MessageButton()
           .setCustomId((Number(shopPage) + 1).toString())
           .setLabel('Вперёд')
+          .setDisabled(isDisabledEnd)
           .setStyle('SUCCESS');
 
 
@@ -195,7 +198,7 @@ let btn4 = new MessageButton()
         
 
 
-        msg.reply(shopPage + '.' + btn1.customId + ' | ' + btn2.customId + ' | ' + btn3.customId + ' | ' + btn4.customId)
+        // msg.reply(shopPage + '.' + btn1.customId + ' | ' + btn2.customId + ' | ' + btn3.customId + ' | ' + btn4.customId)
         const row = new MessageActionRow()
           .addComponents(btn3, btn2, btn1, btn4);
 
