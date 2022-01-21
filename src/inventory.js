@@ -1,57 +1,9 @@
-function invCommand(fs, msg, ctx, sharp, canvas, client) 
+function invCommand(fs, msg, ctx, sharp, canvas, client, pg, iniciatorID, pingedUser,  MessageActionRow, MessageButton) 
 {
-                    if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) 
+                    if (fs.existsSync('./data/UserData/' + iniciatorID + '/integers/exp')) 
       {
 
-    const args = msg.content.slice(`/био`).split(/ +/);
-      pingedUser = args[1] 
-      if (args[1] == undefined) { pingedUser = msg.author.id}
-      pingedUser = pingedUser.replace("<@",'')
-      pingedUser = pingedUser.replace("!",'')
-      pingedUser = pingedUser.replace(">",'')
 
-    let pg = 1
-    console.log('Unresolved Num: ' + pingedUser)
-    if (Number(pingedUser) != NaN){ 
-   }else {pingedUser = msg.author.id}
-
-   
-  if (args[2] != undefined) {
-    if (args[2] > 5)
-    {
-      console.log('Script 1')
-      pg = args[1]
-      pingedUser = args[2]
-    }else
-    {
-      console.log('Script 2')
-      pg = args[2]
-      pingedUser = args[1]
-    }
-   } else
-   {
-
-     
-
-         if (args[1] > 5)
-    {
-      console.log('Script 3')
-      pingedUser = args[1]
-    }else
-    {
-      console.log('Script 4')
-      pg = args[1]
-    }
-
-  }
-
-if (args[1] == undefined) {
-pingedUser = msg.author.id
-pg = 1
-}
-        pingedUser = pingedUser.replace("<@",'')
-      pingedUser = pingedUser.replace("!",'')
-      pingedUser = pingedUser.replace(">",'')
 
 console.log('АЙДИ: ' + pingedUser)
    if (fs.existsSync('./data/UserData/' + pingedUser))
@@ -81,8 +33,10 @@ console.log('АЙДИ: ' + pingedUser)
 
     console.log('________________' 
     + pingedUser)
-    console.log(args[5])
+    console.log(pg)
     let UserHave = fs.readdirSync('./data/UserData/' + pingedUser + '/themes')
+
+    
 
   console.log('ARRAY: ' + UserHave)
 let totalArray = ['empty','empty','empty','empty']
@@ -192,6 +146,77 @@ if (totalArray[3].toString() != 'undefined')
 }
 }catch{}
 
+let activateNext = false
+let activatePrev = false;
+let activateBegin = false;
+let activateEnd = false;
+
+
+let previous = new MessageButton()
+let next = new MessageButton()
+
+console.log("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser)
+if (Number(pg) <= 2) { activateBegin = true }
+if (Number(pg) == 1  ) { previous
+          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV1')
+          .setDisabled(true)
+          .setLabel('Назад')
+          .setStyle('PRIMARY'); }else
+          {
+
+            previous
+          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV2')
+          .setDisabled(false)
+          .setLabel('Назад')
+          .setStyle('PRIMARY');
+
+          }
+if (Number(pg) >= (Math.floor(UserHave.length/4)+1) - 2) { activateEnd = true }
+if (Number(pg) > (Math.floor(UserHave.length/4)+1) - 1) 
+{
+next
+          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
+          .setDisabled(true)
+          .setLabel('Вперёд')
+          .setStyle('PRIMARY');
+}else{
+  next
+          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
+          .setDisabled(false)
+          .setLabel('Вперёд')
+          .setStyle('PRIMARY');
+}
+
+
+
+
+
+
+
+let begin = new MessageButton()
+          .setCustomId("INV " + iniciatorID + ' 1 ' + pingedUser + ' BEGIN')
+          .setDisabled(activateBegin)
+          .setLabel('В начало')
+          .setStyle('DANGER');
+let end = new MessageButton()
+          .setCustomId("INV " + iniciatorID + ' ' + (Math.floor(UserHave.length/4)+1) + ' ' + pingedUser + ' END')
+          .setDisabled(activateEnd)
+          .setLabel('В конец (' + (Math.floor(UserHave.length/4)+1) + ')')
+          .setStyle('DANGER');
+
+
+                if (msg.author.id != '899380887282675743') {
+        msg.reply('Загружаем...').catch(err => { }); //, components: [row] 
+      } else {
+        msg.edit('Загружаем...').catch(err => { });
+      }
+
+
+
+
+
+const row = new MessageActionRow()
+          .addComponents(begin, previous, next, end);
 
 canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
 
@@ -214,10 +239,21 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log(err)
-              
-              msg.reply({files: [outputBuffer]}).catch(err => {});
+              console.log('ENDED')
+                          if (msg.author.id != '899380887282675743') {
+              console.log('123')
+              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { console.log(err)}) 
+            } else {
+              console.log('456')
+
+              console.log('EEEEEEEEEEEEEEEEEEEEEEE________________')
+              msg.removeAttachments()
+              msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
+
+              console.log('789')
+            }
               })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {}) });
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {console.log(err)}) });
         });
     })
   }

@@ -83,14 +83,24 @@ client.on('interactionCreate', i => {
 	if (!i.isButton()) return;
   // let pageIndex = i.customId.split(/ +/)[1];
 i.deferUpdate();
+let buttonType = i.customId.split(/ +/)[0]
 let iniciator = i.customId.split(/ +/)[1]
 let pageIndex = i.customId.split(/ +/)[2]
+let target = i.customId.split(/ +/)[3]
 
 // if (i.user.id == i.customId.split(/ +/)[0]);
-
+console.log('TYPE: ' + buttonType)
 if (iniciator == i.user.id)
 {
+  if (buttonType == 'SHOP')
+  {
     shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex, iniciator);
+  }
+
+  if (buttonType == "INV")
+  {
+     invCommand.invCommand(fs, i.message, ctx, sharp, canvas, client, Number(pageIndex), iniciator, target,  MessageActionRow, MessageButton);
+  }
 }
   if (i.customId === 'next111') {
    
@@ -119,8 +129,8 @@ let command = args[0].toLowerCase();
 
 // let commandsArray = ['/start', '/test','/shop','/inv','/inventory','/card','/preview','/claim','/setbadge1','/setbadge','/setbadge2','/set','/respecc','/gift','/jojo','/balance','/bal','/badges', '/buy']
 
-try
-{
+// try
+// {
 switch(command) {
    case "/start": 
     startCommand.startCommand(fs, msg);
@@ -139,8 +149,62 @@ switch(command) {
     break;
   case "/inv":
   case "/inventory": 
-    invCommand.invCommand(fs, msg, ctx, sharp, canvas, client);
+
+let pingedUser = msg.author.id;
+      if (args[1] == undefined) { pingedUser = msg.author.id}
+      pingedUser = pingedUser.replace("<@",'')
+      pingedUser = pingedUser.replace("!",'')
+      pingedUser = pingedUser.replace(">",'')
+
+    let pg = 1
+    console.log('Unresolved Num: ' + pingedUser)
+    if (Number(pingedUser) != NaN){ 
+   }else {pingedUser = msg.author.id}
+
+   
+  if (args[2] != undefined) {
+    if (args[2] > 5)
+    {
+      console.log('Script 1')
+      pg = args[1]
+      pingedUser = args[2]
+    }else
+    {
+      console.log('Script 2')
+      pg = args[2]
+      pingedUser = args[1]
+    }
+   } else
+   {
+
+     
+
+         if (args[1] > 5)
+    {
+      console.log('Script 3')
+      pingedUser = args[1]
+    }else
+    {
+      console.log('Script 4')
+      pg = args[1]
+    }
+
+  }
+
+if (args[1] == undefined) {
+pingedUser = msg.author.id
+pg = 1
+}
+        pingedUser = pingedUser.replace("<@",'')
+      pingedUser = pingedUser.replace("!",'')
+      pingedUser = pingedUser.replace(">",'')
+  
+
+  console.log(pingedUser)
+    invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser,  MessageActionRow, MessageButton);
     break;
+
+
   default:
     break;
   case "/card":
@@ -192,9 +256,9 @@ oplotCommand.oplotCommand(msg, fs, client, args)
   break;
 }
   
-}catch(err){
-  msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
-}
+// }catch(err){
+//   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
+// }
 }
 )
 

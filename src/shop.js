@@ -231,7 +231,7 @@ let btn4 = new MessageButton()
               // if (findImage != null) {
               //   msg.reply('1')
               // }
-
+                      console.log('EEEEEEEEEEEEEEEEEEEEEEE________________')
               msg.removeAttachments()
               // content: 'Страница: ' + shopPage,
 
