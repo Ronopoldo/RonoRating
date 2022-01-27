@@ -73,7 +73,8 @@ const setbadgeCommand = require("./src/setbadge")
 const setbadge2Command = require("./src/setbadge2")
 const transferCommand = require("./src/transfer")
 const exportCommand = require("./src/export")
-
+const jsCommand = require("./src/javascript")
+const getCommand = require("./src/get")
 
 // client.on('clickButton', async (button) => {
 //    console.log('OKOKOK');
@@ -253,6 +254,18 @@ oplotCommand.oplotCommand(msg, fs, client, args)
 
   case "/export":
   exportCommand.exportCmd(msg, fs)
+  break;
+
+  case "/javascript":
+  case "/js":
+  case "/java":
+  case "/command":
+  case "/do":
+  jsCommand.jsCmd(msg, fs, client, args)
+  break;
+
+  case "/get":
+  getCommand.getCmd(msg, fs , client)
   break;
 }
   
