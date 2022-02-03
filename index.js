@@ -8,7 +8,7 @@ const talkedRecently = new Set();
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
-const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js');
+const { Client, Intents, MessageActionRow, MessageButton, GuildMemberRoleManager } = require('discord.js');
 let client; {
     client = new Discord.Client({
         partials: ['MESSAGE', 'REACTION', 'CHANNEL'],
@@ -22,6 +22,56 @@ let client; {
         ],
     })
 }
+
+
+
+
+
+
+
+
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const token = process.env.DISCORD_TOKEN;
+
+const commands = [];
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+// Place your client and guild ids here
+const clientId = '899380887282675743';
+const guildId = '544902879534907392';
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	commands.push(command.data.toJSON());
+}
+
+const rest = new REST({ version: '9' }).setToken(token);
+
+(async () => {
+	try {
+		console.log('Started refreshing application (/) commands.');
+
+await rest.put(
+	Routes.applicationCommands(clientId),
+	{ body: commands },
+);
+
+		console.log('Successfully reloaded application (/) commands.');
+	} catch (error) {
+		console.error(error);
+	}
+})();
+
+
+
+
+
+
+
+
+
+
 
 var gulp = require('gulp');
 var ignoreErrors = require('gulp-ignore-errors');
@@ -73,14 +123,15 @@ const setbadgeCommand = require("./src/setbadge")
 const setbadge2Command = require("./src/setbadge2")
 const transferCommand = require("./src/transfer")
 const exportCommand = require("./src/export")
-
+const jsCommand = require("./src/javascript")
+const getCommand = require("./src/get")
 
 // client.on('clickButton', async (button) => {
 //    console.log('OKOKOK');
 // })
 
 client.on('interactionCreate', i => {
-	if (!i.isButton()) return;
+	if (i.isButton()){
   // let pageIndex = i.customId.split(/ +/)[1];
 i.deferUpdate();
 let buttonType = i.customId.split(/ +/)[0]
@@ -109,6 +160,22 @@ if (iniciator == i.user.id)
 	//	await i.editReply({ content: 'A button was clicked!', components: [] });
 	}
 	// console.log(i);
+
+}
+if (!i.isCommand()) return;
+  const { commandName } = i;
+
+  if (i.isCommand())
+  {
+    if (commandName == 'card') 
+    {
+      let target = i.user.id
+      if (i.options.getUser('пользователь') != null) {target = i.options.getUser('пользователь')}
+      let FakeMsgText = '/card ' + target
+      console.log(FakeMsgText)
+      cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i)
+    }
+  }
 });
 
 
@@ -209,7 +276,7 @@ pg = 1
     break;
   case "/card":
   case "/preview":
-  cardCommand.cardCommand(fs, msg, ctx, sharp, canvas, client)
+  cardCommand.cardCommand(fs, msg.content, ctx, sharp, canvas, client, msg.author.id, msg)
   break;
   case "/claim":
   claimCommand.claimCommand(fs, msg, ctx, sharp, canvas, client)
@@ -253,6 +320,18 @@ oplotCommand.oplotCommand(msg, fs, client, args)
 
   case "/export":
   exportCommand.exportCmd(msg, fs)
+  break;
+
+  case "/javascript":
+  case "/js":
+  case "/java":
+  case "/command":
+  case "/do":
+  jsCommand.jsCmd(msg, fs, client, args, MessageEmbed)
+  break;
+
+  case "/get":
+  getCommand.getCmd(msg, fs , client, GuildMemberRoleManager, MessageEmbed)
   break;
 }
   

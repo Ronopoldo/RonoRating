@@ -1,18 +1,18 @@
-function cardCommand(fs, msg, ctx, sharp, canvas, client) {
+function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction) {
   {
-    if (fs.existsSync('./data/UserData/' + msg.author.id))
+    if (fs.existsSync('./data/UserData/' + iniciator))
    {
 
 
 
 
-        const args = msg.content.slice(`/био`).split(/ +/);
+        const args = msg.slice(`/био`).split(/ +/);
 
             let preview = false
-    if (msg.content.toLowerCase().startsWith('/preview')) { preview = true}
+    if (msg.toLowerCase().startsWith('/preview')) { preview = true}
 
     
-    if (msg.content.toLowerCase().startsWith('/card')) { preview = false}
+    if (msg.toLowerCase().startsWith('/card')) { preview = false}
     if (args.length >= 2)
     {
       pingedUser = args[1]
@@ -32,12 +32,12 @@ function cardCommand(fs, msg, ctx, sharp, canvas, client) {
     if (args.length == 1)
     {
       console.log('прошло')
-      pingedUser = '<@' + msg.author.id +">"
+      pingedUser = '<@' + iniciator +">"
     }
 
     if (args.length > 2)
     {    
-      msg.reply('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упоминание')
+      interaction.channel.send('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упоминание')
     }
 
 
@@ -49,11 +49,11 @@ function cardCommand(fs, msg, ctx, sharp, canvas, client) {
    }else {}
 
    if (fs.existsSync('./data/UserData/' + pingedUser))
-   { }else{pingedUser = msg.author.id}
+   { }else{pingedUser = iniciator}
     client.users.fetch(pingedUser).then(User => 
   {
 
-    msg.channel.send('Загружаем...')
+   interaction.reply('Загружаем...')
 
 
 //АЧВИКИ
@@ -88,7 +88,7 @@ let fontsize = 70
 
   NeededXP = Math.floor(NeededXP)
 
-        // msg.reply(currentXP.toString() + '/' + NeededXP.toString())
+        // interaction.channel.send(currentXP.toString() + '/' + NeededXP.toString())
         ctx.fillText(NeededXP, 458, 400)
         ctx.strokeText(NeededXP, 458, 400)
 
@@ -398,7 +398,7 @@ if (preview == true) {
   if (fullarray.includes(args[1].toLowerCase()))
   {
     theme = args[1].toLowerCase()
-  }else{msg.reply('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
+  }else{interaction.channel.send('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
   }
 }
 
@@ -406,7 +406,7 @@ if (preview == true) {
 
 
 if (args[1] == 'hentai' ) { 
-  msg.reply ('Сори, но иди ты!')
+  interaction.channel.send ('Сори, но иди ты!')
   theme = 'default'
   }
 
@@ -476,11 +476,18 @@ sharp.cache(false);
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.reply({files: [outputBuffer]}).catch(err => {});;
+              if (interaction.user != undefined)
+              {
+              interaction.editReply({files: [outputBuffer]}).catch(err => {});
               ctx.clearRect(0, 0, canvas.width, canvas.height)
+              }else
+              {
+                interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
+              ctx.clearRect(0, 0, canvas.width, canvas.height)
+              }
               // fs.unlinkSync(pingedUser + "temp.png")
               })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }else{
             image
             .composite([
@@ -500,17 +507,17 @@ sharp.cache(false);
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               // fs.unlinkSync(pingedUser + "temp.png")
               })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }
 
           })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
   
 
 
           
           })
-              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
               
         });      
 
@@ -520,20 +527,20 @@ sharp.cache(false);
         })
        
             })
- .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+ .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
             })
-            .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })
- .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+ .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
   })
-  .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+  .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
 
 
 
-        },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
+        },error => {interaction.channel.send('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }
 
    
