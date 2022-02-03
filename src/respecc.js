@@ -8,8 +8,12 @@ const respecc = new MessageEmbed()
     .setThumbnail('https://media.discordapp.net/attachments/698853696817070164/919682766717730906/Screenshot_20191210-073902_Discord.jpg')
     .setFooter('Ronoserver Services - звено Статистики', 'https://images-ext-2.discordapp.net/external/SLnaCFfbKRV2BQGkU1zVy9VhwyqdeNXw5Fu-bNMJjCk/https/media.discordapp.net/attachments/768414683019345931/841704850139906108/9b6a4cc843e31c1e.png')
 
-
-msg.channel.send({ embeds: [respecc] }).catch(err => {});;
+if (msg.user != undefined)
+              {
+msg.reply({ embeds: [respecc] }).catch(err => {})
+              }else{
+                msg.channel.send({ embeds: [respecc] }).catch(err => {});;
+              }
 }
 
 module.exports = { respeccCommand }

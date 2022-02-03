@@ -1,5 +1,5 @@
-function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID) {
-  if (fs.existsSync('./data/UserData/' + msg.author.id + '/integers/exp')) {
+function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton) {
+  if (fs.existsSync('./data/UserData/' + iniciatorID + '/integers/exp')) {
 
 
 
@@ -24,7 +24,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
       console.log(shopNames)
-      if (msg.author.id != '899380887282675743') {
+      if (isButton == false) {
         msg.reply('Загружаем...').catch(err => { }); //, components: [row] 
       } else {
         msg.edit('Загружаем...').catch(err => { });
@@ -221,9 +221,18 @@ let btn4 = new MessageButton()
           .toBuffer()
           .then(function(outputBuffer) {
             console.log(err)
-            if (msg.author.id != '899380887282675743') {
+
+            console.log(msg)
+            if (isButton == false) {
+
+              if (msg.user != undefined)
+              {
+              msg.editReply({ files: [outputBuffer], components: [row] }).catch(err => { });
+
+              }else{
               console.log('123')
-              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { }); //, components: [row] 
+              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { }); //, components: [row] 
+              }
             } else {
               console.log('456')
 
@@ -232,7 +241,10 @@ let btn4 = new MessageButton()
               //   msg.reply('1')
               // }
                       console.log('EEEEEEEEEEEEEEEEEEEEEEE________________')
+                      msg.edit('Загружаем')
               msg.removeAttachments()
+              msg.edit('Загружено!')
+
               // content: 'Страница: ' + shopPage,
 
               msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
@@ -240,7 +252,7 @@ let btn4 = new MessageButton()
               console.log('789')
             }
           })
-          .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+          .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
       })
 
 

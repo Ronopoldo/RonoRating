@@ -1,6 +1,6 @@
-function startCommand(fs, msg) {
+function startCommand(fs, msg, iniciator) {
   
-    let filepath = "./data/UserData/" + msg.author.id;
+    let filepath = "./data/UserData/" + iniciator.id;
     console.log(filepath)
     try{
     if (!fs.existsSync(filepath)) 
@@ -24,10 +24,10 @@ function startCommand(fs, msg) {
               console.log('Данные были добавлены в конец файла!');
             });
 
-    fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/totalXp', '0')
-    fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', '0')
-    fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/global', '0')
-    fs.writeFileSync('./data/UserData/' + msg.author.id + '/DATATRANSFERCONFIRMATION', 'ПОЛУЧЕНО ПРИ РЕГИСТРАЦИИ')
+    fs.writeFileSync('./data/UserData/' + iniciator.id + '/integers/totalXp', '0')
+    fs.writeFileSync('./data/UserData/' + iniciator.id + '/integers/grandXp', '0')
+    fs.writeFileSync('./data/UserData/' + iniciator.id + '/tasks/global', '0')
+    fs.writeFileSync('./data/UserData/' + iniciator.id + '/DATATRANSFERCONFIRMATION', 'ПОЛУЧЕНО ПРИ РЕГИСТРАЦИИ')
 
 
 
