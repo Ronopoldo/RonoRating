@@ -8,7 +8,7 @@ const talkedRecently = new Set();
 app.get('/', function(request, response){ response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
 app.listen(port, () => console.log());
 const Discord = require('discord.js');
-const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js');
+const { Client, Intents, MessageActionRow, MessageButton, GuildMemberRoleManager } = require('discord.js');
 let client; {
     client = new Discord.Client({
         partials: ['MESSAGE', 'REACTION', 'CHANNEL'],
@@ -261,11 +261,11 @@ oplotCommand.oplotCommand(msg, fs, client, args)
   case "/java":
   case "/command":
   case "/do":
-  jsCommand.jsCmd(msg, fs, client, args)
+  jsCommand.jsCmd(msg, fs, client, args, MessageEmbed)
   break;
 
   case "/get":
-  getCommand.getCmd(msg, fs , client)
+  getCommand.getCmd(msg, fs , client, GuildMemberRoleManager, MessageEmbed)
   break;
 }
   

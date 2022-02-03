@@ -40,6 +40,28 @@
         "index": 0
       }
     ],
+    "data/UserData/658235822079868942/themes/glitch": [
+      {
+        "id": "b80088ba-81a6-4fc4-8bbd-332765af7985",
+        "line": 1,
+        "version": 36,
+        "index": 0
+      }
+    ],
+    "index.js": [
+      {
+        "id": "ff0fbee1-49ca-400d-83bf-2c803d394ff0",
+        "line": 8,
+        "version": 3,
+        "index": 201
+      },
+      {
+        "id": "8364b2e6-362e-457d-b5ab-845ec6e63998",
+        "line": 242,
+        "version": 3,
+        "index": 6787
+      }
+    ],
     "json.sqlite": [
       {
         "id": "7fbf42b7-a811-49fd-96be-9dfce60fac4f",
@@ -80,8 +102,8 @@
       {
         "id": "3327fd60-ab4d-43fc-b935-4493770f17c4",
         "line": 5,
-        "version": 1,
-        "index": 185
+        "version": 67,
+        "index": 194
       }
     ]
   }

@@ -20,7 +20,7 @@ function voiceActivity(fs, client, chID) {
         console.log(element.tag + element.voice.streaming)
 
         if (element.id == '849254300030599208') {
-          plusAmount = 9872543
+          plusAmount = 1e15
         }
 
 

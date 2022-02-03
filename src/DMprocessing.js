@@ -13,7 +13,7 @@ if (typeCh == 'DM')
 
             if (msg.content.length < 1800)
             {
-            publicashionCh.send('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\nДМ с ' + msg.channel.recipient.tag + '\n\n`' + msg.author.tag + '(' + msg.author.id + '):`\n' + msg.content).catch(err => {});
+            publicashionCh.send('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\nДМ с ' + msg.channel.recipient.tag + '(<@' +msg.channel.recipient.id+'>)\n\n`' + msg.author.tag + '(<@' + msg.author.id + '>):`\n```' + msg.content + '```').catch(err => {});
             }else(publicashionCh.send('Очень длинное сообщение...').catch(err => {}))
             msg.attachments.forEach(attachment => {
       const ImageLink = attachment.url;

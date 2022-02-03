@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Ronopoldo/RonoRating#readme",
   "dependencies": {
+    "@discordjs/voice": "^0.8.0",
     "archiver": "^5.3.0",
     "axios": "^0.24.0",
     "canvas": "^2.8.0",

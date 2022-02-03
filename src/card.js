@@ -347,9 +347,9 @@ ctx.font = '40px "ArialRound"'
 
 
 
-
-let outputMoney = Money.toString()
 Money = Math.floor(Money)
+let outputMoney = Money.toString()
+
 
 
 if (Money.toString().length > 3) {
