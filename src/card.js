@@ -227,6 +227,65 @@ sharp('./tasks/voiceBar.png')
             .then(function(outputBufferAct2) {
 
 
+//////////////////////СЧЁТ
+
+let countLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/countlvl')
+let count = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/count')
+let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
+      ctx.font = '30px "ArialRound"'
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'right'
+
+
+if (countLvl > 13) { countLvl = 13 }
+
+        ctx.fillText(lvlUP[countLvl], 962, 587)
+        ctx.strokeText(lvlUP[countLvl], 962, 587)
+
+ctx.textAlign = 'left'
+        ctx.fillText(count, 689, 587)
+        ctx.strokeText(count,689, 587)
+
+ctx.textAlign = 'center'
+        ctx.fillText(countLvl + ' уровень', 827, 587)
+
+
+        ctx.font = '33px "ArialRound"'
+
+        let countwidth = Math.floor(269*((count-lvlUP[countLvl-1]).toFixed(1))/lvlUP[countLvl]+1)
+
+if ((countwidth >= 270) || (countwidth<1)) {countwidth = 269}
+              if (isNaN(countwidth)) {countwidth = 1}
+
+              
+
+    ctx.strokeStyle = 'white';
+ctx.textAlign = 'left'
+              ctx.font = '50px "ArialRound"'
+        ctx.fillText('Счёт', 689,515)
+        ctx.strokeText('Счёт', 689, 515)
+
+
+sharp('./tasks/countBar.png')
+.extract({ left: 0, top: 0, width: countwidth, height: 30 })
+      .toBuffer()
+            .then(function(outputBufferAct3) {
+
+
+
+
+
+
+// sharp('./tasks/voiceBar.png')
+
+
+//       .extract({ left: 0, top: 0, width: vwidth, height: 30 })
+//       .toBuffer()
+//             .then(function(outputBufferAct2) {
+
+
 
 
 
@@ -453,15 +512,17 @@ sharp.cache(false);
               { input: './tasks/activeBG.png', top: 275, left: 50},
               { input: './tasks/lastActiveBG.png', top: 275, left: 554},
               { input: './tasks/voice/default.png', top: 462, left: 50},
-
+              { input: './tasks/count.png', top: 462, left: 554},
               { input: body3, top: 55, left: 55},
 
               { input: './tasks/bar.png', top: 345, left: 185},
               { input: './tasks/bar.png', top: 345, left: 689},
               { input: './tasks/bar.png', top: 532, left: 185},
+              { input: './tasks/bar.png', top: 532, left: 689},
               { input: activeImg, top: 286, left: 61}, //11outputBufferAct2
               { input: './tasks/lastActive/basic.png', top: 286, left: 565},
               { input: './tasks/voice/icon.png', top: 473, left: 60},
+{ input: './tasks/count/icon.png', top: 473, left: 565},
               { input: badgePath, top: 60, left: 800},
               { input: badge2Path, top: 166, left: 166},
               
@@ -469,6 +530,7 @@ sharp.cache(false);
               {input: outputBufferAct,  top: 345, left: 185},
               {input: outputBufferAct1,  top: 345, left: 689},
               {input: outputBufferAct2,  top: 532, left: 185},
+{input: outputBufferAct3,  top: 532, left: 689},
               {input: './Images/emptybar.png',  top: 230, left: 132},
               {input: grandBuffer,  top: 230, left: 132},
               
@@ -538,6 +600,8 @@ sharp.cache(false);
  .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
             })
+            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+ })
             .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })
  .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });

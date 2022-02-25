@@ -77,6 +77,15 @@ function startCommand(fs, msg, iniciator) {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');
             });
+      fs.writeFileSync(filepath + '/integers/count', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+      fs.writeFileSync(filepath + '/tasks/countlvl', '0', 'utf8', (err) => {
+              if (err) throw err;
+              console.log('Данные были добавлены в конец файла!');
+            });
+
       fs.writeFileSync(filepath + '/themes/default', CurrentDate, 'utf8', (err) => {
               if (err) throw err;
               console.log('Данные были добавлены в конец файла!');

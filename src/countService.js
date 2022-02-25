@@ -12,7 +12,7 @@ function msgProcessing(msg, client, fs) {
 
     console.log(lvlUP[level])
     if (userCount+1 >= lvlUP[level]) {
-      msg.reply('12333333')
+     
       console.log('yah')
       
     fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', (money + rewards[level]).toString(), 'utf8')
