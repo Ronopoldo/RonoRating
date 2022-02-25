@@ -20,6 +20,7 @@ let client; {
       "GUILD_MESSAGES",
       "DIRECT_MESSAGES",
     ],
+     allowedMentions: ['repliedUser'],
   })
 }
 
@@ -125,6 +126,9 @@ const transferCommand = require("./src/transfer")
 const exportCommand = require("./src/export")
 const jsCommand = require("./src/javascript")
 const getCommand = require("./src/get")
+const artService = require("./src/artService")
+const spamtonCommand = require("./src/spamtonCommand")
+const countService = require("./src/countService")
 
 // client.on('clickButton', async (button) => {
 //    console.log('OKOKOK');
@@ -177,17 +181,39 @@ client.on('interactionCreate', i => {
     if (commandName == 'export') {
       exportCommand.exportCmd(i, fs, i.user)
     }
-    if (commandName == 'shop')
-    {
+    if (commandName == 'shop') {
       let shopPage = 1
       if (i.options.getNumber('страница') != null) { shopPage = i.options.getNumber('страница').toString() }
-      shopCommand.shopCommand(fs, i, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, i.user,false)
+      shopCommand.shopCommand(fs, i, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, i.user, false)
     }
-    
-    if (commandName == 'respecc')
-    {
+
+    if (commandName == 'set') {
+      let theme = i.options.getString('тема');
+
+      setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id)
+    }
+
+    if (commandName == 'respecc') {
       respeccCommand.respeccCommand(i, MessageEmbed)
     }
+
+    if (commandName == 'js') {
+      let command = '/javascript ' + i.options.getString('команда_для_выполнения');
+      let args = command.slice(`/био`).split(/ +/);
+      console.log(command)
+      jsCommand.jsCmd(i, fs, client, args, MessageEmbed, command, i.user)
+
+    }
+
+    if (commandName == 'balance') {
+      let target = i.user
+      if (i.options.getUser('пользователь') != null) { target = i.options.getUser('пользователь') }
+      console.log(target)
+      balCommand.balCommand(i, fs, ['/args', target.id], client, MessageEmbed, i.user)
+    }
+
+
+
   }
 });
 
@@ -195,9 +221,6 @@ client.on('interactionCreate', i => {
 // Обработчик входящих сообщений
 client.on('messageCreate', msg => {
   calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
-
-
-
 
   // Входящее сообщение
   let incMessage = msg.content.toLowerCase();
@@ -300,7 +323,7 @@ client.on('messageCreate', msg => {
       setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args)
       break;
     case "/set":
-      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args)
+      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id)
       break;
     case "/respecc":
       respeccCommand.respeccCommand(msg, MessageEmbed)
@@ -315,7 +338,7 @@ client.on('messageCreate', msg => {
 
     case "/balance":
     case "/bal":
-      balCommand.balCommand(msg, fs, args, client, MessageEmbed)
+      balCommand.balCommand(msg, fs, args, client, MessageEmbed, msg.author.id)
       break;
 
     case "/badges":
@@ -335,17 +358,42 @@ client.on('messageCreate', msg => {
     case "/java":
     case "/command":
     case "/do":
-      jsCommand.jsCmd(msg, fs, client, args, MessageEmbed)
+      jsCommand.jsCmd(msg, fs, client, args, MessageEmbed, msg.content, msg.author.id)
       break;
 
     case "/get":
       getCommand.getCmd(msg, fs, client, GuildMemberRoleManager, MessageEmbed)
+      break;
+    case "/spamton_theme":
+      spamtonCommand.spamtonCommand(msg, fs, client, args)
       break;
   }
 
   // }catch(err){
   //   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
   // }
+
+  if (msg.channel.id == '671026327016701953') {
+    artService.msgProcessing(msg, client)
+  }
+
+if (msg.channel.id == '796869930397728778') {
+countService.msgProcessing(msg, client, fs)
+}
+
+  if ((msg.channel.id == '940359291175596122') || (msg.channel.id == '940460074378330163'))
+  {
+    if (msg.author.id == '609701912643764244')
+    {
+      msg.reply('Если Кола говорит что то против создания Онли Фанс, то не верьте ему. Он стесняется =)')
+    }
+  }
+
+  if (msg.content == '/oyasumi')
+  {
+    msg.reply("Close your eyes and you'll leave this dream")
+  }
+
 }
 )
 
@@ -355,13 +403,91 @@ client.on("ready", function() {
   voiceActivity.voiceActivity(fs, client, '544902879534907396');
   voiceActivity.voiceActivity(fs, client, '647052644380180480');
 
+
+setInterval(function() {
+function zeros(i) {
+      if (i < 10) {
+        return "0" + i;
+      } else {
+        return i;
+      }
+    }
+
+
+const guild = client.guilds.cache.get("544902879534907392");
+let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
+let currentCount = fs.readFileSync('./data/count', "utf8")
+const countChannel = guild.channels.cache.get("796869930397728778")
+countChannel.setTopic('Последнее число: ' + currentCount + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
+console.log('Обновлено описание счёта')
+},300000);
+
 })
+
+
 
 
 // client.on('message', message => {
 //   console.log('321321123321')
 //     if (message.channel.type == 'dm'){ console.log('WOW')}
 // });
+
+client.on('messageUpdate', (oldMessage, newMessage) => {
+  try{
+  if (newMessage.author.id === client.user.id) return;
+console.log(newMessage.channel.id)
+  if (!oldMessage.author) return;
+  if (newMessage.channel.id == '671026327016701953') {
+
+    if (newMessage.attachments.size > 0) { } else {
+        // newMessage.reply('123')
+      newMessage.delete()
+    }
+
+  }
+
+
+    if (newMessage.channel.id == '796869930397728778') {
+
+let currentCount = Number(fs.readFileSync('./data/count', "utf8"))
+    
+console.log('LOTTA')
+      console.log(currentCount)
+if ((oldMessage.content.startsWith(((currentCount).toString() + ' '))) || (oldMessage.content == (currentCount).toString()))
+      {
+        console.log('GOTTA')
+if ((newMessage.content.startsWith((currentCount.toString() + ' '))) || (newMessage.content == currentCount.toString()))
+    {}else{
+newMessage.delete()
+newMessage.channel.send('<@' + oldMessage.author.id + '>: ' + currentCount)
+console.log('YOTTA')
+}
+}
+
+  }
+
+
+  }catch(err) { console.log(err) }
+});
+
+client.on("messageDelete", (msg) => {
+
+if (msg.channel.id == '796869930397728778') {
+
+let currentCount = Number(fs.readFileSync('./data/count', "utf8"))
+    
+console.log('LOTTA')
+      console.log(currentCount)
+
+if ((msg.content.startsWith(((currentCount).toString() + ' '))) || (msg.content == (currentCount).toString()))
+{
+  msg.channel.send('<@' + msg.author.id + '>: ' + currentCount)
+}
+}
+
+});
+
+
 
 try {
   client.on('messageCreate', msg => {

@@ -1,9 +1,9 @@
-function balCommand(msg, fs, args, client, MessageEmbed) {
+function balCommand(msg, fs, args, client, MessageEmbed, iniciator) {
 
-if (fs.existsSync('./data/UserData/' + msg.author.id))
+if (fs.existsSync('./data/UserData/' + iniciator))
    {
 
-     let pingedUser = msg.author.id
+     let pingedUser = iniciator
  pingedUser = args[1]
 
 if (pingedUser !== undefined)
@@ -15,7 +15,7 @@ pingedUser = pingedUser.replace(">",'')
 
 
 if (fs.existsSync('./data/UserData/' + pingedUser))
-   { }else{pingedUser = msg.author.id}
+   { }else{pingedUser = iniciator}
   
 let Money = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/money', "utf8");
 let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 

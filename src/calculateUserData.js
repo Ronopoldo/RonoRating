@@ -1,4 +1,5 @@
 function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently) {
+  const guild = client.guilds.cache.get("544902879534907392");
   if (msg.channel.type !== 'dm')
   {
      if (talkedRecently.has(msg.author.id)) {
@@ -208,6 +209,23 @@ let allowedChannels = ['647050821594251264','671026327016701953','64900370894802
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', money.toString()) // Деньги
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/grandXp', normalXp1.toString()) //Экспи в ноль
 
+
+try{
+                            let role = msg.guild.roles.cache.find(r => r.id === "709144514471919736");
+              
+              if (globalLvl >= 20)
+              {
+              Guild.members.cache.find(user => user.id === msg.author.id).roles.add(role);
+              }
+
+if (globalLvl >= 48)
+              {
+              role = msg.guild.roles.cache.find(r => r.id === "839446908883959808");
+              Guild.members.cache.find(user => user.id === msg.author.id).roles.add(role);
+              }
+
+}catch(err){console.log(err)}
+              
               msg.reply(':tada:Новый ГЛОБАЛЬНЫЙ уровень!:tada:\nУровень: ' + globalLvl.toString() + '\nТотал опыт: ' + Math.floor(xp) + '\nПолучено монет: ' + Math.floor(globalMoney)).catch(err => {});
             }
 
@@ -280,6 +298,9 @@ let Money1 = fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/mon
 
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', (Math.floor(Money1)).toString(), 'utf8')
               fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/exp', Number(Points).toString(), 'utf8')
+
+
+
               msg.reply(':tada:Новый уровень!:tada:\nУровень: ' + (Number(lvl)+1).toString() + '\nТотал опыт: ' + Math.floor(totalXP) + '\nПолучено монет: ' + Math.floor(NewMoney)).catch(err => {});
            }
           //  msg.reply(NeededXP.toString())

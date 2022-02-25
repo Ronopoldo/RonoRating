@@ -22,7 +22,7 @@ function give(roleID, themeID, Member, type)
      console.log('ye')
   }
 
- let gived = give('933653807936700447', 'generalgavs', member, 'cardBadges') + '\n' + give('647087808908886018', 'staff', member, 'cardBadges')
+ let gived = give('933653807936700447', 'generalgavs', member, 'cardBadges') + '\n' + give('647087808908886018', 'staff', member, 'cardBadges') + '\n' + give('945760929071648808', '22222222222', member, 'themes')
 
 if (gived == undefined) { gived = 'Ничего'}
 

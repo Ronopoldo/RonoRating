@@ -491,19 +491,27 @@ sharp.cache(false);
           }else{
             image
             .composite([
-              { input: './Images/Borders/5.png', top: 50, left: 50},
-              { input: './tasks/activeBG.png', top: 666, left: 50},
-              { input: body, top: 76, left: 76},
-              { input: './tasks/bar.png', top: 345, left: 185},
+              { input: './Images/Borders/5.png', top: 50, left: 50,blend: 'colour-dodge'},
+              { input: './tasks/activeBG.png', top: 666, left: 1960,blend: 'exclusion'},
+              { input: body, top: 106, left: 99},
+              { input: './tasks/bar.png', top: 345, left: 185,blend: 'colour-dodge'},
               { input: activeImg, top: 286, left: 61}, //11
               { input: "./Images/circler.png", top: 76, left: 76},
-              {input: outputBufferAct,  top: 345, left: 185},
+              {input: outputBufferAct,  top: 345, left: 185, blend: 'saturate'},
               // {input: grandBuffer, top: 10, left: 10},
-              { input: out, top: 0, left: 0}])
+              { input: out, top: 0, left: 0, blend: 'dest-over'}])
             .toBuffer()
             .then(function(outputBuffer) {
               console.log("error: ", err)
-              msg.channel.send({files: [outputBuffer]});
+                            if (interaction.user != undefined)
+              {
+              interaction.editReply({files: [outputBuffer]}).catch(err => {});
+              ctx.clearRect(0, 0, canvas.width, canvas.height)
+              }else
+              {
+                interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
+              ctx.clearRect(0, 0, canvas.width, canvas.height)
+              }
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               // fs.unlinkSync(pingedUser + "temp.png")
               })

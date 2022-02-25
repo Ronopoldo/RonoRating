@@ -10,7 +10,7 @@ function voiceActivity(fs, client, chID) {
 
         let userActivity = fs.readFileSync('./data/UserData/' + element.id + '/integers/voice')
         console.log(element.id)
-        let plusAmount =  1
+        let plusAmount =  1.1
 
         if ((element.voice.selfMute == true) || (element.voice.serverMute == true)) { plusAmount = plusAmount * 0.5 }
 
