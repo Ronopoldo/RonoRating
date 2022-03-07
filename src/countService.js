@@ -8,7 +8,7 @@ function msgProcessing(msg, client, fs) {
     let level = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/countlvl', "utf8"))
     let money = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8"))
     let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
-    let rewards = [50, 50, 100, 100, 100, 200, 250, 300, 1000, 1500, 2000, 5000, 10000]
+    let rewards = [50, 50, 100, 100, 200, 400, 500, 600, 750, 1500, 2020, 10000, 15000]
 
     console.log(lvlUP[level])
     if (userCount+1 >= lvlUP[level]) {

@@ -211,7 +211,10 @@ client.on('interactionCreate', i => {
       console.log(target)
       balCommand.balCommand(i, fs, ['/args', target.id], client, MessageEmbed, i.user)
     }
-
+if (commandName == 'count') {
+let currentCount = fs.readFileSync('./data/count', "utf8")
+i.reply('Текущее число: `' + currentCount + '`\n\nСледующее число: `' + (Number(currentCount)+1).toString() + '`')
+}
 
 
   }
@@ -377,6 +380,11 @@ client.on('messageCreate', msg => {
     artService.msgProcessing(msg, client)
   }
 
+if (msg.content.toLowerCase().includes('нет ты') && msg.author.id != '899380887282675743')
+{
+msg.reply('Нет ты')
+}
+
 if (msg.channel.id == '687054666495688788') {
 countService.msgProcessing(msg, client, fs)
 }
@@ -418,7 +426,7 @@ const guild = client.guilds.cache.get("544902879534907392");
 let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
 let currentCount = fs.readFileSync('./data/count', "utf8")
 const countChannel = guild.channels.cache.get("687054666495688788")
-countChannel.setTopic('Последнее число: ' + currentCount + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
+countChannel.setTopic('Следующее число: ' + (Number(currentCount) + 1).toString() + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
 console.log('Обновлено описание счёта')
 },300000);
 

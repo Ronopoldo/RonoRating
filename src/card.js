@@ -1,9 +1,11 @@
 function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction) {
+
+// 'use strict';
   {
     if (fs.existsSync('./data/UserData/' + iniciator))
    {
 
-
+let pingedUser = iniciator
 
 
         const args = msg.slice(`/био`).split(/ +/);
@@ -548,6 +550,25 @@ sharp.cache(false);
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               }
               // fs.unlinkSync(pingedUser + "temp.png")
+
+outputBuffer = '0'
+outputBufferAct = null
+outputBufferAct1 = null
+  outputBufferAct2 = null
+              outputBufferAct3 = null
+              grandBuffer = null
+              out = null
+console.log(outputBuffer)
+
+// var variables = ""
+// for (var name in this)
+// {
+//     variables += name + "\n";
+// eval('console.log(' + name + ')')
+// }
+// console.log(variables)
+
+
               })
               .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }else{
@@ -618,6 +639,9 @@ sharp.cache(false);
    
   }
   
+
+
+
   }
 
 module.exports = { cardCommand }
