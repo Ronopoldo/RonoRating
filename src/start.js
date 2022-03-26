@@ -3,6 +3,8 @@ function startCommand(fs, msg, iniciator) {
     let filepath = "./data/UserData/" + iniciator.id;
     console.log(filepath)
     try{
+      if (msg.author.id != '720663761844699146' && msg.author.id != '945318438245629962')
+      {
     if (!fs.existsSync(filepath)) 
       {
         let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
@@ -99,6 +101,7 @@ function startCommand(fs, msg, iniciator) {
       {
         msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!').catch(err => {});
       }
+      }else{msg.author.id('Иди ты дебик')}
     }catch(err){
     console.log(err)}
 }

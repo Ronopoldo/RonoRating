@@ -495,6 +495,23 @@ if ((msg.content.startsWith(((currentCount).toString() + ' '))) || (msg.content 
 
 });
 
+// client.on('voiceStateUpdate', (oldMember, newMember) => {
+//   let newUserChannel = newMember.voiceChannel
+//   let oldUserChannel = oldMember.voiceChannel
+//   let guild = client.guilds.cache.get("544902879534907392");
+//   let vrole = guild.roles.cache.get('953629666365820948');
+//   if(oldUserChannel === undefined && newUserChannel !== undefined) {
+
+//         newMember.roles.add(vrole)
+    
+//   } else if(newUserChannel === undefined){
+
+//     newMember.roles.remove(vrole)
+
+//   }
+// })
+
+
 
 
 try {

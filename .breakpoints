@@ -40,6 +40,14 @@
         "index": 0
       }
     ],
+    "index.js": [
+      {
+        "id": "1bd3f276-18c1-45df-8388-336346e5aa12",
+        "line": 8,
+        "version": 1,
+        "index": 201
+      }
+    ],
     "json.sqlite": [
       {
         "id": "7fbf42b7-a811-49fd-96be-9dfce60fac4f",
