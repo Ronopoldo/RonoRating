@@ -130,6 +130,10 @@ const artService = require("./src/artService")
 const spamtonCommand = require("./src/spamtonCommand")
 const countService = require("./src/countService")
 
+
+
+
+const checkCount = require("./scripts/checkCount")
 // client.on('clickButton', async (button) => {
 //    console.log('OKOKOK');
 // })
@@ -390,7 +394,7 @@ msg.reply('Нет ты')
 }
 
 if (msg.channel.id == '687054666495688788') {
-countService.msgProcessing(msg, client, fs)
+countService.msgProcessing(msg, client, fs, checkCount.checker(msg, client))
 }
 
   if ((msg.channel.id == '940359291175596122') || (msg.channel.id == '940460074378330163'))
@@ -430,7 +434,18 @@ const guild = client.guilds.cache.get("544902879534907392");
 let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
 let currentCount = fs.readFileSync('./data/count', "utf8")
 const countChannel = guild.channels.cache.get("687054666495688788")
-countChannel.setTopic('Следующее число: ' + (Number(currentCount) + 1).toString() + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
+
+  
+  countChannel.messages.fetch({ limit: 1 }).then(messages => {
+  let lastMessage = messages.first();
+
+
+  
+countChannel.setTopic('Следующее число: ' + (Number(lastMessage.content.split(" ")[0]) + 1).toString() + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
+
+})
+.catch(console.error);
+  
 console.log('Обновлено описание счёта')
 },300000);
 
@@ -461,20 +476,36 @@ console.log(newMessage.channel.id)
 
     if (newMessage.channel.id == '687054666495688788') {
 
-let currentCount = Number(fs.readFileSync('./data/count', "utf8"))
+      newMessage.channel.messages.fetch({ limit: 2 })
+    .then(messageMappings => {
+      let messages = Array.from(messageMappings.values());
+      let previousMessage = messages[1].content;
+
+
+
+
+      let splittedMsg = previousMessage.split(" ");
+      console.log('-===================')
+      let count = splittedMsg[0]
+      console.log(splittedMsg)
+  let newSplit = newMessage.content.split(" ")
+  console.log('1)' + splittedMsg[0])
+  console.log('2)' + newSplit[0])
+
+  if (newSplit[0] == (Number(splittedMsg[0])+1).toString())
+  {
     
-console.log('LOTTA')
-      console.log(currentCount)
-if ((oldMessage.content.startsWith(((currentCount).toString() + ' '))) || (oldMessage.content == (currentCount).toString()))
-      {
-        console.log('GOTTA')
-if ((newMessage.content.startsWith((currentCount.toString() + ' '))) || (newMessage.content == currentCount.toString()))
-    {}else{
-newMessage.delete()
-newMessage.channel.send('<@' + oldMessage.author.id + '>: ' + currentCount)
-console.log('YOTTA')
-}
-}
+  }else
+  {
+    newMessage.delete()
+    newMessage.channel.send( (Number(splittedMsg[0])+1).toString() + ' - <@' + newMessage.author.id + '>')
+  }
+
+
+      
+    })
+
+    .catch(error => console.log("error", "Error fetching messages in channel\n" + error))
 
   }
 
@@ -486,15 +517,18 @@ client.on("messageDelete", (msg) => {
 
 if (msg.channel.id == '687054666495688788') {
 
-let currentCount = Number(fs.readFileSync('./data/count', "utf8"))
-    
-console.log('LOTTA')
-      console.log(currentCount)
+  msg.channel.messages.fetch({ limit: 1 }).then(messages => {
+  let lastMessage = messages.first();
+    if ((Number(lastMessage.content.split(" ")[0]) + 1).toString() == msg.content.split(" ")[0])
+    {
+      msg.channel.send( msg.content.split(" ")[0] + ' - <@' + msg.author.id + '>')
+    }
 
-if ((msg.content.startsWith(((currentCount).toString() + ' '))) || (msg.content == (currentCount).toString()))
-{
-  msg.channel.send('<@' + msg.author.id + '>: ' + currentCount)
-}
+
+
+})
+.catch(console.error);
+
 }
 
 });
