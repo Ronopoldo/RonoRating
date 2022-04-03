@@ -361,6 +361,10 @@ client.on('messageCreate', msg => {
     case "/java":
     case "/command":
     case "/do":
+    case "/script":
+    case "/scenario":
+    case "/ronorating":
+    case "/rr":
       jsCommand.jsCmd(msg, fs, client, args, MessageEmbed, msg.content, msg.author.id)
       break;
 
