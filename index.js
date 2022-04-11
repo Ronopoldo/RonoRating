@@ -138,6 +138,17 @@ const checkCount = require("./scripts/checkCount")
 //    console.log('OKOKOK');
 // })
 
+
+client.on('error', (e) => {
+    console.log('error', e);
+});
+client.on('debug', (e) => {
+    console.log('debug', e);
+});
+
+
+
+
 client.on('interactionCreate', i => {
   if (i.isButton()) {
     // let pageIndex = i.customId.split(/ +/)[1];
