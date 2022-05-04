@@ -73,7 +73,6 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 
 
-
 var gulp = require('gulp');
 var ignoreErrors = require('gulp-ignore-errors');
 var concat = require('gulp-concat');
@@ -142,10 +141,9 @@ const checkCount = require("./scripts/checkCount")
 client.on('error', (e) => {
     console.log('error', e);
 });
-client.on('debug', (e) => {
-    console.log('debug', e);
-});
-
+// client.on('debug', (e) => {
+//     console.log('debug', e);
+// });
 
 
 
@@ -364,7 +362,7 @@ client.on('messageCreate', msg => {
       break;
 
     case "/transfer":
-      transferCommand.transfer(msg, fs)
+      transferCommand.transfer(fs, msg.author.id)
       break;
 
     case "/export":
@@ -424,13 +422,102 @@ countService.msgProcessing(msg, client, fs, checkCount.checker(msg, client))
 }
 )
 
-client.on("ready", function() {
+client.on("ready", async() => {
   voiceActivity.voiceActivity(fs, client, '647198455936319528');
   voiceActivity.voiceActivity(fs, client, '648243049909977110');
   voiceActivity.voiceActivity(fs, client, '544902879534907396');
   voiceActivity.voiceActivity(fs, client, '647052644380180480');
 
+// console.log("Ы")
+// function transit(userID)
+//   {
+//     console.log('ВЫПОЛНЯЮ')
+//     let userPath = './data/UserData/' + userID
+//       const managment = client.guilds.cache.get("968122042765422682");
 
+// const db = managment.channels.cache.get("968123915920617472");
+//     try{
+//     let obj =
+//     {
+//       user: userID,
+//       money: fs.readFileSync(userPath + '/integers/money').toString(),
+//       exp: fs.readFileSync(userPath + '/integers/grandXp').toString(),
+//       credit: fs.readFileSync(userPath + '/integers/socialCredit').toString(),
+//       active:
+//       {
+//         text:
+//         {
+//           lvl: fs.readFileSync(userPath + '/integers/lvl').toString(),
+//           exp: fs.readFileSync(userPath + '/integers/exp').toString()
+//         },
+//         daily:
+//         {
+//           lvl: fs.readFileSync(userPath + '/tasks/lastActve').toString(),
+//           exp: fs.readFileSync(userPath + '/badges/lastActve').toString()
+//         },
+//         voice:
+//         {
+//           lvl: fs.readFileSync(userPath + '/tasks/voice').toString(),
+//           exp: fs.readFileSync(userPath + '/integers/voice').toString()
+//         },
+//         count:
+//         {
+//           lvl: fs.readFileSync(userPath + '/tasks/countlvl').toString(),
+//           exp: fs.readFileSync(userPath + '/integers/count').toString()
+//         },
+//         config:
+//         {
+//           badge1: fs.readFileSync(userPath + '/config/badge').toString(),
+//           badge2: fs.readFileSync( userPath + '/config/badge2').toString(),
+//           theme: fs.readFileSync(userPath + '/config/theme').toString()
+//         }
+//       },
+//         themes: fs.readdirSync(userPath + '/themes'),
+//         badges: fs.readdirSync(userPath + '/cardBadges')
+//     }
+
+    
+//     let loggingCh = managment.channels.cache.get("971425301236162560");
+//     console.log('ИНИЦИАЛИЗАЦИЯ ЗАВЕРШЕНА')
+//   db.send(JSON.stringify(obj)).then(msg9 => {
+//     loggingCh.send('"user_' + userID + '":"' + msg9.id + '",')
+//   })
+
+
+
+
+    
+//     }catch(err){console.log('Ошибка в обработке данных ' + userID)}
+//   }
+
+
+//       const managment = client.guilds.cache.get("968122042765422682");
+
+// const db = managment.channels.cache.get("968123915920617472");
+
+
+//   const needmsg = await db.messages.fetch('971414518540406825')
+
+// let arrayus = fs.readdirSync('./data/UserData')
+// let i=0
+
+//   setInterval(function() {
+// transit(arrayus[i])
+//     i++
+//   },3000);
+
+  
+//   console.log('^^^^^^^^^^^^^')
+
+// let arrayus = fs.readdirSync('./data/UserData')
+//   arrayus.forEach(element => {
+//     transferCommand.transfer(fs,element)
+//   })
+
+//   console.log('ТРАНСФЕР ЗАВЕРШЁН')
+
+
+  
 setInterval(function() {
 function zeros(i) {
       if (i < 10) {
@@ -442,6 +529,10 @@ function zeros(i) {
 
 
 const guild = client.guilds.cache.get("544902879534907392");
+  const managment = client.guilds.cache.get("968122042765422682");
+
+console.log(managment)
+const db = managment.channels.cache.get("968123915920617472");
 let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
 let currentCount = fs.readFileSync('./data/count', "utf8")
 const countChannel = guild.channels.cache.get("687054666495688788")

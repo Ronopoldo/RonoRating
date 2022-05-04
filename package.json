@@ -26,7 +26,7 @@
     "canvas": "^2.8.0",
     "discord-api-types": "^0.31.0",
     "discord.js": "^13.6.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "extract-zip": "^2.0.1",
     "firebase-tools": "^10.6.0",
     "fs-extra": "^10.0.0",
@@ -36,7 +36,6 @@
     "gulp-ignore-errors": "0.0.4",
     "gulp-uglify": "^3.0.2",
     "node": "^16.10.0",
-    "nodeJs-zip": "^1.0.4",
     "request": "^2.88.2",
     "sharp": "^0.30.2"
   }
