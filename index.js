@@ -67,6 +67,37 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 
 
+async function getData(userid, data)
+{
+  const managment = client.guilds.cache.get("968122042765422682");
+const db = managment.channels.cache.get("968123915920617472");
+
+  
+  let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
+  let msgid = userlist[userid]
+  let dbmsg = await db.messages.fetch(msgid)
+  let objectdb = JSON.parse(dbmsg.content)
+
+  let properties = data.split('.')
+  let i = 1
+  let promiseData = objectdb[properties[0]]
+  while (i < properties.length)
+    {
+      promiseData = promiseData[properties[i]]
+      i++
+    }
+  console.log(promiseData)
+  return msgid
+}
+
+async function isExist(id)
+  {
+    let userlist = await JSON.parse(fs.readFileSync('./data/dbsetup'))
+    return userlist.hasOwnProperty(id)
+  }
+
+
+
 
 
 
@@ -235,8 +266,8 @@ i.reply('Текущее число: `' + currentCount + '`\n\nСледующее
 
 
 // Обработчик входящих сообщений
-client.on('messageCreate', msg => {
-  calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
+client.on('messageCreate', async(msg) => {
+  // calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
 
   // Входящее сообщение
   let incMessage = msg.content.toLowerCase();
@@ -251,11 +282,22 @@ client.on('messageCreate', msg => {
   // try
   // {
   switch (command) {
+    case "/check":
+      {
+        let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
+
+        if (userlist.hasOwnProperty(msg.author.id) == false)
+        {
+         msg.reply("Йоу! Не могу найти твои данные :(\nУверен ли ты, что регистрировался ранее в RonoRating'е?\n\nЕсли ты уверен, что твои данные существовали и затерялись, то напиши в службу поддержки (<#805513502307254302>)") 
+        }else{
+          msg.reply('Хей! Поздравляю! С твоими данными всё в порядке: они мигрировали на новую базу данных без ошибок.')
+        }
+      }
     case "/start":
       startCommand.startCommand(fs, msg, msg.author);
       break;
     case "/test":
-      test.test(msg, client, args, MessageActionRow, MessageButton,fs);
+      test.test(getData, msg, isExist)
       break;
     case "/shop":
 
