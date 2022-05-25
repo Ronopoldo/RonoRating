@@ -1,0 +1,38 @@
+{
+  "name": "Discordjs-V13",
+  "version": "1.0.0",
+  "description": "`npm install` - install all required dependancies",
+  "main": "index.js",
+  "dependencies": {
+    "@discordjs/builders": "^0.13.0",
+    "@discordjs/rest": "^0.4.1",
+    "archiver": "^5.3.1",
+    "axios": "^0.27.2",
+    "canvas": "^2.9.1",
+    "discord-api-types": "^0.32.1",
+    "discord.js": "^13.1.0",
+    "express": "^4.17.1",
+    "glob": "^7.1.7",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-ignore-errors": "0.0.4",
+    "gulp-uglify": "^3.0.2",
+    "mongoose": "^5.13.7",
+    "reconlx": "^2.3.2",
+    "request": "^2.88.2",
+    "sharp": "^0.30.4",
+    "weather-js": "^2.0.0"
+  },
+  "devDependencies": {
+    "node": "^16.6.1"
+  },
+  "scripts": {
+    "start": "node .",
+    "node-update": "npm i --save-dev node@16 && npm config set prefix=$(pwd)/node_modules/node && export PATH=$(pwd)/node_modules/node/bin:$PATH",
+    "node-clean": "rm -rf node_modules && rm package-lock.json && npm cache clear --force && npm cache clean --force && npm i",
+    "node-update-then-clean": "npm run node-update && npm run node-clean-cache"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
