@@ -1,31 +1,31 @@
 {
-	"user": "634053732111482899",
-	"money": 37380,
-	"exp": "10.958335955738642",
-	"lvl": "17",
+	"user": "768542235137802249",
+	"money": 52747,
+	"exp": "344.506504531521",
+	"lvl": "32",
 	"credit": "1000",
 	"active": {
 		"text": {
-			"lvl": 17,
-			"exp": 27
+			"lvl": "30",
+			"exp": 238.4000000000011
 		},
 		"daily": {
-			"lvl": "3",
+			"lvl": "5",
 			"exp": "2022-05-25T00:00:00.000Z 0"
 		},
 		"voice": {
 			"lvl": "12",
-			"exp": "2011.7499999999332"
+			"exp": "1857.5249999999003"
 		},
 		"count": {
-			"lvl": "7",
-			"exp": "67"
+			"lvl": "5",
+			"exp": "23"
 		}
 	},
 	"config": {
 		"badge1": "NULL",
 		"badge2": "NULL",
-		"theme": "space"
+		"theme": "2022pixel"
 	},
 	"themes": [
 		"2020",
@@ -33,12 +33,16 @@
 		"MoskvaLublinoRabotaem",
 		"chilldebil",
 		"default",
+		"dio",
 		"gradient",
 		"happy2022",
 		"hromo",
+		"jolyne",
+		"jotaro",
 		"pixel_galaxy",
 		"pixelice",
 		"ronostar",
+		"sakuya",
 		"snow",
 		"space",
 		"volcano",

@@ -1,0 +1,61 @@
+{
+	"user": "733603141559386113",
+	"money": 191299,
+	"exp": "366.24150453152504",
+	"lvl": "46",
+	"credit": "1000",
+	"active": {
+		"text": {
+			"lvl": "34",
+			"exp": 224.200000000001
+		},
+		"daily": {
+			"lvl": "6",
+			"exp": "4 3 1"
+		},
+		"voice": {
+			"lvl": "20",
+			"exp": "15580.150000000865"
+		},
+		"count": {
+			"lvl": "7",
+			"exp": "67"
+		}
+	},
+	"config": {
+		"badge1": "generalgavs",
+		"badge2": "staff",
+		"theme": "[SPAMTON]"
+	},
+	"themes": [
+		"2020",
+		"2022",
+		"2022pixel",
+		"22222222222",
+		"MoskvaLublinoRabotaem",
+		"[SPAMTON]",
+		"beta",
+		"chilldebil",
+		"default",
+		"dio",
+		"glitch",
+		"gradient",
+		"happy2022",
+		"hromo",
+		"jolyne",
+		"jotaro",
+		"pixel_galaxy",
+		"pixelice",
+		"ronostar",
+		"sakuya",
+		"snow",
+		"space",
+		"volcano",
+		"winterbabft"
+	],
+	"badges": [
+		"generalgavs",
+		"nothing",
+		"staff"
+	]
+}

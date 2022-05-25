@@ -206,7 +206,7 @@ client.on('interactionCreate', i => {
       }
 
       if (buttonType == "INV") {
-        invCommand.invCommand(fs, i.message, ctx, sharp, canvas, client, Number(pageIndex), iniciator, target, MessageActionRow, MessageButton);
+        invCommand.invCommand(fs, i.message, ctx, sharp, canvas, client, Number(pageIndex), iniciator, target, MessageActionRow, MessageButton, isExist, getData);
       }
     }
     if (i.customId === 'next111') {
@@ -242,6 +242,18 @@ client.on('interactionCreate', i => {
       shopCommand.shopCommand(fs, i, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, i.user, false)
     }
 
+        if (commandName == 'inventory') {
+          console.log('BEGAN')
+      let pg = 1
+      if (i.options.getNumber('страница') != null) { pg = i.options.getNumber('страница').toString() }
+pingedUser = i.user
+          if (i.options.getUser('пользователь') != null) { pingedUser = i.options.getUser('пользователь').id.toString() }
+
+          console.log('ENDED')
+          
+            invCommand.invCommand(fs, i, ctx, sharp, canvas, client, Number(pg), i.user.id, pingedUser, MessageActionRow, MessageButton, isExist, getData);
+    }
+
     if (commandName == 'set') {
 
       console.log('set')
@@ -254,6 +266,18 @@ client.on('interactionCreate', i => {
       respeccCommand.respeccCommand(i, MessageEmbed)
     }
 
+    if (commandName == 'badges')
+    {
+      let target = i.user
+      if (i.options.getUser('пользователь') != null) { target = i.options.getUser('пользователь') }
+
+      
+      let args = ['/badges', target.id]
+      console.log(args)
+      badgesCommand.badgesCommand(i, fs, args, client, i.user.id, isExist, getData)
+    }
+
+    
     if (commandName == 'js') {
       let command = '/javascript ' + i.options.getString('команда_для_выполнения');
       let args = command.slice(`/био`).split(/ +/);
@@ -268,6 +292,23 @@ client.on('interactionCreate', i => {
       console.log(target)
       balCommand.balCommand(i, fs, ['/args', target.id], client, MessageEmbed, i.user)
     }
+
+
+        if (commandName == 'setbadge') {
+      let target = i.user
+      let badge = i.options.getString('значок') 
+      let args = ['/setbadge', badge]
+  
+      if (i.options.getNumber('место') == 2)
+      {
+      setbadge2Command.setbadge2Command(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id)
+      }else{
+        setbadgeCommand.setbadgeCommand(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id)
+      }
+      }
+
+
+    
 // if (commandName == 'count') {
 // let currentCount = fs.readFileSync('./data/count', "utf8")
 // i.reply('Текущее число: `' + currentCount + '`\n\nСледующее число: `' + (Number(currentCount)+1).toString() + '`')
@@ -322,57 +363,57 @@ client.on('messageCreate', msg => {
 
     //   shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false);
     //   break;
-    // case "/inv":
-    // case "/inventory":
+    case "/inv":
+    case "/inventory":
 
-    //   let pingedUser = msg.author.id;
-    //   if (args[1] == undefined) { pingedUser = msg.author.id }
-    //   pingedUser = pingedUser.replace("<@", '')
-    //   pingedUser = pingedUser.replace("!", '')
-    //   pingedUser = pingedUser.replace(">", '')
+      let pingedUser = msg.author.id;
+      if (args[1] == undefined) { pingedUser = msg.author.id }
+      pingedUser = pingedUser.replace("<@", '')
+      pingedUser = pingedUser.replace("!", '')
+      pingedUser = pingedUser.replace(">", '')
 
-    //   let pg = 1
-    //   console.log('Unresolved Num: ' + pingedUser)
-    //   if (Number(pingedUser) != NaN) {
-    //   } else { pingedUser = msg.author.id }
-
-
-    //   if (args[2] != undefined) {
-    //     if (args[2] > 5) {
-    //       console.log('Script 1')
-    //       pg = args[1]
-    //       pingedUser = args[2]
-    //     } else {
-    //       console.log('Script 2')
-    //       pg = args[2]
-    //       pingedUser = args[1]
-    //     }
-    //   } else {
+      let pg = 1
+      console.log('Unresolved Num: ' + pingedUser)
+      if (Number(pingedUser) != NaN) {
+      } else { pingedUser = msg.author.id }
 
 
-
-    //     if (args[1] > 5) {
-    //       console.log('Script 3')
-    //       pingedUser = args[1]
-    //     } else {
-    //       console.log('Script 4')
-    //       pg = args[1]
-    //     }
-
-    //   }
-
-    //   if (args[1] == undefined) {
-    //     pingedUser = msg.author.id
-    //     pg = 1
-    //   }
-    //   pingedUser = pingedUser.replace("<@", '')
-    //   pingedUser = pingedUser.replace("!", '')
-    //   pingedUser = pingedUser.replace(">", '')
+      if (args[2] != undefined) {
+        if (args[2] > 5) {
+          console.log('Script 1')
+          pg = args[1]
+          pingedUser = args[2]
+        } else {
+          console.log('Script 2')
+          pg = args[2]
+          pingedUser = args[1]
+        }
+      } else {
 
 
-    //   console.log(pingedUser)
-    //   invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton);
-    //   break;
+
+        if (args[1] > 5) {
+          console.log('Script 3')
+          pingedUser = args[1]
+        } else {
+          console.log('Script 4')
+          pg = args[1]
+        }
+
+      }
+
+      if (args[1] == undefined) {
+        pingedUser = msg.author.id
+        pg = 1
+      }
+      pingedUser = pingedUser.replace("<@", '')
+      pingedUser = pingedUser.replace("!", '')
+      pingedUser = pingedUser.replace(">", '')
+
+
+      console.log(pingedUser)
+      invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton, isExist, getData);
+      break;
 
 
     // default:
@@ -405,13 +446,13 @@ client.on('messageCreate', msg => {
     // case "/buy":
     //   buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
     //   break;
-    // case "/setbadge":
-    // case "/setbadge1":
-    //   setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args)
-    //   break;
-    // case "/setbadge2":
-    //   setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args)
-    //   break;
+    case "/setbadge":
+    case "/setbadge1":
+      setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id)
+      break;
+    case "/setbadge2":
+      setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id)
+      break;
     case "/set":
       setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData)
       break;
@@ -431,9 +472,9 @@ client.on('messageCreate', msg => {
     //   balCommand.balCommand(msg, fs, args, client, MessageEmbed, msg.author.id)
     //   break;
 
-    // case "/badges":
-    //   badgesCommand.badgesCommand(msg, fs, args, client)
-    //   break;
+    case "/badges":
+      badgesCommand.badgesCommand(msg, fs, args, client, msg.author.id, isExist, getData)
+      break;
 
     // case "/transfer":
     //   transferCommand.transfer(fs, msg.author.id)
