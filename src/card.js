@@ -1,9 +1,11 @@
-function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction) {
+async function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction, isExist, getData) {
 
 // 'use strict';
   {
-    if (fs.existsSync('./data/UserData/' + iniciator))
+    if (isExist('iniciator'))
    {
+interaction.reply('Загружаем...')
+     
 
 let pingedUser = iniciator
 
@@ -50,12 +52,16 @@ let pingedUser = iniciator
      pingedUser = pingedUser.replace(">",'')
    }else {}
 
-   if (fs.existsSync('./data/UserData/' + pingedUser))
+   if (isExist(pingedUser))
    { }else{pingedUser = iniciator}
+
+     console.log('ПОПАааа')
+     let obj = await getData(pingedUser)
+console.log(obj)
     client.users.fetch(pingedUser).then(User => 
   {
 
-   interaction.reply('Загружаем...')
+   
 
 
 //АЧВИКИ
@@ -73,10 +79,10 @@ let fontsize = 70
 
 //Актив макс уровень
              let lastLvl = '0'
-             try{lastLvl  = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/activity', "utf8")}catch(err){}
+             try{lastLvl  = obj.active.text.lvl}catch(err){}
 
-          const currentXP = Math.floor(fs.readFileSync('./data/UserData/' + pingedUser + '/integers/exp', "utf8"))
-          const levelNeed = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/lvl', "utf8");
+          const currentXP = Math.floor(obj.active.text.exp)
+          const levelNeed = obj.active.text.lvl
            NeededXP = 8
            CycleNum = 0
            active = true
@@ -120,6 +126,7 @@ ctx.textAlign = 'left'
 
 
         let actwidth = Math.floor(270 * (currentXP / NeededXP) + 1)
+    console.log('111')
              if (actwidth >= 270) {actwidth = 269}
       sharp('./tasks/fullBar.png')
  
@@ -132,12 +139,12 @@ let lastActiveLvl  = 0
 let lastActive = '0 0 0'
 let InputMassive = ['0', '0', '0']
 try{
-lastActiveLvl = Number(fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/lastActve', "utf8"));
-lastActive = fs.readFileSync('./data/UserData/' + pingedUser + '/badges/lastActve', "utf8");
-InputMassive = lastActive.split(' ', 3);
+lastActiveLvl = Number(obj.active.daily.lvl);
+lastActive = obj.active.daily.exp
+InputMassive = lastActive.split(' ');
 }catch(err){
   lastActiveLvl = 0
-  InputMassive = ['0','0','0']
+  InputMassive = ['2022-05-20T00:00:00.000Z','0']
 }
 let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
 
@@ -154,8 +161,8 @@ let fontsize = 70
         ctx.strokeText(activeDays[lastActiveLvl + 1], 962, 400)
 
 ctx.textAlign = 'left'
-        ctx.fillText(InputMassive[2], 689, 400)
-        ctx.strokeText(InputMassive[2], 689, 400)
+        ctx.fillText(InputMassive[1], 689, 400)
+        ctx.strokeText(InputMassive[1], 689, 400)
 
 ctx.textAlign = 'center'
         ctx.fillText(lastActiveLvl + ' уровень', 827, 400)
@@ -167,17 +174,17 @@ ctx.textAlign = 'center'
 ctx.textAlign = 'left'
         ctx.fillText('Повседневность', 689, 320)
         ctx.strokeText('Повседневность', 689, 320)
-
+console.log('222')
 sharp('./tasks/lastActiveBar.png')
-        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[2] / activeDays[lastActiveLvl + 1] * 269 + 1 ), height: 30 })
+        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl + 1] * 269 + 1 ), height: 30 })
       .toBuffer()
             .then(function(outputBufferAct1) {
 
 
 
 ///////////////ГС АКТИВ
-let currentLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/voice')
-        let userActivity = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/voice')
+let currentLvl = obj.active.voice.lvl
+        let userActivity = obj.active.voice.exp
 
         
 let lvlArray = [0.5,1,1.5,2,3,4,5,10,15,20,25,30,45,50,75,90,120,150,180,220,280,320,390,460,500,600,750,800,900,1000]
@@ -219,7 +226,7 @@ ctx.textAlign = 'left'
         let vwidth = Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
 if ((vwidth >= 270) || (vwidth<1)) {vwidth = 269}
-
+console.log('333')
 
 sharp('./tasks/voiceBar.png')
 
@@ -231,8 +238,8 @@ sharp('./tasks/voiceBar.png')
 
 //////////////////////СЧЁТ
 
-let countLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/countlvl')
-let count = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/count')
+let countLvl = obj.active.count.lvl
+let count = Math.floor(obj.active.text.exp)
 let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
       ctx.font = '30px "ArialRound"'
     ctx.strokeStyle = 'white';
@@ -269,7 +276,7 @@ ctx.textAlign = 'left'
         ctx.fillText('Счёт', 689,515)
         ctx.strokeText('Счёт', 689, 515)
 
-
+console.log('444')
 sharp('./tasks/countBar.png')
 .extract({ left: 0, top: 0, width: countwidth, height: 30 })
       .toBuffer()
@@ -305,10 +312,8 @@ let fontsize = 45
 let grandPath = './Images/Blank.png'
 let barSize = 1
 
-if (fs.existsSync('./data/UserData/' + pingedUser + '/DATATRANSFERCONFIRMATION'))
-{
-  let currentGlobalLvl = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/global')
-  let currentGlobalExp = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/grandXp')
+  let currentGlobalLvl = obj.lvl
+  let currentGlobalExp = obj.exp
   grandPath = './Images/grandbar.png'
   barSize = 
   ctx.fillText(Math.floor((Number(currentGlobalExp)).toString()), 132,255)
@@ -336,13 +341,12 @@ barSize = currentGlobalExp / neededExp
 console.log('bar1' + barSize)
 
 
-}
+
 barSize = Math.floor(520 * barSize)
 console.log('ЙО!' + barSize)
 if ((barSize >519) || (barSize < 1)) { barSize = 519 }
 console.log('bar1' + barSize)
 sharp(grandPath)
-
 
       .extract({ left: 0, top: 0, width: barSize, height: 7 })
       .toBuffer()
@@ -373,10 +377,10 @@ var request = require('request').defaults({ encoding: null });
 
 
 
-let Badge = fs.readFileSync('./data/UserData/' + pingedUser + '/config/badge', "utf8");
+let Badge = obj.config.badge1;
 let badgePath = './Badges/' + Badge + '.png'
 
-let Badge2 = fs.readFileSync('./data/UserData/' + pingedUser + '/config/badge2', "utf8");
+let Badge2 = obj.config.badge2
 let badge2Path = './Badges2/' + Badge2 + '.png'
 
   console.log('Адоптируем...')
@@ -384,15 +388,13 @@ let badge2Path = './Badges2/' + Badge2 + '.png'
 console.log('Адоптация:' + fontsize)
 
 //Юзер
-let Money = fs.readFileSync('./data/UserData/' + pingedUser + '/integers/money', "utf8");
+let Money = obj.money
 
 let Level = '0'
 
-if (fs.existsSync('./data/UserData/' + pingedUser + '/tasks/global'))
-{
-  Level = fs.readFileSync('./data/UserData/' + pingedUser + '/tasks/global', "utf8");
-}
-let Themes = fs.readdirSync('./data/UserData/' + pingedUser + '/themes', "utf8");
+
+  Level = obj.lvl
+let Themes = obj.themes
 
 
 
@@ -447,7 +449,7 @@ canvas.toBuffer((err, out) => { console.log('The PNG file was created.')
 
 
 
-let theme = fs.readFileSync('./data/UserData/' + pingedUser + '/config/theme', "utf8");
+let theme = obj.config.theme
 
 
 

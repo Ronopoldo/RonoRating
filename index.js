@@ -67,7 +67,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 
 
-async function getData(userid, data)
+async function getData(userid)
 {
   const managment = client.guilds.cache.get("968122042765422682");
 const db = managment.channels.cache.get("968123915920617472");
@@ -77,17 +77,28 @@ const db = managment.channels.cache.get("968123915920617472");
   let msgid = userlist[userid]
   let dbmsg = await db.messages.fetch(msgid)
   let objectdb = JSON.parse(dbmsg.content)
-
-  let properties = data.split('.')
+console.log(msgid)
   let i = 1
-  let promiseData = objectdb[properties[0]]
-  while (i < properties.length)
-    {
-      promiseData = promiseData[properties[i]]
-      i++
-    }
-  console.log(promiseData)
-  return msgid
+  let promiseData = objectdb.config
+
+  // console.log(objectdb["config"])
+  return objectdb
+}
+
+
+async function putData(userid, obj)
+{
+  const managment = client.guilds.cache.get("968122042765422682");
+const db = managment.channels.cache.get("968123915920617472");
+const log = managment.channels.cache.get("978739540736999444");
+  
+  let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
+  let msgid = userlist[userid]
+  let dbmsg = await db.messages.fetch(msgid)
+log.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + '` (старая дата)')
+  let updData = JSON.stringify(obj);
+
+  dbmsg.edit(updData)
 }
 
 async function isExist(id)
@@ -216,14 +227,14 @@ client.on('interactionCreate', i => {
       if (i.options.getUser('пользователь') != null) { target = i.options.getUser('пользователь') }
       let FakeMsgText = '/card ' + target
       console.log(FakeMsgText)
-      cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i)
+      cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i, isExist, getData)
     }
     if (commandName == 'start') {
       startCommand.startCommand(fs, i, i.user);
     }
 
     if (commandName == 'export') {
-      exportCommand.exportCmd(i, fs, i.user)
+      exportCommand.exportCmd(i, fs, i.user, isExist, getData)
     }
     if (commandName == 'shop') {
       let shopPage = 1
@@ -232,9 +243,11 @@ client.on('interactionCreate', i => {
     }
 
     if (commandName == 'set') {
+
+      console.log('set')
       let theme = i.options.getString('тема');
 
-      setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id)
+      setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id, isExist, getData, putData)
     }
 
     if (commandName == 'respecc') {
@@ -255,10 +268,10 @@ client.on('interactionCreate', i => {
       console.log(target)
       balCommand.balCommand(i, fs, ['/args', target.id], client, MessageEmbed, i.user)
     }
-if (commandName == 'count') {
-let currentCount = fs.readFileSync('./data/count', "utf8")
-i.reply('Текущее число: `' + currentCount + '`\n\nСледующее число: `' + (Number(currentCount)+1).toString() + '`')
-}
+// if (commandName == 'count') {
+// let currentCount = fs.readFileSync('./data/count', "utf8")
+// i.reply('Текущее число: `' + currentCount + '`\n\nСледующее число: `' + (Number(currentCount)+1).toString() + '`')
+// }
 
 
   }
@@ -266,8 +279,9 @@ i.reply('Текущее число: `' + currentCount + '`\n\nСледующее
 
 
 // Обработчик входящих сообщений
-client.on('messageCreate', async(msg) => {
-  // calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently);
+client.on('messageCreate', msg => {
+  
+
 
   // Входящее сообщение
   let incMessage = msg.content.toLowerCase();
@@ -293,95 +307,113 @@ client.on('messageCreate', async(msg) => {
           msg.reply('Хей! Поздравляю! С твоими данными всё в порядке: они мигрировали на новую базу данных без ошибок.')
         }
       }
-    case "/start":
-      startCommand.startCommand(fs, msg, msg.author);
-      break;
-    case "/test":
-      test.test(getData, msg, isExist)
-      break;
-    case "/shop":
+    // case "/start":
+    //   startCommand.startCommand(fs, msg, msg.author);
+    //   break;
+    // case "/test":
+    //   test.test(getData, msg)
+    //   break;
+    // case "/shop":
 
-      if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
-      console.log(shopPage)
+    //   if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
+    //   console.log(shopPage)
 
-      if (shopPage > 100) { shopPage = 1 }
+    //   if (shopPage > 100) { shopPage = 1 }
 
-      shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false);
-      break;
-    case "/inv":
-    case "/inventory":
+    //   shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false);
+    //   break;
+    // case "/inv":
+    // case "/inventory":
 
-      let pingedUser = msg.author.id;
-      if (args[1] == undefined) { pingedUser = msg.author.id }
-      pingedUser = pingedUser.replace("<@", '')
-      pingedUser = pingedUser.replace("!", '')
-      pingedUser = pingedUser.replace(">", '')
+    //   let pingedUser = msg.author.id;
+    //   if (args[1] == undefined) { pingedUser = msg.author.id }
+    //   pingedUser = pingedUser.replace("<@", '')
+    //   pingedUser = pingedUser.replace("!", '')
+    //   pingedUser = pingedUser.replace(">", '')
 
-      let pg = 1
-      console.log('Unresolved Num: ' + pingedUser)
-      if (Number(pingedUser) != NaN) {
-      } else { pingedUser = msg.author.id }
-
-
-      if (args[2] != undefined) {
-        if (args[2] > 5) {
-          console.log('Script 1')
-          pg = args[1]
-          pingedUser = args[2]
-        } else {
-          console.log('Script 2')
-          pg = args[2]
-          pingedUser = args[1]
-        }
-      } else {
+    //   let pg = 1
+    //   console.log('Unresolved Num: ' + pingedUser)
+    //   if (Number(pingedUser) != NaN) {
+    //   } else { pingedUser = msg.author.id }
 
 
-
-        if (args[1] > 5) {
-          console.log('Script 3')
-          pingedUser = args[1]
-        } else {
-          console.log('Script 4')
-          pg = args[1]
-        }
-
-      }
-
-      if (args[1] == undefined) {
-        pingedUser = msg.author.id
-        pg = 1
-      }
-      pingedUser = pingedUser.replace("<@", '')
-      pingedUser = pingedUser.replace("!", '')
-      pingedUser = pingedUser.replace(">", '')
+    //   if (args[2] != undefined) {
+    //     if (args[2] > 5) {
+    //       console.log('Script 1')
+    //       pg = args[1]
+    //       pingedUser = args[2]
+    //     } else {
+    //       console.log('Script 2')
+    //       pg = args[2]
+    //       pingedUser = args[1]
+    //     }
+    //   } else {
 
 
-      console.log(pingedUser)
-      invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton);
-      break;
+
+    //     if (args[1] > 5) {
+    //       console.log('Script 3')
+    //       pingedUser = args[1]
+    //     } else {
+    //       console.log('Script 4')
+    //       pg = args[1]
+    //     }
+
+    //   }
+
+    //   if (args[1] == undefined) {
+    //     pingedUser = msg.author.id
+    //     pg = 1
+    //   }
+    //   pingedUser = pingedUser.replace("<@", '')
+    //   pingedUser = pingedUser.replace("!", '')
+    //   pingedUser = pingedUser.replace(">", '')
 
 
-    default:
-      break;
+    //   console.log(pingedUser)
+    //   invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton);
+    //   break;
+
+
+    // default:
+    //   break;
     case "/card":
-    case "/preview":
-      cardCommand.cardCommand(fs, msg.content, ctx, sharp, canvas, client, msg.author.id, msg)
+    // case "/preview":
+      cardCommand.cardCommand(fs, msg.content, ctx, sharp, canvas, client, msg.author.id, msg, isExist, getData)
       break;
-    case "/claim":
-      claimCommand.claimCommand(fs, msg, ctx, sharp, canvas, client)
-      break;
-    case "/buy":
-      buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
-      break;
-    case "/setbadge":
-    case "/setbadge1":
-      setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args)
-      break;
-    case "/setbadge2":
-      setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args)
-      break;
+
+    case "/edit":
+      {
+        if (msg.author.id == 544902183007813652)
+        {
+          let objectData = JSON.parse(msg.content.replace('/edit ' + args[1] + ' ',''))
+
+          console.log(objectData)
+          console.log(args[1])
+        putData(args[1], objectData)
+          msg.reply('Успешно!')
+        }else{
+          msg.reply('Прав у тя нет. Подтверждение того, что ты лох по жизни :Р')
+             }
+        
+        
+        break;
+      }
+    // case "/claim":
+    //   claimCommand.claimCommand(fs, msg, ctx, sharp, canvas, client)
+    //   break;
+    // case "/buy":
+    //   buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
+    //   break;
+    // case "/setbadge":
+    // case "/setbadge1":
+    //   setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args)
+    //   break;
+    // case "/setbadge2":
+    //   setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args)
+    //   break;
     case "/set":
-      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id)
+      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData)
       break;
     case "/respecc":
       respeccCommand.respeccCommand(msg, MessageEmbed)
@@ -390,25 +422,25 @@ client.on('messageCreate', async(msg) => {
     //giftCommand.giftCommand(msg, fs, client, args)
     // break;
 
-    case "/jojo":
-      oplotCommand.oplotCommand(msg, fs, client, args)
-      break;
+    // case "/jojo":
+    //   oplotCommand.oplotCommand(msg, fs, client, args)
+    //   break;
 
-    case "/balance":
-    case "/bal":
-      balCommand.balCommand(msg, fs, args, client, MessageEmbed, msg.author.id)
-      break;
+    // case "/balance":
+    // case "/bal":
+    //   balCommand.balCommand(msg, fs, args, client, MessageEmbed, msg.author.id)
+    //   break;
 
-    case "/badges":
-      badgesCommand.badgesCommand(msg, fs, args, client)
-      break;
+    // case "/badges":
+    //   badgesCommand.badgesCommand(msg, fs, args, client)
+    //   break;
 
-    case "/transfer":
-      transferCommand.transfer(fs, msg.author.id)
-      break;
+    // case "/transfer":
+    //   transferCommand.transfer(fs, msg.author.id)
+    //   break;
 
     case "/export":
-      exportCommand.exportCmd(msg, fs, msg.author)
+      exportCommand.exportCmd(msg, fs, msg.author, isExist, getData)
       break;
 
     case "/javascript":
@@ -423,13 +455,17 @@ client.on('messageCreate', async(msg) => {
       jsCommand.jsCmd(msg, fs, client, args, MessageEmbed, msg.content, msg.author.id)
       break;
 
-    case "/get":
-      getCommand.getCmd(msg, fs, client, GuildMemberRoleManager, MessageEmbed)
-      break;
-    case "/spamton_theme":
-      spamtonCommand.spamtonCommand(msg, fs, client, args)
-      break;
-  }
+    // case "/get":
+    //   getCommand.getCmd(msg, fs, client, GuildMemberRoleManager, MessageEmbed)
+    //   break;
+    // case "/spamton_theme":
+    //   spamtonCommand.spamtonCommand(msg, fs, client, args)
+    //   break;
+    default:
+  {
+        calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData);
+}  
+}
 
   // }catch(err){
   //   msg.reply('КРИТИЧЕСКАЯ ОШИБКА В РАБОТЕ БОТА! СООБЩИТЕ ДАННЫЙ КОД <@544902183007813652>\n`'+ err + '`')
@@ -465,10 +501,10 @@ countService.msgProcessing(msg, client, fs, checkCount.checker(msg, client))
 )
 
 client.on("ready", async() => {
-  voiceActivity.voiceActivity(fs, client, '647198455936319528');
-  voiceActivity.voiceActivity(fs, client, '648243049909977110');
-  voiceActivity.voiceActivity(fs, client, '544902879534907396');
-  voiceActivity.voiceActivity(fs, client, '647052644380180480');
+  // voiceActivity.voiceActivity(fs, client, '647198455936319528');
+  // voiceActivity.voiceActivity(fs, client, '648243049909977110');
+  // voiceActivity.voiceActivity(fs, client, '544902879534907396');
+  // voiceActivity.voiceActivity(fs, client, '647052644380180480');
 
 // console.log("Ы")
 // function transit(userID)
@@ -484,6 +520,7 @@ client.on("ready", async() => {
 //       user: userID,
 //       money: fs.readFileSync(userPath + '/integers/money').toString(),
 //       exp: fs.readFileSync(userPath + '/integers/grandXp').toString(),
+//       lvl: fs.readFileSync(userPath + '/tasks/global').toString(),
 //       credit: fs.readFileSync(userPath + '/integers/socialCredit').toString(),
 //       active:
 //       {
@@ -507,13 +544,13 @@ client.on("ready", async() => {
 //           lvl: fs.readFileSync(userPath + '/tasks/countlvl').toString(),
 //           exp: fs.readFileSync(userPath + '/integers/count').toString()
 //         },
+//       },
 //         config:
 //         {
 //           badge1: fs.readFileSync(userPath + '/config/badge').toString(),
 //           badge2: fs.readFileSync( userPath + '/config/badge2').toString(),
 //           theme: fs.readFileSync(userPath + '/config/theme').toString()
-//         }
-//       },
+//         },
 //         themes: fs.readdirSync(userPath + '/themes'),
 //         badges: fs.readdirSync(userPath + '/cardBadges')
 //     }
@@ -576,7 +613,7 @@ const guild = client.guilds.cache.get("544902879534907392");
 console.log(managment)
 const db = managment.channels.cache.get("968123915920617472");
 let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"}))
-let currentCount = fs.readFileSync('./data/count', "utf8")
+// let currentCount = fs.readFileSync('./data/count', "utf8")
 const countChannel = guild.channels.cache.get("687054666495688788")
 
   
@@ -612,7 +649,7 @@ console.log(newMessage.channel.id)
 
     if (newMessage.attachments.size > 0) { } else {
         // newMessage.reply('123')
-      newMessage.delete()
+      // newMessage.delete()
     }
 
   }

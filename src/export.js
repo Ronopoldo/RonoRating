@@ -1,27 +1,14 @@
-function exportCmd(msg, fs, iniciator) {
-  const archiver = require('archiver');
+async function exportCmd(msg, fs, iniciator, isExist, getData) {
 
-  let output = fs.createWriteStream('./userArchives/' + iniciator.id + '.zip');
-let archive = archiver('zip');
-
-output.on('close', function () {
-    console.log(archive.pointer() + ' total bytes');
-    console.log('archiver has been finalized and the output file descriptor has closed.');
-    msg.reply({files: ['./userArchives/' + iniciator.id + '.zip'], content:'✅Твой архив с файлами готов!✅\nВыбран уровень экспорта: МИНИМАЛЬНЫЙ'})
-    .then(() => fs.unlinkSync('./userArchives/' + iniciator.id + '.zip'))
-    .catch(console.error);
-
-});
-
-archive.on('error', function(err){
-    throw err;
-});
-archive.pipe(output);
-
-archive.directory('./data/UserData/' + iniciator.id, false);
-
-archive.finalize();
-
+  console.log(iniciator)
+  if (await isExist(iniciator.id) == true) {
+    let obj = await getData(iniciator.id)
+    await fs.writeFile('./archives/' + iniciator + '.json', JSON.stringify(obj, null, '\t'), (error) => {
+      if (error) throw error;
+    });
+      await msg.reply({ files: ['./archives/' + iniciator + '.json'], content: '✅Твои данные собраны и запакованы в легко-читаемый JSON✅\nУровень экспорта: МИНИМАЛЬНЫЙ'});
+    // fs.unlinkSync('./archives/' + iniciator + '.json') ПОФИКСИТЬ
+  }
 }
 module.exports = { exportCmd }
 

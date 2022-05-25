@@ -1,0 +1,50 @@
+{
+	"user": "634053732111482899",
+	"money": 37315,
+	"exp": "10.958335955738642",
+	"lvl": "17",
+	"credit": "1000",
+	"active": {
+		"text": {
+			"lvl": 17,
+			"exp": 3
+		},
+		"daily": {
+			"lvl": "3",
+			"exp": "2022-05-25T00:00:00.000Z 0"
+		},
+		"voice": {
+			"lvl": "12",
+			"exp": "2011.7499999999332"
+		},
+		"count": {
+			"lvl": "7",
+			"exp": "67"
+		}
+	},
+	"config": {
+		"badge1": "NULL",
+		"badge2": "NULL",
+		"theme": "space"
+	},
+	"themes": [
+		"2020",
+		"2022pixel",
+		"MoskvaLublinoRabotaem",
+		"chilldebil",
+		"default",
+		"gradient",
+		"happy2022",
+		"hromo",
+		"pixel_galaxy",
+		"pixelice",
+		"ronostar",
+		"snow",
+		"space",
+		"volcano",
+		"winterbabft"
+	],
+	"badges": [
+		"nothing"
+	]
+}
