@@ -1,11 +1,13 @@
-async function invCommand(fs, msg, ctx, sharp, canvas, client, pg, iniciatorID, pingedUser,  MessageActionRow, MessageButton, isExist, getData) 
+const { debug } = require("console");
+
+async function invCommand(fs, msg, ctx, sharp, canvas, client, pg, iniciatorID, pingedUser,  MessageActionRow, MessageButton, isExist, getData, debug) 
 {
                     if (await isExist(iniciatorID) == true) 
       {
 
 
-
-console.log('АЙДИ: ' + pingedUser)
+let  debugOut = ''
+ debugOut = debugOut + '\n' + 'АЙДИ: ' + pingedUser
    if (await isExist(pingedUser) == true)
    { 
      // msg.reply('Вариант 5')
@@ -35,14 +37,14 @@ console.log('АЙДИ: ' + pingedUser)
     ctx.textAlign = 'center'
 
 
-    console.log('________________' 
-    + pingedUser)
-    console.log(pg)
+    debugOut = debugOut + '\n' + '________________' 
+    + pingedUser
+    debugOut = debugOut + '\n' + pg
     let UserHave = obj.themes
 
     
 
-  console.log('ARRAY: ' + UserHave)
+    debugOut = debugOut + '\n' + 'ARRAY: ' + UserHave
 let totalArray = ['empty','empty','empty','empty']
 let totalName = ['.','.','.','.']
 
@@ -56,27 +58,27 @@ let totalName = ['.','.','.','.']
     try {
       if (fs.existsSync('./Background/' + totalArray[0]))
       {
-        console.log('./Background/' + totalArray[0] + '/displayName')
-      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")}}catch(err){console.log(err)}
+        debugOut = debugOut + '\n' + './Background/' + totalArray[0] + '/displayName'
+      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")}}catch(err){debugOut = debugOut + '\n' + err}
     try {
       if (fs.existsSync('./Background/' + totalArray[1]))
       {
-        console.log('./Background/' + totalArray[1] + '/displayName')
+        debugOut = debugOut + '\n' + './Background/' + totalArray[1] + '/displayName'
       totalName[1] = fs.readFileSync('./Background/' + totalArray[1] + '/displayName', "utf8")}}catch(err){}
     try {
       if (fs.existsSync('./Background/' + totalArray[2]))
       {
-        console.log('./Background/' + totalArray[2] + '/displayName')
+        debugOut = debugOut + '\n' + './Background/' + totalArray[2] + '/displayName'
       totalName[2] = fs.readFileSync('./Background/' + totalArray[2] + '/displayName', "utf8")}}catch(err){}
     try {
       if (fs.existsSync('./Background/' + totalArray[3]))
       {
-        console.log('./Background/' + totalArray[3] + '/displayName')
+        debugOut = debugOut + '\n' + './Background/' + totalArray[3] + '/displayName'
       totalName[3] = fs.readFileSync('./Background/' + totalArray[3] + '/displayName', "utf8")}}catch(err){}
 
 
 
-      console.log('eeeeee:' + totalName)
+      debugOut = debugOut + '\n' + 'eeeeee:' + totalName
 
 try{
 if (totalArray[0].toString() != 'undefined')
@@ -159,7 +161,7 @@ let activateEnd = false;
 let previous = new MessageButton()
 let next = new MessageButton()
 
-console.log("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser)
+debugOut = debugOut + '\n' + "INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser
 if (Number(pg) <= 2) { activateBegin = true }
 if (Number(pg) == 1  ) { previous
           .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV1')
@@ -218,13 +220,13 @@ let end = new MessageButton()
 const row = new MessageActionRow()
           .addComponents(begin, previous, next, end);
 
-canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
+canvas.toBuffer((err, out) => { debugOut = debugOut + '\n' + 'The PNG file was created.' 
 
 
-console.log('0]./Background/' + totalArray[0] + '/icon.png')
-console.log('1]./Background/' + totalArray[1] + '/icon.png')
-console.log('2]./Background/' + totalArray[2] + '/icon.png')
-console.log('3]./Background/' + totalArray[3] + '/icon.png')
+debugOut = debugOut + '\n' + '0]./Background/' + totalArray[0] + '/icon.png'
+debugOut = debugOut + '\n' + '1]./Background/' + totalArray[1] + '/icon.png'
+debugOut = debugOut + '\n' + '2]./Background/' + totalArray[2] + '/icon.png'
+debugOut = debugOut + '\n' + '3]./Background/' + totalArray[3] + '/icon.png'
 sharp.cache(false);
             sharp('./Images/inventory.png')
             .resize(1024, 1024)
@@ -238,30 +240,32 @@ sharp.cache(false);
               ])
             .toBuffer()
             .then(function(outputBuffer) {
-              console.log(err)
-              console.log('ENDED')
+              debugOut = debugOut + '\n' + err
+              debugOut = debugOut + '\n' + 'ENDED'
                           if (iniciatorID != '899380887282675743') {
 
                             if (msg.applicationId
 == null || msg.applicationId == undefined)
                             {
-              console.log('123')
-              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { console.log(err)}) 
+              debugOut = debugOut + '\n' + '123'
+              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + err}) 
                             }else{
                               
-              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
+              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + "АШЫПКА: " + err });
                             }
             } else {
-              console.log('456')
+              debugOut = debugOut + '\n' + '456'
 
-              console.log('EEEEEEEEEEEEEEEEEEEEEEE________________')
+              debugOut = debugOut + '\n' + 'EEEEEEEEEEEEEEEEEEEEEEE________________'
               msg.removeAttachments()
-              msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
+              msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + "АШЫПКА: " + err });
 
-              console.log('789')
+              debugOut = debugOut + '\n' + '789'
             }
+
+            debug(msg, debugOut, obj)
               })
-              .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {console.log(err)}) });
+              .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {debugOut = debugOut + '\n' + err}) });
         });
     })
   }

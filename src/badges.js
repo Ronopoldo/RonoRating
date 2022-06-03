@@ -1,4 +1,4 @@
-async function badgesCommand(msg, fs, args, client, iniciator, isExist, getData) {
+async function badgesCommand(msg, fs, args, client, iniciator, isExist, getData, debug) {
 if (await isExist(iniciator) == true)
    {
     
@@ -18,7 +18,7 @@ if (await isExist(pingedUser) == true)
      let obj = await getData(pingedUser)
 client.users.fetch(pingedUser).then(async User => 
   {
-
+   debug(msg, obj.badges, obj)
     let badges = obj.badges
     if (badges.length == 1) { badges = 'Не обнаружено' }
 

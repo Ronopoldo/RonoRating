@@ -1,12 +1,7 @@
-const express = require('express')
-const app = express();
-const port = 3000;
 const fs = require("fs");
 const axios = require("axios");
 const sharp = require("sharp");
 const talkedRecently = new Set();
-app.get('/', function(request, response) { response.send(`Монитор активен. Локальный адрес: http://localhost:${port}`); });
-app.listen(port, () => console.log());
 const Discord = require('discord.js');
 const { Client, Intents, MessageActionRow, MessageButton, GuildMemberRoleManager } = require('discord.js');
 let client; {
@@ -33,7 +28,7 @@ let client; {
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const token = process.env.DISCORD_TOKEN;
+const { token } = require('./config.json');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -60,7 +55,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 
     console.log('Successfully reloaded application (/) commands.');
   } catch (error) {
-    console.error(error);
+    // console.error(error);
   }
 })();
 
@@ -85,6 +80,18 @@ console.log(msgid)
   return objectdb
 }
 
+async function debug(msg, message, obj)
+{
+  try{
+
+    console.log('yEEEEEEEEEEEEEEEEEE')
+  if (obj.debugMode == true)
+  {
+    msg.channel.send('-=__**Начало дебага=-**__\n```' + message + '```\n\n -=__**Окончание дебага=-**__').catch(err=>{console.log(err)})
+  }
+}catch(err){console.log(err)}
+}
+
 
 async function putData(userid, obj)
 {
@@ -95,6 +102,18 @@ const log = managment.channels.cache.get("978739540736999444");
   let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
   let msgid = userlist[userid]
   let dbmsg = await db.messages.fetch(msgid)
+  if (obj.debugMode == true)
+  {
+    try
+{   let debugger1 = await client.users.fetch(userid)
+   debugger1.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + '` (старая дата)').catch(err => {
+    console.log('Не удалось отправить изменение базы данныхв ДМ. Возможно, у Вас выключен приём сообщений в ЛС.\n\nКод ошибки: ' + err)
+   })
+  
+  }catch(err){
+     console.log('Не удалось отправить изменение базы данныхв ДМ. Возможно, у Вас выключен приём сообщений в ЛС.\n\nКод ошибки: ' + err)
+   }
+  }
 log.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + '` (старая дата)')
   let updData = JSON.stringify(obj);
 
@@ -170,7 +189,7 @@ const getCommand = require("./src/get")
 const artService = require("./src/artService")
 const spamtonCommand = require("./src/spamtonCommand")
 const countService = require("./src/countService")
-
+const debugMode = require("./src/debugMode")
 
 
 
@@ -206,7 +225,7 @@ client.on('interactionCreate', i => {
       }
 
       if (buttonType == "INV") {
-        invCommand.invCommand(fs, i.message, ctx, sharp, canvas, client, Number(pageIndex), iniciator, target, MessageActionRow, MessageButton, isExist, getData);
+        invCommand.invCommand(fs, i.message, ctx, sharp, canvas, client, Number(pageIndex), iniciator, target, MessageActionRow, MessageButton, isExist, getData, debug);
       }
     }
     if (i.customId === 'next111') {
@@ -227,14 +246,18 @@ client.on('interactionCreate', i => {
       if (i.options.getUser('пользователь') != null) { target = i.options.getUser('пользователь') }
       let FakeMsgText = '/card ' + target
       console.log(FakeMsgText)
-      cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i, isExist, getData)
+      cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i, isExist, getData, debug)
     }
     if (commandName == 'start') {
       startCommand.startCommand(fs, i, i.user);
     }
-
+    
+    if (commandName == 'debug')
+    {
+      debugMode.debugMode(i, i.user, isExist, getData, putData)
+    }
     if (commandName == 'export') {
-      exportCommand.exportCmd(i, fs, i.user, isExist, getData)
+      exportCommand.exportCmd(i, fs, i.user, isExist, getData, debug)
     }
     if (commandName == 'shop') {
       let shopPage = 1
@@ -251,7 +274,7 @@ pingedUser = i.user
 
           console.log('ENDED')
           
-            invCommand.invCommand(fs, i, ctx, sharp, canvas, client, Number(pg), i.user.id, pingedUser, MessageActionRow, MessageButton, isExist, getData);
+            invCommand.invCommand(fs, i, ctx, sharp, canvas, client, Number(pg), i.user.id, pingedUser, MessageActionRow, MessageButton, isExist, getData, debug);
     }
 
     if (commandName == 'set') {
@@ -259,7 +282,7 @@ pingedUser = i.user
       console.log('set')
       let theme = i.options.getString('тема');
 
-      setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id, isExist, getData, putData)
+      setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id, isExist, getData, putData, debug)
     }
 
     if (commandName == 'respecc') {
@@ -274,7 +297,7 @@ pingedUser = i.user
       
       let args = ['/badges', target.id]
       console.log(args)
-      badgesCommand.badgesCommand(i, fs, args, client, i.user.id, isExist, getData)
+      badgesCommand.badgesCommand(i, fs, args, client, i.user.id, isExist, getData, debug)
     }
 
     
@@ -301,9 +324,9 @@ pingedUser = i.user
   
       if (i.options.getNumber('место') == 2)
       {
-      setbadge2Command.setbadge2Command(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id)
+      setbadge2Command.setbadge2Command(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id, debug)
       }else{
-        setbadgeCommand.setbadgeCommand(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id)
+        setbadgeCommand.setbadgeCommand(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id, debug)
       }
       }
 
@@ -412,7 +435,7 @@ client.on('messageCreate', msg => {
 
 
       console.log(pingedUser)
-      invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton, isExist, getData);
+      invCommand.invCommand(fs, msg, ctx, sharp, canvas, client, Number(pg), msg.author.id, pingedUser, MessageActionRow, MessageButton, isExist, getData, debug);
       break;
 
 
@@ -420,8 +443,12 @@ client.on('messageCreate', msg => {
     //   break;
     case "/card":
     // case "/preview":
-      cardCommand.cardCommand(fs, msg.content, ctx, sharp, canvas, client, msg.author.id, msg, isExist, getData)
+      cardCommand.cardCommand(fs, msg.content, ctx, sharp, canvas, client, msg.author.id, msg, isExist, getData, debug)
       break;
+
+      case "/debug":
+        debugMode.debugMode(msg, msg.author, isExist, getData, putData)
+        break;
 
     case "/edit":
       {
@@ -448,13 +475,13 @@ client.on('messageCreate', msg => {
     //   break;
     case "/setbadge":
     case "/setbadge1":
-      setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id)
+      setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id, debug)
       break;
     case "/setbadge2":
-      setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id)
+      setbadge2Command.setbadge2Command(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id, debug)
       break;
     case "/set":
-      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData)
+      setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData, debug)
       break;
     case "/respecc":
       respeccCommand.respeccCommand(msg, MessageEmbed)
@@ -473,7 +500,7 @@ client.on('messageCreate', msg => {
     //   break;
 
     case "/badges":
-      badgesCommand.badgesCommand(msg, fs, args, client, msg.author.id, isExist, getData)
+      badgesCommand.badgesCommand(msg, fs, args, client, msg.author.id, isExist, getData, debug)
       break;
 
     // case "/transfer":
@@ -481,7 +508,7 @@ client.on('messageCreate', msg => {
     //   break;
 
     case "/export":
-      exportCommand.exportCmd(msg, fs, msg.author, isExist, getData)
+      exportCommand.exportCmd(msg, fs, msg.author, isExist, getData, debug)
       break;
 
     case "/javascript":
@@ -504,7 +531,7 @@ client.on('messageCreate', msg => {
     //   break;
     default:
   {
-        calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData);
+        calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData, debug);
 }  
 }
 
@@ -782,7 +809,7 @@ try {
   });
 } catch (err) { }
 
-client.login(process.env.DISCORD_TOKEN);
+client.login(require('./config.json').token);
 //тут был Сенко
 
 //П
@@ -797,29 +824,29 @@ client.login(process.env.DISCORD_TOKEN);
 
 
 
-(function(console) {
+// (function(console) {
 
-  console.save = function(data, filename) {
+//   console.save = function(data, filename) {
 
-    if (!data) {
-      console.error('Console.save: No data')
-      return;
-    }
+//     if (!data) {
+//       console.error('Console.save: No data')
+//       return;
+//     }
 
-    if (!filename) filename = 'console.json'
+//     if (!filename) filename = 'console.json'
 
-    if (typeof data === "object") {
-      data = JSON.stringify(data, undefined, 4)
-    }
+//     if (typeof data === "object") {
+//       data = JSON.stringify(data, undefined, 4)
+//     }
 
-    var blob = new Blob([data], { type: 'text/json' }),
-      e = document.createEvent('MouseEvents'),
-      a = document.createElement('a')
+//     var blob = new Blob([data], { type: 'text/json' }),
+//       e = document.createEvent('MouseEvents'),
+//       a = document.createElement('a')
 
-    a.download = filename
-    a.href = window.URL.createObjectURL(blob)
-    a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
-    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-    a.dispatchEvent(e)
-  }
-})(console)
+//     a.download = filename
+//     a.href = window.URL.createObjectURL(blob)
+//     a.dataset.downloadurl = ['text/json', a.download, a.href].join(':')
+//     e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+//     a.dispatchEvent(e)
+//   }
+// })(console)

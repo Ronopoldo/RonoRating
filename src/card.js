@@ -1,5 +1,5 @@
-async function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction, isExist, getData) {
-
+async function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction, isExist, getData, debug) {
+  let debugOut = ''
 // 'use strict';
   {
     if (isExist('iniciator'))
@@ -31,11 +31,11 @@ let pingedUser = iniciator
     if ((args.length >= 2) && (!args[1].includes('<@')))
     {
       pingedUser = '<@' + args[1] + '>'
-      console.log(pingedUser)
+      debugOut = debugOut + '\n' +pingedUser
     }
     if (args.length == 1)
     {
-      console.log('прошло')
+      debugOut = debugOut + '\n' +'прошло'
       pingedUser = '<@' + iniciator +">"
     }
 
@@ -55,9 +55,10 @@ let pingedUser = iniciator
    if (isExist(pingedUser))
    { }else{pingedUser = iniciator}
 
-     console.log('ПОПАааа')
+     debugOut = debugOut + '\n' +'ПОПАааа'
+
      let obj = await getData(pingedUser)
-console.log(obj)
+debugOut = debugOut + '\n' +obj
     client.users.fetch(pingedUser).then(User => 
   {
 
@@ -126,7 +127,7 @@ ctx.textAlign = 'left'
 
 
         let actwidth = Math.floor(270 * (currentXP / NeededXP) + 1)
-    console.log('111')
+    debugOut = debugOut + '\n' +'111'
              if (actwidth >= 270) {actwidth = 269}
       sharp('./tasks/fullBar.png')
  
@@ -174,7 +175,7 @@ ctx.textAlign = 'center'
 ctx.textAlign = 'left'
         ctx.fillText('Повседневность', 689, 320)
         ctx.strokeText('Повседневность', 689, 320)
-console.log('222')
+debugOut = debugOut + '\n' +'222'
 sharp('./tasks/lastActiveBar.png')
         .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl + 1] * 269 + 1 ), height: 30 })
       .toBuffer()
@@ -216,7 +217,7 @@ ctx.textAlign = 'center'
 
 
 
-console.log('SECRET NUM: ' + Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1))
+debugOut = debugOut + '\n' +'SECRET NUM: ' + Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
     ctx.strokeStyle = 'white';
 ctx.textAlign = 'left'
@@ -226,7 +227,7 @@ ctx.textAlign = 'left'
         let vwidth = Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
 if ((vwidth >= 270) || (vwidth<1)) {vwidth = 269}
-console.log('333')
+debugOut = debugOut + '\n' +'333'
 
 sharp('./tasks/voiceBar.png')
 
@@ -276,7 +277,7 @@ ctx.textAlign = 'left'
         ctx.fillText('Счёт', 689,515)
         ctx.strokeText('Счёт', 689, 515)
 
-console.log('444')
+debugOut = debugOut + '\n' +'444'
 sharp('./tasks/countBar.png')
 .extract({ left: 0, top: 0, width: countwidth, height: 30 })
       .toBuffer()
@@ -335,17 +336,17 @@ let barSize = 1
 
   if (neededExp > 450) { neededExp = 450 }
   
-  console.log('NEEDED / CURRENT ' + neededExp + '/' + currentGlobalExp)
+  debugOut = debugOut + '\n' +'NEEDED / CURRENT ' + neededExp + '/' + currentGlobalExp
 barSize = currentGlobalExp / neededExp
 
-console.log('bar1' + barSize)
+debugOut = debugOut + '\n' +'bar1' + barSize
 
 
 
 barSize = Math.floor(520 * barSize)
-console.log('ЙО!' + barSize)
+debugOut = debugOut + '\n' +'ЙО!' + barSize
 if ((barSize >519) || (barSize < 1)) { barSize = 519 }
-console.log('bar1' + barSize)
+debugOut = debugOut + '\n' +'bar1' + barSize
 sharp(grandPath)
 
       .extract({ left: 0, top: 0, width: barSize, height: 7 })
@@ -383,9 +384,9 @@ let badgePath = './Badges/' + Badge + '.png'
 let Badge2 = obj.config.badge2
 let badge2Path = './Badges2/' + Badge2 + '.png'
 
-  console.log('Адоптируем...')
+  debugOut = debugOut + '\n' +'Адоптируем...'
   fontsize = 70 - (nameLength/3)*4
-console.log('Адоптация:' + fontsize)
+debugOut = debugOut + '\n' +'Адоптация:' + fontsize
 
 //Юзер
 let Money = obj.money
@@ -400,7 +401,7 @@ let Themes = obj.themes
 
 ctx.font = fontsize + 'px "Main"'
 ctx.fillText(User.tag, 245, 110)
-console.log('Тег: ' + User.tag)
+debugOut = debugOut + '\n' +'Тег: ' + User.tag
 
 ctx.font = '40px "ArialRound"'
     ctx.strokeStyle = 'white';
@@ -432,19 +433,19 @@ outputMoney = (Math.floor(Money/1000/10)/100).toString() + 'M'
 
 
 ctx.fillText(outputMoney, 275, 168)
-console.log('ДЕНЬГИ ВНЕСЕНЫ ' + outputMoney)
-console.log('Мани: ' + outputMoney)
+debugOut = debugOut + '\n' +'ДЕНЬГИ ВНЕСЕНЫ ' + outputMoney
+debugOut = debugOut + '\n' +'Мани: ' + outputMoney
 ctx.fillText(Level, 275, 218)
-console.log('Мани: ' + Level)
-console.log('VVV AMOUNT VVV')
+debugOut = debugOut + '\n' +'Мани: ' + Level
+debugOut = debugOut + '\n' +'VVV AMOUNT VVV'
 ctx.font = '85px "ArialRound"'
 ctx.textAlign = 'right'
-console.log(Themes)
+debugOut = debugOut + '\n' +Themes.toString()
 ctx.fillText(Themes.length , 580, 208)
-console.log('Мани: ' + Level)
+debugOut = debugOut + '\n' +'Мани: ' + Level
 
 // let out = fs.createWriteStream(pingedUser + 'temp.png')
-canvas.toBuffer((err, out) => { console.log('The PNG file was created.') 
+canvas.toBuffer((err, out) => { debugOut = debugOut + '\n' +'The PNG file was created.'
 
 
 
@@ -456,7 +457,7 @@ let theme = obj.config.theme
 
 if (preview == true) {
   let fullarray = fs.readdirSync('Background')
-  console.log('FULLARRAY: ' + fullarray)
+  debugOut = debugOut + '\n' +'FULLARRAY: ' + fullarray.toString()
   if (args[1] != undefined) {
   if (fullarray.includes(args[1].toLowerCase()))
   {
@@ -474,7 +475,7 @@ if (args[1] == 'hentai' ) {
   }
 
 
-          console.log('456')
+          debugOut = debugOut + '\n' +'456'
 
 sharp.cache(false);
 let image = sharp('./Background/' + theme + '/image.png');
@@ -541,14 +542,20 @@ sharp.cache(false);
               { input: out, top: 0, left: 0}])
             .toBuffer()
             .then(function(outputBuffer) {
-              console.log("error: ", err)
+              debugOut = debugOut + '\n' +"error: ", err
               if (interaction.user != undefined)
               {
               interaction.editReply({files: [outputBuffer]}).catch(err => {});
               ctx.clearRect(0, 0, canvas.width, canvas.height)
+              try{
+                debug(interaction, debugOut, obj)
+              }catch(err){}
               }else
               {
                 interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
+                try{
+                  debug(interaction, debugOut, obj)
+                }catch(err){}
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               }
               // fs.unlinkSync(pingedUser + "temp.png")
@@ -560,15 +567,15 @@ outputBufferAct1 = null
               outputBufferAct3 = null
               grandBuffer = null
               out = null
-console.log(outputBuffer)
+debugOut = debugOut + '\n' +outputBuffer.toString()
 
 // var variables = ""
 // for (var name in this)
 // {
 //     variables += name + "\n";
-// eval('console.log(' + name + ')')
+// eval('debugOut = debugOut + '\n' +' + name + ')')
 // }
-// console.log(variables)
+// debugOut = debugOut + '\n' +variables)
 
 
               })
@@ -587,14 +594,20 @@ console.log(outputBuffer)
               { input: out, top: 0, left: 0, blend: 'dest-over'}])
             .toBuffer()
             .then(function(outputBuffer) {
-              console.log("error: ", err)
+              debugOut = debugOut + '\n' +"error: ", err
                             if (interaction.user != undefined)
               {
               interaction.editReply({files: [outputBuffer]}).catch(err => {});
               ctx.clearRect(0, 0, canvas.width, canvas.height)
+              try{
+                debug(interaction, debugOut, obj)
+              }catch(err){}
               }else
               {
                 interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
+                try{
+                  debug(interaction, debugOut, obj)
+                }catch(err){}
               ctx.clearRect(0, 0, canvas.width, canvas.height)
               }
               ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -633,7 +646,7 @@ console.log(outputBuffer)
   .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
 
-
+  
 
         },error => {interaction.channel.send('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }

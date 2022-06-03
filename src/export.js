@@ -1,8 +1,9 @@
-async function exportCmd(msg, fs, iniciator, isExist, getData) {
+async function exportCmd(msg, fs, iniciator, isExist, getData, debug) {
 
-  console.log(iniciator)
+
   if (await isExist(iniciator.id) == true) {
     let obj = await getData(iniciator.id)
+    debug(msg, '\n' + iniciator, obj)
     await fs.writeFile('./archives/' + iniciator + '.json', JSON.stringify(obj, null, '\t'), (error) => {
       if (error) throw error;
     });

@@ -1,11 +1,12 @@
-async function setbadge2Command(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, iniciator) {
+async function setbadge2Command(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, iniciator, debug) {
 
-  console.log('popa' + iniciator)
+
     if (await isExist(iniciator) == true)
 {
-  console.log('pisya')
+ 
   try{
     let obj = await getData(iniciator)
+    debug(msg, 'popa' + iniciator + '\npisya', obj)
     let ThemeMassive = obj.badges
     if (fs.existsSync('./Badges/' + args[1] + '.png'))
     {

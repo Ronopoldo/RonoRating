@@ -1,15 +1,15 @@
-async function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData) {
+async function calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData, debug) {
   const guild = client.guilds.cache.get("544902879534907392");
   if (msg.channel.type !== 'dm' && msg.channel.id != '978739540736999444')
   {
-    console.log(await isExist(msg.author.id))
     if (await isExist(msg.author.id) == true)
     {
-      console.log('LOL x2')
+
      if (talkedRecently.has(msg.author.id)) {
     } else {
-
+      let debugOut = ''
       let obj = await getData(msg.author.id)
+      debugOut = debugOut +'\n' + 'LOL x2'
       let textexp = Number(obj.active.text.exp)
       let textlvl = Number(obj.active.text.lvl)
       let money = Number(obj.money)
@@ -26,7 +26,7 @@ let dataObj = obj.active.daily.exp.slice(`/био`).split(/ +/);
        let dateExp = Number(dataObj[1])
        let currentDate = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Europe/Moscow"}))
 
-       console.log(currentDate)
+       debugOut = debugOut +'\n' + currentDate.toString()
        if (dataObj.length >= 3)
        {
          obj.active.daily.exp = currentDate.toISOString() + ' ' + '0'
@@ -105,7 +105,7 @@ let rewards = [0,50,100,150,200,400,500,550,600,1000,700,1000,5000]
 
       if (globalNeededExp > 450) { globalNeededExp = 450 }
       if (neededExp > 450) { neededExp = 450 }
-      console.log(neededExp + ' - нужный опыт')
+      debugOut = debugOut +'\n' + neededExp + ' - нужный опыт'
       //Текстовый иф
       if (neededExp - 1 < Number(textexp))
       {
@@ -138,8 +138,9 @@ let rewards = [0,50,100,150,200,400,500,550,600,1000,700,1000,5000]
 
 
        obj.money = Math.floor(money)
-      console.log(obj)
+       debugOut = debugOut +'\n' + JSON.stringify(obj).toString()
        putData(msg.author.id, obj)
+       debug(msg,debugOut,obj)
     }
                     talkedRecently.add(msg.author.id);
         setTimeout(() => {
