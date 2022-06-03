@@ -20,7 +20,18 @@ let client; {
 }
 
 
-
+const process = require('process');
+  
+try {
+  
+  // Change the directory
+  process.chdir('./RonoRating');
+  console.log("directory has successfully been changed");
+} catch (err) {
+      
+  // Printing error if occurs
+  console.error("error while changing directory");
+}
 
 
 
