@@ -22,6 +22,10 @@ let client; {
 
 const process = require('process');
   
+
+if (require('../isServer') == 'false')
+{}else
+{
 try {
   
   // Change the directory
@@ -32,14 +36,14 @@ try {
   // Printing error if occurs
   console.error("error while changing directory");
 }
-
+}
 
 
 
 
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { token } = require('./config.json');
+const { token } = require('../config.json');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -820,7 +824,9 @@ try {
   });
 } catch (err) { }
 
-client.login(require('./config.json').token);
+
+
+client.login(require('../config.json').token);
 //тут был Сенко
 
 //П
