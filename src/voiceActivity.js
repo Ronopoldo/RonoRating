@@ -1,14 +1,14 @@
 
-function voiceActivity(fs, client, chID) {
+async function voiceActivity(fs, client, chID, getData, putData, isExist) {
 
   setInterval(function() {
 
     let ChillCenter = client.channels.cache.get(chID)
-    ChillCenter.members.forEach(element => {
+    ChillCenter.members.forEach(async element => {
 
-      if ((fs.existsSync('./data/UserData/' + element.id)) && (element.voice.selfDeaf == false)) {
-
-        let userActivity = fs.readFileSync('./data/UserData/' + element.id + '/integers/voice')
+      if ((await isExist(element.id) == true) && (element.voice.selfDeaf == false)) {
+        let obj = await getData(element.id)
+        let userActivity = obj.active.voice.exp
         console.log(element.id)
         let plusAmount =  1.1
 
@@ -23,17 +23,17 @@ function voiceActivity(fs, client, chID) {
           plusAmount = 1000
         }
 
-
-        userActivity = Number(userActivity) + plusAmount
-        fs.writeFileSync('./data/UserData/' + element.id + '/integers/voice', userActivity.toString())
+        
+        obj.active.voice.exp = Number(obj.active.voice.exp) + plusAmount
+        obj.exp = Number(obj.exp) + plusAmount
         console.log(element.user.tag + ' + ' + plusAmount + ' минута ГС; всего: ' + userActivity)
 
         let lvlArray = [0.5, 1, 1.5, 2, 3, 4, 5, 10, 15, 20, 25, 30, 45, 50, 75, 90, 120, 150, 180, 220, 280, 320, 390, 460, 500, 600, 750, 800, 900, 1000]
 
         let rewards = [50, 100, 300, 400, 800, 1200, 3000, 7000, 7000, 8500, 9000, 9000, 9000, 10000, 11000, 15000, 16000, 17000, 18000, 19000, 20000, 25000, 25000, 25000, 25000, 25000, 25000, 40000, 40000, 250000]
 
-        let currentLvl = fs.readFileSync('./data/UserData/' + element.id + '/tasks/voice')
-        let Money = fs.readFileSync('./data/UserData/' + element.id + '/integers/money')
+        let currentLvl = obj.active.voice.lvl
+        let Money = obj.money
 
         if (userActivity / 60 >= lvlArray[currentLvl]) {
 
@@ -44,22 +44,18 @@ function voiceActivity(fs, client, chID) {
           Money = Number(Money) + rewards[currentLvl]
           currentLvl = Number(currentLvl) + 1
 
-          fs.writeFileSync('./data/UserData/' + element.id + '/integers/money', Money.toString())
-          fs.writeFileSync('./data/UserData/' + element.id + '/tasks/voice', currentLvl.toString())
+          obj.money = Money
+          obj.active.voice.lvl = currentLvl
 
-          element.user.send('**__Поздравляю с новым уровнем в категории "Голосовая активность"!__**\nНовый уровень: `' + currentLvl.toString() + '`\nЧасов в голосовых каналах: `' + (userActivity / 60).toFixed(1).toString() + '`\nПолучено монет: `' + (rewards[currentLvl]).toString() + '`\n\nИскренне\nРоносервер').catch(error => { })
+          element.user.send('**__Поздравляю с новым уровнем в категории "Голосовая активность"!__**\nНовый уровень: `' + currentLvl.toString() + '`\nЧасов в голосовых каналах: `' + (userActivity / 60).toFixed(1).toString() + '`\nПолучено монет: `' + (rewards[currentLvl-1]).toString() + '`\n\nИскренне\nРоносервер').catch(error => { })
         }
 
 
-          if (fs.existsSync('./data/UserData/' + element.user.id + '/DATATRANSFERCONFIRMATION'))
-          {
             
-            let curExpPath = './data/UserData/' + element.user.id + '/integers/totalXp'
-            let xp = fs.readFileSync(curExpPath)
-            let normalXp = fs.readFileSync('./data/UserData/' + element.user.id + '/integers/grandXp')
-            let daystreak = fs.readFileSync('./data/UserData/' + element.user.id + '/badges/lastActve') + ''
+            let normalXp = obj.exp
+            let daystreak = obj.active.daily.exp
 
-            let dayStreakClear = Number(daystreak.split(' ')[2])
+            let dayStreakClear = Number(daystreak.split(' ')[1])
 
 
 let multiplier = 4
@@ -69,9 +65,7 @@ let multiplier = 4
             }
 
             let newXp = plusAmount * multiplier
-            xp = Number(xp) + newXp
-            fs.writeFileSync(curExpPath, xp.toString())
-            fs.writeFileSync('./data/UserData/' + element.user.id + '/integers/grandXp', normalXp.toString())
+            obj.exp = normalXp
             // element.user.send(dayStreakClear.toString())
             // element.user.send(multiplier.toString())
             // element.user.send(xp.toString())
@@ -81,21 +75,21 @@ let multiplier = 4
 
             /////УРОВНИ И ДЕНЬГИ
 
-            let globalLvl = Number(fs.readFileSync('./data/UserData/' + element.user.id + '/tasks/global'))
+            let globalLvl = obj.lvl
 
 
             let neededExp = 12
             let active1 = true
             let counterGlobal = 0
             let globalMoney = 25
-            while (active1 == true)
+            while (true)
             {
               neededExp = neededExp * 1.2
               globalMoney = globalMoney * 1.1
               counterGlobal = counterGlobal + 1
               if (counterGlobal >= globalLvl)
               {
-                active1 = false
+                break;
               }
             }
 
@@ -103,36 +97,35 @@ let multiplier = 4
             console.log(neededExp + ' - нужный опыт')
             if (neededExp < Number(normalXp))
             {
-              let money = fs.readFileSync('./data/UserData/' + element.user.id + '/integers/money')
+              let money = obj.money
               money = Number(money) + globalMoney
               console.log('МАНИ ' + money)
               console.log( Number(money))
               console.log(globalMoney)
               normalXp = Number(normalXp) - neededExp
-              globalLvl = globalLvl + 1
+              globalLvl = Number(globalLvl) + 1
 
-              fs.writeFileSync('./data/UserData/' + element.user.id + '/tasks/global', globalLvl.toString()) // Уровень
-              fs.writeFileSync('./data/UserData/' + element.user.id + '/integers/money', money.toString()) // Деньги
-              fs.writeFileSync('./data/UserData/' + element.user.id + '/integers/grandXp', normalXp.toString()) //Экспи в ноль
+              obj.lvl = globalLvl // Уровень
+              obj.money = money // Деньги
+              obj.exp = normalXp//Экспи в ноль
 
-              element.user.send(':tada:Новый ГЛОБАЛЬНЫЙ уровень!:tada:\nУровень: ' + globalLvl.toString() + '\nТотал опыт: ' + Math.floor(xp) + '\nПолучено монет: ' + Math.floor(globalMoney)).catch(err => {});
+              element.user.send(':tada:Новый ГЛОБАЛЬНЫЙ уровень!:tada:\nУровень: ' + globalLvl.toString() + '\nПолучено монет: ' + Math.floor(globalMoney)).catch(err => {});
             }
 
 
 
 
 
-          }else{
-            element.user.send('Хей! Тебе не добавляется глобальный опыт!\nСрочно перенеси свой текущий командой `/transfer`\n\nPS - команду будет выключена в ближайшее время и те, кто не перенёс опыт, остануться без него')
-          }
 
 
+putData(element.id, obj)
 
       } else { console.log(element.id + ' не зареган') }
     });
 
 if (chID == '647198455936319528'){
-    let Users = fs.readdirSync('./data/UserData', "utf8");
+  let dbsetup = JSON.parse(fs.readFileSync('./data/dbsetup'))
+    let Users = Object.keys(dbsetup)
 
     let randomElement = Users[Math.floor(Math.random() * Users.length)];
     

@@ -117,6 +117,7 @@ const log = managment.channels.cache.get("978739540736999444");
   let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
   let msgid = userlist[userid]
   let dbmsg = await db.messages.fetch(msgid)
+  try{
   if (obj.debugMode == true)
   {
     try
@@ -129,16 +130,17 @@ const log = managment.channels.cache.get("978739540736999444");
      console.log('Не удалось отправить изменение базы данныхв ДМ. Возможно, у Вас выключен приём сообщений в ЛС.\n\nКод ошибки: ' + err)
    }
   }
+}catch(err){}
 log.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + '` (старая дата)')
   let updData = JSON.stringify(obj);
-
+console.log(msgid)
   dbmsg.edit(updData)
 }
 
 async function isExist(id)
   {
     let userlist = await JSON.parse(fs.readFileSync('./data/dbsetup'))
-    return userlist.hasOwnProperty(id)
+    return id in userlist
   }
 
 
@@ -332,6 +334,18 @@ pingedUser = i.user
       balCommand.balCommand(i, fs, ['/args', target.id], client, MessageEmbed, i.user)
     }
 
+    if (commandName == 'claim') {
+     target = i.options.getString('ключ')
+     i.content = '/claim ' + target
+     claimCommand.claimCommand(fs, i, ctx, sharp, canvas, client, getData, putData, isExist, i.user.id)
+    }
+
+
+    if (commandName == 'buy') {
+      target = i.options.getString('тема')
+      i.content = '/claim ' + target
+      buyCommand.buyCommand(fs, i, ctx, sharp, canvas, i.user.id, getData, putData, isExist)
+     }
 
         if (commandName == 'setbadge') {
       let target = i.user
@@ -468,7 +482,7 @@ client.on('messageCreate', msg => {
 
     case "/edit":
       {
-        if (msg.author.id == 544902183007813652)
+        if (msg.author.id == 544902183007813652 || msg.author.id == 969899130061221888)
         {
           let objectData = JSON.parse(msg.content.replace('/edit ' + args[1] + ' ',''))
 
@@ -483,12 +497,12 @@ client.on('messageCreate', msg => {
         
         break;
       }
-    // case "/claim":
-    //   claimCommand.claimCommand(fs, msg, ctx, sharp, canvas, client)
-    //   break;
-    // case "/buy":
-    //   buyCommand.buyCommand(fs, msg, ctx, sharp, canvas)
-    //   break;
+    case "/claim":
+      claimCommand.claimCommand(fs, msg, ctx, sharp, canvas, client, getData, putData, isExist, msg.author.id)
+      break;
+    case "/buy":
+      buyCommand.buyCommand(fs, msg, ctx, sharp, canvas, msg.author.id, getData, putData, isExist)
+      break;
     case "/setbadge":
     case "/setbadge1":
       setbadgeCommand.setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, msg.author.id, debug)
@@ -585,10 +599,10 @@ countService.msgProcessing(msg, client, fs, checkCount.checker(msg, client))
 )
 
 client.on("ready", async() => {
-  // voiceActivity.voiceActivity(fs, client, '647198455936319528');
-  // voiceActivity.voiceActivity(fs, client, '648243049909977110');
-  // voiceActivity.voiceActivity(fs, client, '544902879534907396');
-  // voiceActivity.voiceActivity(fs, client, '647052644380180480');
+  voiceActivity.voiceActivity(fs, client, '647198455936319528', getData, putData, isExist);
+  voiceActivity.voiceActivity(fs, client, '648243049909977110', getData, putData, isExist);
+  voiceActivity.voiceActivity(fs, client, '544902879534907396', getData, putData, isExist);
+  voiceActivity.voiceActivity(fs, client, '647052644380180480', getData, putData, isExist);
 
 // console.log("Ы")
 // function transit(userID)

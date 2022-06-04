@@ -1,13 +1,12 @@
-function buyCommand(fs, msg, ctx, sharp, canvas) {
-    if (fs.existsSync('./data/UserData/' + msg.author.id))
-{
-  try{
-    if (fs.existsSync('./data/UserData/' + msg.author.id))
-   {
+async function buyCommand(fs, msg, ctx, sharp, canvas, iniciator, getData, putData, isExist) {
 
+  try{
+    console.log('BEGAN')
+    if (await isExist(iniciator))
+   {
+    let obj = await getData(iniciator)
     let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
-    let filepath = "./data/UserData/" + msg.author.id;
-     let UserThemes = fs.readdirSync('./data/UserData/' + msg.author.id + '/themes')
+     let UserThemes = obj.themes
 let ShopThemes = fs.readdirSync('./Background')
 
     const args = msg.content.slice(`/био`).split(/ +/);
@@ -23,24 +22,22 @@ let ShopThemes = fs.readdirSync('./Background')
         {
           let price = Number(fs.readFileSync('./Background/' + args[1] + '/price', "utf8"));
           console.log('PRICE: ' + price)
-          let userBalance = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8"));
+          let userBalance = Number(obj.money);
           console.log('BALANCE: ' + userBalance)
           if (userBalance < price)
           {
             msg.reply('Прости, но похоже, что у тебя недостаточно средств на покупку этой темы!').catch(err => {});
           }else
           {
-            let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON();
-            
             let owned = Number(fs.readFileSync('./Background/' + args[1] + '/owned', "utf8"));
             fs.writeFileSync('./Background/' + args[1] + '/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
 
             // msg.reply(owned.toString())
 
-            fs.writeFileSync('./data/UserData/' + msg.author.id + '/themes/' + args[1],CurrentDate, 'utf8', (err) => { console.log(err) })
-            userBalance = userBalance - price
-            fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money',userBalance.toString(), 'utf8', (err) => { console.log(err) })
+            obj.themes[obj.themes.length] = args[1]
+            obj.money = obj.money - price
             msg.reply('Покупка темы прошла успешно!!\nПоставь её командой `/set ' + args[1] + '` :3').catch(err => {});
+            putData(iniciator, obj)
           }
         }else{
           msg.reply('Эта тема не продаётся!').catch(err => {});
@@ -53,8 +50,8 @@ let ShopThemes = fs.readdirSync('./Background')
     }
   }
   
-  }catch(err){ msg.reply('Хей! Скорее всего у тебя неправильный ввод! Ввод доолжен быть в формате `/buy <ID ТЕМЫ>`\nОшибка: ' + err).catch(err => {}); }
-}
+  }catch(err){ msg.channel.send('Хей! Скорее всего у тебя неправильный ввод! Ввод доолжен быть в формате `/buy <ID ТЕМЫ>`\nОшибка: ' + err).catch(err => {console.log(err)}); }
+
 }
 
 module.exports = { buyCommand }

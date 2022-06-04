@@ -1,0 +1,40 @@
+{
+	"user": "969899130061221888",
+	"money": 72.3,
+	"exp": 1.9000000000000008,
+	"lvl": "01",
+	"credit": "1000",
+	"active": {
+		"text": {
+			"lvl": 0,
+			"exp": 6
+		},
+		"daily": {
+			"lvl": 1,
+			"exp": "2022-06-04T21:00:00.000Z 1"
+		},
+		"voice": {
+			"lvl": 1,
+			"exp": 33.2
+		},
+		"count": {
+			"lvl": 0,
+			"exp": 0
+		}
+	},
+	"config": {
+		"badge1": "nothing",
+		"badge2": "nothing",
+		"theme": "2020"
+	},
+	"themes": [
+		"default",
+		"2022pixel",
+		"2020",
+		"gradient"
+	],
+	"badges": [
+		"nothing"
+	],
+	"debugMode": false
+}
