@@ -1,109 +1,34 @@
-function startCommand(fs, msg, iniciator) {
-  
-    let filepath = "./data/UserData/" + iniciator.id;
-    console.log(filepath)
-    try{
-      if (msg.author.id != '720663761844699146' && msg.author.id != '945318438245629962')
-      {
-    if (!fs.existsSync(filepath)) 
-      {
-        let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
-        fs.mkdirSync(filepath, err => {console.log(err)})
-        fs.mkdirSync(filepath + '/integers', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/collections', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/config', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/badges', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/themes', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/tasks', err => {console.log(err)})
-        fs.mkdirSync(filepath + '/cardBadges', err => {console.log(err)})
-      fs.writeFileSync(filepath + '/tasks/voice', '0')
-              fs.writeFileSync(filepath + '/integers/talkingPoints', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/integers/money', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
+async function startCommand(msg, iniciator, isExist, putData, debug, fs, client) {
+  if (await isExist(iniciator.id) == false)
+  {
+    let dbsetup = JSON.parse(fs.readFileSync('./data/dbsetup'))
+    const managment = client.guilds.cache.get("968122042765422682");
+    const db = managment.channels.cache.get("968123915920617472");
+    const log = managment.channels.cache.get("978739540736999444");
+    let obj = JSON.parse(fs.readFileSync('./data/blankData.json'))
+    obj.user = iniciator.id
+    obj.active.daily.exp = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Europe/Moscow"})).toISOString() + ' 0'
+    console.log(obj)
+    
+    log.send('Создаана учётка ' + iniciator.id)
+    await fs.writeFile('./data/dbsetupbackup.json', JSON.stringify(dbsetup, null, '\t'), (error) => {
+      if (error) throw error;
+    });
 
-    fs.writeFileSync('./data/UserData/' + iniciator.id + '/integers/totalXp', '0')
-    fs.writeFileSync('./data/UserData/' + iniciator.id + '/integers/grandXp', '0')
-    fs.writeFileSync('./data/UserData/' + iniciator.id + '/tasks/global', '0')
-    fs.writeFileSync('./data/UserData/' + iniciator.id + '/DATATRANSFERCONFIRMATION', 'ПОЛУЧЕНО ПРИ РЕГИСТРАЦИИ')
+    await log.send({ files: ['./data/dbsetupbackup.json']})
 
-
-
-
-
-                        fs.writeFileSync(filepath + '/integers/exp', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-                        fs.writeFileSync(filepath + '/config/language', 'RU', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/config/theme', 'default', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-                        fs.writeFileSync(filepath + '/collections/userThemes', 'default', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/integers/lvl', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/badges/active', '0\n0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/config/badge', 'NULL', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-            fs.writeFileSync(filepath + '/config/badge2', 'NULL', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/socialCredit', '1000', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/voice', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/SummarXP', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/integers/count', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-      fs.writeFileSync(filepath + '/tasks/countlvl', '0', 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-
-      fs.writeFileSync(filepath + '/themes/default', CurrentDate, 'utf8', (err) => {
-              if (err) throw err;
-              console.log('Данные были добавлены в конец файла!');
-            });
-
-            fs.writeFileSync(filepath + '/cardBadges/nothing', '')
-
+    db.send(JSON.stringify(obj)).then(dataMsg => {
+      dbsetup[iniciator.id] = dataMsg.id
+      fs.writeFileSync('./data/dbsetup', JSON.stringify(dbsetup))
       
-      msg.reply('Успешно!').catch(err => {});
-      }else
-      {
-        msg.reply('Хей! Ты уже зарегестрирован. Эта команда не для тебя!').catch(err => {});
-      }
-      }else{msg.author.id('Иди ты дебик')}
-    }catch(err){
-    console.log(err)}
+    })
+    msg.reply('**__Добро пожаловать в RonoRating__**\nВаша учётная запись успешно создана! Проверьте свою карточку при помощи `/card`\nА про команды подробнее Вы сможете прочитать в <#647517557615755287>\nЖелаем удачи\n-RonoRating')
+    
+  }else{
+    msg.reply('Похоже, что твоя учётная запись уже зарегистрирована. Если ты считаешь, что нет, то напиши в службу поддержки!')
+  }
+
+
 }
 
 module.exports = { startCommand }

@@ -1,0 +1,37 @@
+{
+	"user": "INSERT",
+	"money": 50,
+	"exp": "0",
+	"lvl": "0",
+	"credit": "1000",
+	"active": {
+		"text": {
+			"lvl": 0,
+			"exp": 0
+		},
+		"daily": {
+			"lvl": 0,
+			"exp": "INSERT"
+		},
+		"voice": {
+			"lvl": 0,
+			"exp": 0
+		},
+		"count": {
+			"lvl": 0,
+			"exp": 0
+		}
+	},
+	"config": {
+		"badge1": "nothing",
+		"badge2": "nothing",
+		"theme": "default"
+	},
+	"themes": [
+		"default"
+	],
+	"badges": [
+		"nothing"
+	],
+	"debugMode": false
+}

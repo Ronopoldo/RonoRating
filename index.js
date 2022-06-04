@@ -19,7 +19,7 @@ let client; {
   })
 }
 
-
+// getData, putData, isExist, debug
 const process = require('process');
   
 
@@ -236,7 +236,7 @@ client.on('interactionCreate', i => {
     console.log('TYPE: ' + buttonType)
     if (iniciator == i.user.id) {
       if (buttonType == 'SHOP') {
-        shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex, iniciator, true);
+        shopCommand.shopCommand(fs, i.message, ctx, sharp, canvas, MessageActionRow, MessageButton, pageIndex, iniciator, true, getData, putData, isExist, debug);
       }
 
       if (buttonType == "INV") {
@@ -264,7 +264,7 @@ client.on('interactionCreate', i => {
       cardCommand.cardCommand(fs, FakeMsgText, ctx, sharp, canvas, client, i.user.id, i, isExist, getData, debug)
     }
     if (commandName == 'start') {
-      startCommand.startCommand(fs, i, i.user);
+      startCommand.startCommand(i, i.user, isExist, putData, debug, fs, client);
     }
     
     if (commandName == 'debug')
@@ -277,7 +277,8 @@ client.on('interactionCreate', i => {
     if (commandName == 'shop') {
       let shopPage = 1
       if (i.options.getNumber('страница') != null) { shopPage = i.options.getNumber('страница').toString() }
-      shopCommand.shopCommand(fs, i, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, i.user, false)
+      console.log('Крестик')
+      shopCommand.shopCommand(fs, i, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, i.user.id, false, getData, putData, isExist, debug)
     }
 
         if (commandName == 'inventory') {
@@ -386,21 +387,21 @@ client.on('messageCreate', msg => {
           msg.reply('Хей! Поздравляю! С твоими данными всё в порядке: они мигрировали на новую базу данных без ошибок.')
         }
       }
-    // case "/start":
-    //   startCommand.startCommand(fs, msg, msg.author);
-    //   break;
+    case "/start":
+      startCommand.startCommand(msg, msg.author, isExist, putData, debug, fs, client);
+      break;
     // case "/test":
     //   test.test(getData, msg)
     //   break;
-    // case "/shop":
+    case "/shop":
 
-    //   if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
-    //   console.log(shopPage)
+      if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
+      console.log(shopPage)
 
-    //   if (shopPage > 100) { shopPage = 1 }
+      if (shopPage > 100) { shopPage = 1 }
 
-    //   shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false);
-    //   break;
+      shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false, getData, putData, isExist, debug);
+      break;
     case "/inv":
     case "/inventory":
 

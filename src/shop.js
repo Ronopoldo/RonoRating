@@ -1,8 +1,9 @@
-function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton) {
-  if (fs.existsSync('./data/UserData/' + iniciatorID + '/integers/exp')) {
+async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton, getData, putData, isExist, debug) {
+  console.log(await isExist(iniciatorID))
+  if (await isExist(iniciatorID) == true) {
 
-
-
+    let obj = await getData(iniciatorID)
+    console.log('Галачька')
     let shopNames = []
     fs.readdir('Background', (err, files) => {
       files.forEach(file => {
@@ -33,6 +34,9 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
       let totalArray = ['empty', 'empty', 'empty', 'empty']
       let totalPrice = []
       let totalName = []
+
+      console.log('СТРАОНЦИАААА ' + shopPage)
+
 
       try { totalArray[0] = (shopNames[4 * shopPage - 4][0]) } catch{ }
       try { totalArray[1] = (shopNames[4 * shopPage - 3][0]) } catch{ }
@@ -121,7 +125,7 @@ function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButto
 
 
         let boughThemes = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.png', './Images/Blank.png']
-        let UserHave = fs.readdirSync('./data/UserData/' + iniciatorID + '/themes')
+        let UserHave = obj.themes
         console.log(UserHave)
         if (UserHave.includes(totalArray[0])) { boughThemes[0] = './Images/bought.png' }
         if (UserHave.includes(totalArray[1])) { boughThemes[1] = './Images/bought.png' }
@@ -224,10 +228,10 @@ let btn4 = new MessageButton()
 
             console.log(msg)
             if (isButton == false) {
-
+              console.log('NOTBUTTON')
               if (msg.user != undefined)
               {
-              msg.editReply({ files: [outputBuffer], components: [row] }).catch(err => { });
+              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { console.log(err) });
 
               }else{
               console.log('123')
@@ -254,10 +258,12 @@ let btn4 = new MessageButton()
           })
           .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
       })
-
+      
 
     })
   }
+
+  
 }
 
 module.exports = { shopCommand }
