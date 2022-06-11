@@ -1,13 +1,13 @@
 {
 	"user": "544902183007813652",
-	"money": 257713,
+	"money": 257724,
 	"exp": "331.8478223737671",
 	"lvl": "60",
 	"credit": "1000",
 	"active": {
 		"text": {
 			"lvl": 33,
-			"exp": 303
+			"exp": 307
 		},
 		"daily": {
 			"lvl": 11,
@@ -29,8 +29,32 @@
 		"sticker1": {
 			"name": "smiley",
 			"position": [
-				1000,
-				255
+				700,
+				900
+			],
+			"rotation": 87,
+			"size": [
+				200,
+				null
+			]
+		},
+		"sticker2": {
+			"name": "smiley",
+			"position": [
+				0,
+				0
+			],
+			"rotation": 0,
+			"size": [
+				500,
+				0
+			]
+		},
+		"sticker3": {
+			"name": "smiley",
+			"position": [
+				0,
+				0
 			],
 			"rotation": 0,
 			"size": [

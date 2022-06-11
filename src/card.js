@@ -524,33 +524,98 @@ if (obj.config.sticker1 != undefined)
 
 if (obj.config.sticker2 != undefined)
 {
-  sticker1 = obj.config.sticker2
+  sticker2 = obj.config.sticker2
 }
 
 if (obj.config.sticker3 != undefined)
 {
-  sticker1 = obj.config.sticker3
+  sticker3 = obj.config.sticker3
 }
 
 if (obj.config.sticker4 != undefined)
 {
-  sticker1 = obj.config.sticker4
+  sticker4 = obj.config.sticker4
 }
 
 if (obj.config.sticker5 != undefined)
 {
-  sticker1 = obj.config.sticker5
+  sticker5 = obj.config.sticker5
 }
+
+
+if (Number(sticker1.size[1]) == 0 && Number(sticker1.size[1]) != undefined && Number(sticker1.size[1]) != NaN)
+{
+  sticker1.size[1] = sticker1.size[0]
+}
+if (Number(sticker2.size[1]) == 0 && Number(sticker2.size[1]) != undefined && Number(sticker2.size[1]) != NaN)
+{
+  sticker2.size[1] = sticker2.size[0]
+}
+if (Number(sticker3.size[1]) == 0 && Number(sticker3.size[1]) != undefined && Number(sticker3.size[1]) != NaN)
+{
+  sticker3.size[1] = sticker3.size[0]
+}
+if (Number(sticker4.size[1]) == 0 && Number(sticker4.size[1]) != undefined && Number(sticker4.size[1]) != NaN)
+{
+  sticker4.size[1] = sticker4.size[0]
+}
+
+
+if (Number(sticker5.size[1]) > 0 && Number(sticker5.size[1]) != undefined && Number(sticker5.size[1]) != NaN)
+{
+  sticker5.size[1] = sticker5.size[0]
+}
+
 
 console.log(sticker1)
 sharp("./Background/" + sticker1.name + "/image.png")
-.rotate(Number(sticker1.rotation), {background: "#ff00ff00"})
 .resize(sticker1.size[0], sticker1.size[1])
-
 .toBuffer().then(function(stick1)
 {
 
+console.log(sticker2.size)
 
+
+
+  sharp("./Background/" + sticker2.name + "/image.png")
+.rotate(Number(sticker2.rotation), {background: "#ff00ff00"})
+.resize(sticker2.size[0], sticker2.size[1])
+
+.toBuffer().then(function(stick2)
+{
+
+
+
+
+
+  sharp("./Background/" + sticker3.name + "/image.png")
+.rotate(Number(sticker3.rotation), {background: "#ff00ff00"})
+.resize(sticker3.size[0], sticker3.size[1])
+
+.toBuffer().then(function(stick3)
+{
+
+
+
+
+  sharp("./Background/" + sticker4.name + "/image.png")
+.rotate(Number(sticker4.rotation), {background: "#ff00ff00"})
+.resize(sticker4.size[0], sticker4.size[1])
+
+.toBuffer().then(function(stick4)
+{
+
+
+
+  console.log('321321312321213231')
+
+  sharp("./Background/" + sticker5.name + "/image.png")
+.rotate(Number(sticker5.rotation), {background: "#ff00ff00"})
+
+.toBuffer().then(function(stick5)
+{
+
+console.log('sdasa')
 sharp(body)
 .resize(171, 171)
 .composite([
@@ -605,8 +670,11 @@ sharp.cache(false);
               {input: grandBuffer,  top: 230, left: 132},
               
               { input: out, top: 0, left: 0},
-            {input: stick1, left: sticker1.position[0], top: sticker1.position[1]}
-            
+            {input: stick1, left: sticker1.position[0], top: sticker1.position[1]},
+            {input: stick2, left: sticker2.position[0], top: sticker2.position[1]},
+            {input: stick3, left: sticker3.position[0], top: sticker3.position[1]},
+            {input: stick4, left: sticker4.position[0], top: sticker4.position[1]},
+            {input: stick5, left: sticker5.position[0], top: sticker5.position[1]}
             ])
             .toBuffer()
             .then(function(outputBuffer) {
@@ -693,8 +761,18 @@ debugOut = debugOut + '\n' +outputBuffer.toString()
          
           
           })
-              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
-              
+              .catch(err => { interaction.channel.send('1Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            })
+            .catch(err => { interaction.channel.send('2Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+          })
+          .catch(err => { interaction.channel.send('3Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+        })
+        .catch(err => { interaction.channel.send('4Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+      })
+      .catch(err => { 
+        console.log(err)
+        interaction.channel.send('5Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+
         });      
 
 
