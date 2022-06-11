@@ -2,6 +2,7 @@ async function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, inter
   let debugOut = ''
 // 'use strict';
   {
+    const Color = require('color');
     if (isExist('iniciator'))
    {
 interaction.reply('Загружаем...')
@@ -484,6 +485,70 @@ if (fs.existsSync('./Background/' + theme + '/GIF'))
 {
   image = sharp('./Background/' + theme + '/GIF/image.gif');
 }
+//СТИКЕРЫ
+let sticker1 = {
+  "name": "undefined",
+  "position": [0,0],
+  "rotation": 0,
+  "size": [200,200]
+}
+let sticker2 = {
+  "name": "undefined",
+  "position": [0,0],
+  "rotation": 0,
+  "size": [200,200]
+}
+let sticker3 = {
+  "name": "undefined",
+  "position": [0,0],
+  "rotation": 0,
+  "size": [200,200]
+}
+let sticker4 = {
+  "name": "undefined",
+  "position": [0,0],
+  "rotation": 0,
+  "size": [200,200]
+}
+let sticker5 = {
+  "name": "undefined",
+  "position": [0,0],
+  "rotation": 0,
+  "size": [200,200]
+}
+
+if (obj.config.sticker1 != undefined)
+{
+  sticker1 = obj.config.sticker1
+}
+
+if (obj.config.sticker2 != undefined)
+{
+  sticker1 = obj.config.sticker2
+}
+
+if (obj.config.sticker3 != undefined)
+{
+  sticker1 = obj.config.sticker3
+}
+
+if (obj.config.sticker4 != undefined)
+{
+  sticker1 = obj.config.sticker4
+}
+
+if (obj.config.sticker5 != undefined)
+{
+  sticker1 = obj.config.sticker5
+}
+
+console.log(sticker1)
+sharp("./Background/" + sticker1.name + "/image.png")
+.rotate(Number(sticker1.rotation), {background: "#ff00ff00"})
+.resize(sticker1.size[0], sticker1.size[1])
+
+.toBuffer().then(function(stick1)
+{
 
 
 sharp(body)
@@ -539,7 +604,10 @@ sharp.cache(false);
               {input: './Images/emptybar.png',  top: 230, left: 132},
               {input: grandBuffer,  top: 230, left: 132},
               
-              { input: out, top: 0, left: 0}])
+              { input: out, top: 0, left: 0},
+            {input: stick1, left: sticker1.position[0], top: sticker1.position[1]}
+            
+            ])
             .toBuffer()
             .then(function(outputBuffer) {
               debugOut = debugOut + '\n' +"error: ", err
@@ -620,7 +688,9 @@ debugOut = debugOut + '\n' +outputBuffer.toString()
               .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
   
 
-
+            })
+            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+         
           
           })
               .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });

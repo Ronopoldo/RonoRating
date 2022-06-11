@@ -208,7 +208,7 @@ const spamtonCommand = require("./src/spamtonCommand")
 const countService = require("./src/countService")
 const debugMode = require("./src/debugMode")
 const stickershopCommand = require("./src/stickershopCommand")
-
+const stickerCommand = require("./src/sticker")
 
 const checkCount = require("./scripts/checkCount")
 // client.on('clickButton', async (button) => {
@@ -303,6 +303,8 @@ pingedUser = i.user
       setCommand.setCommand(fs, i, ctx, sharp, canvas, ['/set', theme], i.user.id, isExist, getData, putData, debug)
     }
 
+    
+
     if (commandName == 'respecc') {
       respeccCommand.respeccCommand(i, MessageEmbed)
     }
@@ -358,6 +360,45 @@ pingedUser = i.user
       }else{
         setbadgeCommand.setbadgeCommand(fs, i, ctx, sharp, canvas, args, isExist, getData, putData, i.user.id, debug)
       }
+      }
+
+
+      if (commandName == 'sticker') {
+        let x = i.options.getNumber('x');
+        let y = i.options.getNumber('y');
+        let num = i.options.getNumber('номер');
+        let axis = i.options.getNumber('поворот');
+        let name = i.options.getString('название');
+
+        if (i.options.getSubcommand() == 'set')
+        {
+          let args = ['/sticker', num, 'set', name]
+          stickerCommand.stickerCommand(fs, i, ctx, sharp, canvas, args, i.user.id, isExist, getData, putData, debug)
+        }
+        if (i.options.getSubcommand() == 'size')
+        {
+          let args = ['/sticker', num, 'size', x, y]
+          stickerCommand.stickerCommand(fs, i, ctx, sharp, canvas, args, i.user.id, isExist, getData, putData, debug)
+        
+        }
+        if (i.options.getSubcommand() == 'rotation')
+        {
+          let args = ['/sticker', num, 'rotation', axis]
+          stickerCommand.stickerCommand(fs, i, ctx, sharp, canvas, args, i.user.id, isExist, getData, putData, debug)
+        
+        }
+        if (i.options.getSubcommand() == 'clear')
+        {
+          let args = ['/sticker', num, 'clear']
+          stickerCommand.stickerCommand(fs, i, ctx, sharp, canvas, args, i.user.id, isExist, getData, putData, debug)
+        
+        }
+        if (i.options.getSubcommand() == 'position')
+        {
+          let args = ['/sticker', num, 'position', x, y]
+          stickerCommand.stickerCommand(fs, i, ctx, sharp, canvas, args, i.user.id, isExist, getData, putData, debug)
+        
+        }
       }
 
 
@@ -527,6 +568,10 @@ client.on('messageCreate', msg => {
     case "/set":
       setCommand.setCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData, debug)
       break;
+
+      case "/sticker":
+        stickerCommand.stickerCommand(fs, msg, ctx, sharp, canvas, args, msg.author.id, isExist, getData, putData, debug)
+        break;
     case "/respecc":
       respeccCommand.respeccCommand(msg, MessageEmbed)
       break;

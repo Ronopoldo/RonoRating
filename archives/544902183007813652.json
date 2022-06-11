@@ -1,13 +1,13 @@
 {
 	"user": "544902183007813652",
-	"money": 257959,
+	"money": 257713,
 	"exp": "331.8478223737671",
 	"lvl": "60",
 	"credit": "1000",
 	"active": {
 		"text": {
 			"lvl": 33,
-			"exp": 301
+			"exp": 303
 		},
 		"daily": {
 			"lvl": 11,
@@ -25,7 +25,19 @@
 	"config": {
 		"badge1": "mdk",
 		"badge2": "staff",
-		"theme": "2020"
+		"theme": "2020",
+		"sticker1": {
+			"name": "smiley",
+			"position": [
+				1000,
+				255
+			],
+			"rotation": 0,
+			"size": [
+				200,
+				200
+			]
+		}
 	},
 	"themes": [
 		"1",
@@ -47,7 +59,8 @@
 		"ronostar",
 		"space",
 		"volcano",
-		"winterbabft"
+		"winterbabft",
+		"pixelice"
 	],
 	"badges": [
 		"contributor",
