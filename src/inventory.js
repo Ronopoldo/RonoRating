@@ -40,13 +40,14 @@ let  debugOut = ''
     debugOut = debugOut + '\n' + '________________' 
     + pingedUser
     debugOut = debugOut + '\n' + pg
-    let UserHave = obj.themes
+    let UserHave = obj.themes.concat(obj.stickers)
 
     
 
     debugOut = debugOut + '\n' + 'ARRAY: ' + UserHave
 let totalArray = ['empty','empty','empty','empty']
 let totalName = ['.','.','.','.']
+let totalType = []
 
 
     try {totalArray[0] = (UserHave[4*pg-4])}catch{}
@@ -55,26 +56,36 @@ let totalName = ['.','.','.','.']
     try {totalArray[3] = (UserHave[4*pg-1])}catch{}
 
 
+
     try {
       if (fs.existsSync('./Background/' + totalArray[0]))
       {
         debugOut = debugOut + '\n' + './Background/' + totalArray[0] + '/displayName'
-      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")}}catch(err){debugOut = debugOut + '\n' + err}
+      totalName[0] = fs.readFileSync('./Background/' + totalArray[0] + '/displayName', "utf8")
+      totalType[0] = fs.readFileSync('./Background/' + totalArray[0] + '/type', "utf8")
+    }
+    }catch(err){debugOut = debugOut + '\n' + err}
     try {
       if (fs.existsSync('./Background/' + totalArray[1]))
       {
         debugOut = debugOut + '\n' + './Background/' + totalArray[1] + '/displayName'
-      totalName[1] = fs.readFileSync('./Background/' + totalArray[1] + '/displayName', "utf8")}}catch(err){}
+      totalName[1] = fs.readFileSync('./Background/' + totalArray[1] + '/displayName', "utf8")
+      totalType[1] = fs.readFileSync('./Background/' + totalArray[1] + '/type', "utf8")
+    }}catch(err){}
     try {
       if (fs.existsSync('./Background/' + totalArray[2]))
       {
         debugOut = debugOut + '\n' + './Background/' + totalArray[2] + '/displayName'
-      totalName[2] = fs.readFileSync('./Background/' + totalArray[2] + '/displayName', "utf8")}}catch(err){}
+      totalName[2] = fs.readFileSync('./Background/' + totalArray[2] + '/displayName', "utf8")
+      totalType[2] = fs.readFileSync('./Background/' + totalArray[2] + '/type', "utf8")
+    }}catch(err){}
     try {
       if (fs.existsSync('./Background/' + totalArray[3]))
       {
         debugOut = debugOut + '\n' + './Background/' + totalArray[3] + '/displayName'
-      totalName[3] = fs.readFileSync('./Background/' + totalArray[3] + '/displayName', "utf8")}}catch(err){}
+      totalName[3] = fs.readFileSync('./Background/' + totalArray[3] + '/displayName', "utf8")
+      totalType[3] = fs.readFileSync('./Background/' + totalArray[3] + '/type', "utf8")
+    }}catch(err){}
 
 
 
@@ -158,6 +169,20 @@ let activateBegin = false;
 let activateEnd = false;
 
 
+if (obj.stickers == undefined || obj.stickers == null)
+{
+  obj.stickers = []
+}
+
+let stickersList = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.png', './Images/Blank.png']
+        
+        if (totalType[0] == 'sticker') { stickersList[0] = './Images/sticker.png' }
+        if (totalType[1] == 'sticker') { stickersList[1] = './Images/sticker.png' }
+        if (totalType[2] == 'sticker') { stickersList[2] = './Images/sticker.png' }
+        if (totalType[3] == 'sticker') { stickersList[3] = './Images/sticker.png' }
+
+console.log(totalType)
+
 let previous = new MessageButton()
 let next = new MessageButton()
 
@@ -235,7 +260,10 @@ sharp.cache(false);
                {input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539},
                { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85},
                {input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539},
-               
+               {input: stickersList[0], top: 70, left: 330},
+               { input: stickersList[1], top: 70, left: 780 },
+               { input: stickersList[2], top: 525, left: 330 },
+               { input: stickersList[3], top: 525, left: 780 },
               { input: out, top: 0, left: 0}
               ])
             .toBuffer()

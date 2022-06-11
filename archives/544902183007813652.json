@@ -1,17 +1,17 @@
 {
 	"user": "544902183007813652",
-	"money": 256303,
+	"money": 257959,
 	"exp": "331.8478223737671",
 	"lvl": "60",
 	"credit": "1000",
 	"active": {
 		"text": {
 			"lvl": 33,
-			"exp": 63
+			"exp": 301
 		},
 		"daily": {
-			"lvl": 10,
-			"exp": "2022-06-02T21:00:00.000Z 38"
+			"lvl": 11,
+			"exp": "2022-06-10T21:00:00.000Z 46"
 		},
 		"voice": {
 			"lvl": "19",
@@ -56,5 +56,8 @@
 		"nothing",
 		"staff"
 	],
-	"debugMode": true
+	"debugMode": false,
+	"stickers": [
+		"smiley"
+	]
 }

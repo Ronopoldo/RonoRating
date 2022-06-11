@@ -207,7 +207,7 @@ const artService = require("./src/artService")
 const spamtonCommand = require("./src/spamtonCommand")
 const countService = require("./src/countService")
 const debugMode = require("./src/debugMode")
-
+const stickershopCommand = require("./src/stickershopCommand")
 
 
 const checkCount = require("./scripts/checkCount")
@@ -416,6 +416,20 @@ client.on('messageCreate', msg => {
 
       shopCommand.shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false, getData, putData, isExist, debug);
       break;
+
+      // case "/stickershop":
+      //   case "/ss":
+      //     case "/shop2":
+
+      //   if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
+      //   console.log(shopPage)
+  
+      //   if (shopPage > 100) { shopPage = 1 }
+  
+      //   stickershopCommand.stickershopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, msg.author.id, false, getData, putData, isExist, debug);
+      //   break;
+
+
     case "/inv":
     case "/inventory":
 

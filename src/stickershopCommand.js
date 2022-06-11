@@ -1,21 +1,20 @@
-async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton, getData, putData, isExist, debug) {
+async function stickershopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton, getData, putData, isExist, debug) {
   console.log(await isExist(iniciatorID))
   if (await isExist(iniciatorID) == true) {
 
     let obj = await getData(iniciatorID)
     console.log('Галачька')
     let shopNames = []
-    fs.readdir('Background', (err, files) => {
+    fs.readdir('stickers', (err, files) => {
       files.forEach(file => {
         console.log(file);
-        let show = fs.readFileSync('./Background/' + file + '/forSale', "utf8");
+        let show = fs.readFileSync('./stickers/' + file + '/forSale', "utf8");
 
 
         if (show == 'true') {
-          let price = fs.readFileSync('./Background/' + file + '/price', "utf8")
-          let displayName = fs.readFileSync('./Background/' + file + '/displayName', "utf8")
-          let type = fs.readFileSync('./Background/' + file + '/type', "utf8")
-          shopNames[shopNames.length] = [file, price, displayName, type]
+          let price = fs.readFileSync('./stickers/' + file + '/price', "utf8")
+          let displayName = fs.readFileSync('./stickers/' + file + '/displayName', "utf8")
+          shopNames[shopNames.length] = [file, price, displayName]
         }
       });
 
@@ -35,7 +34,6 @@ async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, Messag
       let totalArray = ['empty', 'empty', 'empty', 'empty']
       let totalPrice = []
       let totalName = []
-      let totalType = []
 
       console.log('СТРАОНЦИАААА ' + shopPage)
 
@@ -56,11 +54,6 @@ async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, Messag
       try { totalName[1] = (shopNames[4 * shopPage - 3][2]) } catch{ }
       try { totalName[2] = (shopNames[4 * shopPage - 2][2]) } catch{ }
       try { totalName[3] = (shopNames[4 * shopPage - 1][2]) } catch{ }
-
-      try { totalType[0] = (shopNames[4 * shopPage - 4][3]) } catch{ }
-      try { totalType[1] = (shopNames[4 * shopPage - 3][3]) } catch{ }
-      try { totalType[2] = (shopNames[4 * shopPage - 2][3]) } catch{ }
-      try { totalType[3] = (shopNames[4 * shopPage - 1][3]) } catch{ }
 
 
       ctx.font = '50px "Main"'
@@ -132,26 +125,12 @@ async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, Messag
 
 
         let boughThemes = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.png', './Images/Blank.png']
-        if (obj.stickers == undefined || obj.stickers == null)
-        {
-          obj.stickers = []
-        }
-        let UserHave = obj.themes.concat(obj.stickers)
+        let UserHave = obj.themes
         console.log(UserHave)
         if (UserHave.includes(totalArray[0])) { boughThemes[0] = './Images/bought.png' }
         if (UserHave.includes(totalArray[1])) { boughThemes[1] = './Images/bought.png' }
         if (UserHave.includes(totalArray[2])) { boughThemes[2] = './Images/bought.png' }
         if (UserHave.includes(totalArray[3])) { boughThemes[3] = './Images/bought.png' }
-
-
-        let stickersList = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.png', './Images/Blank.png']
-        
-        if (totalType[0] == 'sticker') { stickersList[0] = './Images/sticker.png' }
-        if (totalType[1] == 'sticker') { stickersList[1] = './Images/sticker.png' }
-        if (totalType[2] == 'sticker') { stickersList[2] = './Images/sticker.png' }
-        if (totalType[3] == 'sticker') { stickersList[3] = './Images/sticker.png' }
-
-
         console.log('Тотал: ' + totalArray)
         console.log(shopPage)
         console.log('ПЕРВЫЙ ЭЛ: ' + shopNames[4 * shopPage - 4])
@@ -232,26 +211,17 @@ let btn4 = new MessageButton()
         sharp('./Images/shop.png')
           .resize(1024, 1024)
           .composite([
-            { input: './Background/' + totalArray[0] + '/icon.png', top: 130, left: 85 },
-            { input: './Background/' + totalArray[1] + '/icon.png', top: 130, left: 539 },
-            { input: './Background/' + totalArray[2] + '/icon.png', top: 584, left: 85 },
-            { input: './Background/' + totalArray[3] + '/icon.png', top: 584, left: 539 },
+            { input: './stickers/' + totalArray[0] + '/icon.png', top: 130, left: 85 },
+            { input: './stickers/' + totalArray[1] + '/icon.png', top: 130, left: 539 },
+            { input: './stickers/' + totalArray[2] + '/icon.png', top: 584, left: 85 },
+            { input: './stickers/' + totalArray[3] + '/icon.png', top: 584, left: 539 },
 
             { input: boughThemes[0], top: 145, left: 70 },
             { input: boughThemes[1], top: 145, left: 524 },
             { input: boughThemes[2], top: 600, left: 70 },
             { input: boughThemes[3], top: 600, left: 524 },
 
-            {input: stickersList[0], top: 70, left: 330},
-            { input: stickersList[1], top: 70, left: 780 },
-            { input: stickersList[2], top: 525, left: 330 },
-            { input: stickersList[3], top: 525, left: 780 },
-            
-            { input: out, top: 0, left: 0 }
-          
-
-
-          ])
+            { input: out, top: 0, left: 0 }])
           .toBuffer()
           .then(function(outputBuffer) {
             console.log(err)
@@ -296,4 +266,4 @@ let btn4 = new MessageButton()
   
 }
 
-module.exports = { shopCommand }
+module.exports = { stickershopCommand }

@@ -33,10 +33,30 @@ let ShopThemes = fs.readdirSync('./Background')
             fs.writeFileSync('./Background/' + args[1] + '/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
 
             // msg.reply(owned.toString())
-
+            let codeWord = 'темы'
+            if (fs.readFileSync('./Background/' + args[1] + '/type') == 'theme')
+            {
             obj.themes[obj.themes.length] = args[1]
+            codeWord = 'темы'
             obj.money = obj.money - price
-            msg.reply('Покупка темы прошла успешно!!\nПоставь её командой `/set ' + args[1] + '` :3').catch(err => {});
+            }
+
+
+            if (obj.stickers == undefined || obj.stickers == null)
+            {
+              obj.stickers = []
+            }
+
+
+            if (fs.readFileSync('./Background/' + args[1] + '/type') == 'sticker')
+            {
+            obj.stickers[obj.stickers.length] = args[1]
+            codeWord = 'значка'
+            obj.money = obj.money - price
+            }
+            
+            
+            msg.reply('Покупка ' + codeWord + ' прошла успешно!!\nПоставь её командой `/set ' + args[1] + '` :3').catch(err => {});
             putData(iniciator, obj)
           }
         }else{
