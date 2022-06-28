@@ -159,8 +159,8 @@ ctx.font = '30px "ArialRound"'
 let fontsize = 70
 
 
-        ctx.fillText(activeDays[lastActiveLvl + 1], 962, 400)
-        ctx.strokeText(activeDays[lastActiveLvl + 1], 962, 400)
+        ctx.fillText(activeDays[lastActiveLvl], 962, 400)
+        ctx.strokeText(activeDays[lastActiveLvl], 962, 400)
 
 ctx.textAlign = 'left'
         ctx.fillText(InputMassive[1], 689, 400)
@@ -178,7 +178,7 @@ ctx.textAlign = 'left'
         ctx.strokeText('Повседневность', 689, 320)
 debugOut = debugOut + '\n' +'222'
 sharp('./tasks/lastActiveBar.png')
-        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl + 1] * 269 + 1 ), height: 30 })
+        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl] * 269 + 1 ), height: 30 })
       .toBuffer()
             .then(function(outputBufferAct1) {
 
@@ -569,7 +569,9 @@ if (Number(sticker5.size[1]) > 0 && Number(sticker5.size[1]) != undefined && Num
 
 console.log(sticker1)
 sharp("./Background/" + sticker1.name + "/image.png")
+.rotate(Number(sticker1.rotation), {background: "#ff00ff00"})
 .resize(sticker1.size[0], sticker1.size[1])
+
 .toBuffer().then(function(stick1)
 {
 
