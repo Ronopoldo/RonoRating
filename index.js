@@ -414,7 +414,7 @@ pingedUser = i.user
 
 
 // Обработчик входящих сообщений
-client.on('messageCreate', msg => {
+client.on('messageCreate', async msg => {
   
 
 
@@ -638,7 +638,7 @@ msg.reply('Нет ты')
 }
 
 if (msg.channel.id == '687054666495688788') {
-countService.msgProcessing(msg, client, fs, checkCount.checker(msg, client))
+countService.msgProcessing(msg, client, checkCount.checker(msg, client), getData, putData, isExist)
 }
 
   if ((msg.channel.id == '940359291175596122') || (msg.channel.id == '940460074378330163'))

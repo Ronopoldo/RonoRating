@@ -241,7 +241,7 @@ sharp('./tasks/voiceBar.png')
 //////////////////////СЧЁТ
 
 let countLvl = obj.active.count.lvl
-let count = Math.floor(obj.active.text.exp)
+let count = Math.floor(obj.active.count.exp)
 let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
       ctx.font = '30px "ArialRound"'
     ctx.strokeStyle = 'white';
@@ -265,9 +265,9 @@ ctx.textAlign = 'center'
 
         ctx.font = '33px "ArialRound"'
 
-        let countwidth = Math.floor(269*((count-lvlUP[countLvl-1]).toFixed(1))/lvlUP[countLvl]+1)
-
-if ((countwidth >= 270) || (countwidth<1)) {countwidth = 269}
+        let countwidth = Math.floor(269 * ((Number(count) - Number(lvlUP[countLvl - 1])) / Number(lvlUP[countLvl - 1])) + 1)
+console.log('REWIJAKSLFA:FS ' + countwidth)
+if ((countwidth >= 270) || (countwidth<1)) {countwidth = 2}
               if (isNaN(countwidth)) {countwidth = 1}
 
               

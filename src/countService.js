@@ -1,5 +1,15 @@
-function msgProcessing(msg, client, fs, checkCount) {
-  
+async function msgProcessing(msg, client, checkCount, getData, putData, isExist) {
+  let existense = false
+  let obj = {}
+  if (await isExist(msg.author.id))
+  {
+    obj = await getData(msg.author.id)
+    existense = true
+    console.log('POPASODPOAPOPASOpdoap')
+  }
+
+
+
   msg.channel.messages.fetch({ limit: 2 })
     .then(messageMappings => {
       let messages = Array.from(messageMappings.values());
@@ -17,20 +27,24 @@ function msgProcessing(msg, client, fs, checkCount) {
   {
 
 console.log('1')
-    
-    let userCount = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/count', "utf8"))
-    let level = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/tasks/countlvl', "utf8"))
-    let money = Number(fs.readFileSync('./data/UserData/' + msg.author.id + '/integers/money', "utf8"))
+if (existense)
+{
+  console.log('pipi')
+
+    let userCount = Number(obj.active.count.exp)
+    let level = Number(obj.active.count.lvl)
+    let money = Number(obj.money)
     let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
     let rewards = [50, 50, 100, 100, 200, 400, 500, 600, 750, 1500, 2020, 10000, 15000]
 
     console.log(lvlUP[level])
+    console.log(userCount)
     if (userCount+1 >= lvlUP[level]) {
      
       console.log('yah')
       
-    fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/money', (money + rewards[level]).toString(), 'utf8')
-      fs.writeFileSync('./data/UserData/' + msg.author.id + '/tasks/countlvl', (level + 1).toString(), 'utf8')
+    obj.money = money + rewards[level]
+    obj.active.count.lvl = level + 1
 
   if (msg.author.bot == false){
       
@@ -39,8 +53,10 @@ console.log('1')
   }
     }
 
-fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/count', (userCount + 1).toString(), 'utf8')
-    
+obj.active.count.exp = userCount + 1
+
+putData(msg.author.id, obj)
+  }
   }else{
   msg.delete()
   }
@@ -49,6 +65,6 @@ fs.writeFileSync('./data/UserData/' + msg.author.id + '/integers/count', (userCo
       
     })
 
-    .catch(error => console.log("error", "Error fetching messages in channel"))
+    .catch(error => console.log("error", "Error fetching messages in channel" + error))
 }
 module.exports = { msgProcessing }

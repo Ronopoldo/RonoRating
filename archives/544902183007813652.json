@@ -1,65 +1,89 @@
 {
 	"user": "544902183007813652",
-	"money": 257724,
-	"exp": "331.8478223737671",
-	"lvl": "60",
+	"money": 268860,
+	"exp": 166.74782237376863,
+	"lvl": 61,
 	"credit": "1000",
 	"active": {
 		"text": {
-			"lvl": 33,
-			"exp": 307
+			"lvl": 34,
+			"exp": 417
 		},
 		"daily": {
-			"lvl": 11,
-			"exp": "2022-06-10T21:00:00.000Z 46"
+			"lvl": 12,
+			"exp": "2022-07-05T21:00:00.000Z 71"
 		},
 		"voice": {
 			"lvl": "19",
-			"exp": "12228.599999999758"
+			"exp": 12513.499999999849
 		},
 		"count": {
 			"lvl": "9",
-			"exp": "131"
+			"exp": 137
 		}
 	},
 	"config": {
 		"badge1": "mdk",
 		"badge2": "staff",
-		"theme": "2020",
+		"theme": "neonrain",
 		"sticker1": {
-			"name": "smiley",
+			"name": "like",
 			"position": [
-				700,
-				900
+				10,
+				800
 			],
-			"rotation": 87,
+			"rotation": 20,
 			"size": [
-				200,
+				180,
 				null
 			]
 		},
 		"sticker2": {
-			"name": "smiley",
+			"name": "covid-19",
 			"position": [
-				0,
-				0
+				749,
+				50
 			],
 			"rotation": 0,
 			"size": [
-				500,
-				0
+				100,
+				null
 			]
 		},
 		"sticker3": {
-			"name": "smiley",
+			"name": "covid-19",
 			"position": [
-				0,
-				0
+				900,
+				201
 			],
-			"rotation": 0,
+			"rotation": 40,
 			"size": [
-				200,
-				200
+				125,
+				null
+			]
+		},
+		"sticker4": {
+			"name": "utochka",
+			"position": [
+				3,
+				150
+			],
+			"rotation": 335,
+			"size": [
+				150,
+				null
+			]
+		},
+		"sticker5": {
+			"name": "blueheart",
+			"position": [
+				600,
+				50
+			],
+			"rotation": 30,
+			"size": [
+				50,
+				null
 			]
 		}
 	},
@@ -84,7 +108,8 @@
 		"space",
 		"volcano",
 		"winterbabft",
-		"pixelice"
+		"pixelice",
+		"neonrain"
 	],
 	"badges": [
 		"contributor",
@@ -95,6 +120,10 @@
 	],
 	"debugMode": false,
 	"stickers": [
-		"smiley"
+		"smiley",
+		"covid-19",
+		"utochka",
+		"like",
+		"blueheart"
 	]
 }
