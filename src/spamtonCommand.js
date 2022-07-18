@@ -1,9 +1,8 @@
-function spamtonCommand(msg, fs, client, args) {
+async function spamtonCommand(msg, fs, client, args, getData, putData, isExist) {
   {
      if (msg.member.id == '733603141559386113')
     {
-    if (fs.existsSync('./data/UserData/' + msg.member.id))
-   {
+
 
 
 
@@ -49,33 +48,35 @@ function spamtonCommand(msg, fs, client, args) {
      pingedUser = pingedUser.replace("!",'')
      pingedUser = pingedUser.replace(">",'')
    }else {}
-
-   if (fs.existsSync('./data/UserData/' + pingedUser))
+let obj = await getData(pingedUser)
+   if (await isExist(pingedUser))
    { }else{
      msg.reply('Чел... Я такова не нашёл сори лол')
      pingedUser = msg.member.id}
     client.users.fetch(pingedUser).then(User => 
   {
           let CurrentDate = new Date(new Date().toLocaleString("en-US", {timeZone: "Europe/Moscow"})).toJSON(); 
+	
 
+         obj.themes[obj.themes.length] = '[SPAMTON]'
 
-        fs.writeFileSync('./data/UserData/' + pingedUser + '/themes/[SPAMTON]', CurrentDate)
-
-            let owned = Number(fs.readFileSync('./Background/[SPAMTON]/owned', "utf8"));
-            fs.writeFileSync('./Background/[SPAMTON]/owned',(owned + 1).toString(), 'utf8', (err) => { console.log(err) })
-
+      console.log(obj)
+      console.log('-===========-')
+	 putData(pingedUser, obj)
         
 msg.reply('Тема была успешно [ВЫДАНА] пользователю [<@' + pingedUser + '>]')
 
 
   },error => {msg.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
-  }
+  
 
-   
+     
   }else{
     msg.reply('Чел, лол, у тя полномочий нет) Ебать ты попуск кнш')
+  
   }
-  }
-  }
+}
+}
+  
 
 module.exports = { spamtonCommand }

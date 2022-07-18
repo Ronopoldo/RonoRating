@@ -10,22 +10,18 @@ async function msgProcessing(msg, client, checkCount, getData, putData, isExist)
 
 
 
-  msg.channel.messages.fetch({ limit: 2 })
-    .then(messageMappings => {
-      let messages = Array.from(messageMappings.values());
-      let previousMessage = messages[1].content;
+  let count = await checkCount(client)
+
+  console.log(count + '<===')
 
 
+      
 
-      let splittedMsg = previousMessage.split(" ");
-      console.log('-===================')
-      let count = splittedMsg[0]
-      console.log(splittedMsg)
-
-
-  if ( msg.content.split(" ")[0] == (Number(count) + 1).toString())
+  if (msg.content.split(" ")[0] == (Number(count) + 1).toString())
   {
 
+
+    client.guilds.cache.get("968122042765422682").channels.cache.get("998542566918197388").messages.cache.get("998544849357779024").edit('{"count" :' + (Number(count) + 1).toString() + '}');
 console.log('1')
 if (existense)
 {
@@ -58,13 +54,12 @@ obj.active.count.exp = userCount + 1
 putData(msg.author.id, obj)
   }
   }else{
+
+    if (msg.author.id != "899380887282675743")
+    {
   msg.delete()
-  }
-
-
-      
-    })
-
-    .catch(error => console.log("error", "Error fetching messages in channel" + error))
+    }  
 }
+
+    }
 module.exports = { msgProcessing }

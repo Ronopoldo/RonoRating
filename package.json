@@ -21,7 +21,7 @@
     "mongoose": "^5.13.7",
     "reconlx": "^2.3.2",
     "request": "^2.88.2",
-    "sharp": "^0.30.4",
+    "sharp": "^0.30.7",
     "weather-js": "^2.0.0"
   },
   "devDependencies": {

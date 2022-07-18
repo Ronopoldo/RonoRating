@@ -1,6 +1,7 @@
-async function test(getData, msg) {
-msg.channel.send('123')
-  let userdata = await getData('544902183007813652')
-  console.log(userdata.config.theme)
+async function test(msg, checkCount, client) {
+console.log(checkCount(client))
+let count = await checkCount(client)
+await console.log('->' +count )
+await msg.reply(count.toString())
 }
 module.exports = { test }

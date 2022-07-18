@@ -108,8 +108,10 @@ async function debug(msg, message, obj)
 }
 
 
+
 async function putData(userid, obj)
 {
+  console.log(obj)
   const managment = client.guilds.cache.get("968122042765422682");
 const db = managment.channels.cache.get("968123915920617472");
 const log = managment.channels.cache.get("978739540736999444");
@@ -117,6 +119,9 @@ const log = managment.channels.cache.get("978739540736999444");
   let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
   let msgid = userlist[userid]
   let dbmsg = await db.messages.fetch(msgid)
+  
+  console.log('1232123132123')
+  console.log(obj)
   try{
   if (obj.debugMode == true)
   {
@@ -134,6 +139,7 @@ const log = managment.channels.cache.get("978739540736999444");
 log.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + '` (старая дата)')
   let updData = JSON.stringify(obj);
 console.log(msgid)
+  console.log(updData)
   dbmsg.edit(updData)
 }
 
@@ -445,9 +451,9 @@ client.on('messageCreate', async msg => {
     case "/start":
       startCommand.startCommand(msg, msg.author, isExist, putData, debug, fs, client);
       break;
-    // case "/test":
-    //   test.test(getData, msg)
-    //   break;
+    case "/test":
+      test.test(msg, checkCount.checker, client)
+      break;
     case "/shop":
 
       if ((isNaN(Number(args[1])) == true) || (Number(args[1] == undefined)) || (args[1] == undefined || (args[1] == NaN))) { shopPage = 1 } else { shopPage = Number(args[1]) }
@@ -612,15 +618,15 @@ client.on('messageCreate', async msg => {
       jsCommand.jsCmd(msg, fs, client, args, MessageEmbed, msg.content, msg.author.id)
       break;
 
-    // case "/get":
-    //   getCommand.getCmd(msg, fs, client, GuildMemberRoleManager, MessageEmbed)
-    //   break;
-    // case "/spamton_theme":
-    //   spamtonCommand.spamtonCommand(msg, fs, client, args)
-    //   break;
+    case "/get":
+       getCommand.getCmd(msg, fs, client, GuildMemberRoleManager, MessageEmbed)
+      break;
+     case "/spamton_theme":
+     spamtonCommand.spamtonCommand(msg, fs, client, args, getData, putData, isExist)
+      break;
     default:
   {
-        calculateUserData.calculateUserData(fs, msg, client, ctx, sharp, canvas, talkedRecently, getData, isExist, putData, debug);
+        calculateUserData.calculateUserData(fs, msg, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug);
 }  
 }
 
@@ -638,7 +644,7 @@ msg.reply('Нет ты')
 }
 
 if (msg.channel.id == '687054666495688788') {
-countService.msgProcessing(msg, client, checkCount.checker(msg, client), getData, putData, isExist)
+countService.msgProcessing(msg, client, checkCount.checker, getData, putData, isExist)
 }
 
   if ((msg.channel.id == '940359291175596122') || (msg.channel.id == '940460074378330163'))
@@ -754,7 +760,7 @@ client.on("ready", async() => {
 
 
   
-setInterval(function() {
+setInterval(async function() {
 function zeros(i) {
       if (i < 10) {
         return "0" + i;
@@ -762,7 +768,7 @@ function zeros(i) {
         return i;
       }
     }
-
+    let nextNum = await checkCount.checker(client)
 
 const guild = client.guilds.cache.get("544902879534907392");
   const managment = client.guilds.cache.get("968122042765422682");
@@ -779,7 +785,7 @@ const countChannel = guild.channels.cache.get("687054666495688788")
 
 
   
-countChannel.setTopic('Следующее число: ' + (Number(lastMessage.content.split(" ")[0]) + 1).toString() + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
+countChannel.setTopic('Следующее число: ' + (Number(nextNum) + 1).toString() + ' | ДАННЫЕ НА ' + CurrentDate.getHours() + ':' + zeros(CurrentDate.getMinutes()) + ':' + zeros(CurrentDate.getSeconds()))
 
 })
 .catch(console.error);
@@ -851,26 +857,25 @@ console.log(newMessage.channel.id)
   }catch(err) { console.log(err) }
 });
 
-client.on("messageDelete", (msg) => {
+client.on("messageDelete", async (msg) => {
 
 if (msg.channel.id == '687054666495688788') {
 
-  msg.channel.messages.fetch({ limit: 1 }).then(messages => {
-  let lastMessage = messages.first();
-    if ((Number(lastMessage.content.split(" ")[0]) + 1).toString() == msg.content.split(" ")[0])
+  console.log('УДАЛЕНИЕ')
+  console.log(msg.content)
+let count = await checkCount.checker(client)
+console.log('VVVV')
+console.log(count)
+console.log((msg.content.split(" ")[0]).toString())
+console.log("^^^^")
+    if (Number(count) == Number(msg.content.split(" ")[0]))
     {
-      msg.channel.send( msg.content.split(" ")[0] + ' - <@' + msg.author.id + '>')
+      console.log('E')
+      msg.channel.send( count + ' - <@' + msg.author.id + '>')
     }
-
-
-
-})
-.catch(console.error);
-
+  }
 }
-
-});
-
+)
 // client.on('voiceStateUpdate', (oldMember, newMember) => {
 //   let newUserChannel = newMember.voiceChannel
 //   let oldUserChannel = oldMember.voiceChannel
