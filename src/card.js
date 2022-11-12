@@ -1,12 +1,11 @@
-async function cardCommand(fs, msg, ctx, sharp, canvas, client, iniciator, interaction, isExist, getData, debug) {
+async function cardCommand(bot, fs, ctx , msg, sharp, canvas, client, iniciator, interaction, isExist, getData, debug,gctx) {
   let debugOut = ''
 // 'use strict';
   {
     const Color = require('color');
-    if (isExist('iniciator'))
+    if (isExist(iniciator))
    {
-interaction.reply('Загружаем...')
-     
+ctx.reply('Загружаем...')
 
 let pingedUser = iniciator
 
@@ -18,40 +17,25 @@ let pingedUser = iniciator
 
     
     if (msg.toLowerCase().startsWith('/card')) { preview = false}
+
+
+
+
+
+
     if (args.length >= 2)
     {
       pingedUser = args[1]
-      pingedUser = pingedUser.replace("<@",'')
-      pingedUser = pingedUser.replace("!",'')
-      pingedUser = pingedUser.replace(">",'')
-    }
-    if (args.length >= 2)
-    {
-      pingedUser = args[1]
-    }
-    if ((args.length >= 2) && (!args[1].includes('<@')))
-    {
-      pingedUser = '<@' + args[1] + '>'
-      debugOut = debugOut + '\n' +pingedUser
-    }
-    if (args.length == 1)
-    {
-      debugOut = debugOut + '\n' +'прошло'
-      pingedUser = '<@' + iniciator +">"
+      pingedUser = pingedUser.replace("@",'')
+      //ПРЕОБРАЗОВАТЬ В АЙДИ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     if (args.length > 2)
     {    
-      interaction.channel.send('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упоминание')
+      ctx.reply('Слишком много аргументов! После команды Вам следует написать лишь один аргумент - упомянание пользователя, его id или вообще не использовать аргументы.\nНе смотря на это, мы всё равно попробуем распознать упоминание')
     }
 
 
-   if (pingedUser.includes('<@'))
-   {
-     pingedUser = pingedUser.replace("<@",'')
-     pingedUser = pingedUser.replace("!",'')
-     pingedUser = pingedUser.replace(">",'')
-   }else {}
 
    if (isExist(pingedUser))
    { }else{pingedUser = iniciator}
@@ -59,23 +43,24 @@ let pingedUser = iniciator
      debugOut = debugOut + '\n' +'ПОПАааа'
 
      let obj = await getData(pingedUser)
-debugOut = debugOut + '\n' +obj
-    client.users.fetch(pingedUser).then(User => 
-  {
+debugOut = debugOut + '\n' + obj
 
-   
+  //   client.users.fetch(pingedUser).then(User => 
+  // {
 
+   let User = await bot.telegram.getChat(pingedUser)
 
+console.log('p1')
 //АЧВИКИ
-ctx.font = '30px "ArialRound"'
+gctx.font = '30px "ArialRound"'
 
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
 
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.textAlign = 'right'
+    gctx.clearRect(0, 0, canvas.width, canvas.height);
+    gctx.textAlign = 'right'
 
 let fontsize = 70
 
@@ -98,25 +83,25 @@ let fontsize = 70
 
   NeededXP = Math.floor(NeededXP)
 
-        // interaction.channel.send(currentXP.toString() + '/' + NeededXP.toString())
-        ctx.fillText(NeededXP, 458, 400)
-        ctx.strokeText(NeededXP, 458, 400)
+        // interaction.reply(currentXP.toString() + '/' + NeededXP.toString())
+        gctx.fillText(NeededXP, 458, 400)
+        gctx.strokeText(NeededXP, 458, 400)
 
-ctx.textAlign = 'left'
-        ctx.fillText(currentXP, 175, 400)
-        ctx.strokeText(currentXP, 175, 400)
+gctx.textAlign = 'left'
+        gctx.fillText(currentXP, 175, 400)
+        gctx.strokeText(currentXP, 175, 400)
 
-ctx.textAlign = 'center'
-        ctx.fillText(lastLvl + ' уровень', 323, 400)
+gctx.textAlign = 'center'
+        gctx.fillText(lastLvl + ' уровень', 323, 400)
 
 
 
-        ctx.font = '47px "ArialRound"'
+        gctx.font = '47px "ArialRound"'
 
-    ctx.strokeStyle = 'white';
-ctx.textAlign = 'left'
-        ctx.fillText('Активность', 185, 330)
-        ctx.strokeText('Активность', 185, 330)
+    gctx.strokeStyle = 'white';
+gctx.textAlign = 'left'
+        gctx.fillText('Активность', 185, 330)
+        gctx.strokeText('Активность', 185, 330)
 
         let activeImg = './Images/Blank.png'
         if (-1<lastLvl<9999)
@@ -124,18 +109,24 @@ ctx.textAlign = 'left'
           activeImg = './tasks/activity/basic.png'
         }
 
-
+await console.log('p2')
 
 
         let actwidth = Math.floor(270 * (currentXP / NeededXP) + 1)
     debugOut = debugOut + '\n' +'111'
              if (actwidth >= 270) {actwidth = 269}
-      sharp('./tasks/fullBar.png')
- 
-        .extract({ left: 0, top: 0, width: actwidth, height: 30 })
-      .toBuffer()
-            .then(function(outputBufferAct) {
+             await console.log('p2.0.1')
 
+
+     sharp('./tasks/fullBar.png')
+        .extract({ left: 0, top: 0, width: actwidth, height: 30 })
+
+        // await console.log('2.0.2')
+        
+      .toBuffer()
+      
+            .then(function(outputBufferAct) {
+              console.log('p2.1')
 //Актив дни подряд
 let lastActiveLvl  = 0
 let lastActive = '0 0 0'
@@ -148,34 +139,35 @@ InputMassive = lastActive.split(' ');
   lastActiveLvl = 0
   InputMassive = ['2022-05-20T00:00:00.000Z','0']
 }
+console.log('p2.2')
 let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
 
-ctx.font = '30px "ArialRound"'
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'right'
+gctx.font = '30px "ArialRound"'
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
+    gctx.textAlign = 'right'
 
 let fontsize = 70
+console.log('p3')
+
+        gctx.fillText(activeDays[lastActiveLvl], 962, 400)
+        gctx.strokeText(activeDays[lastActiveLvl], 962, 400)
+
+gctx.textAlign = 'left'
+        gctx.fillText(InputMassive[1], 689, 400)
+        gctx.strokeText(InputMassive[1], 689, 400)
+
+gctx.textAlign = 'center'
+        gctx.fillText(lastActiveLvl + ' уровень', 827, 400)
 
 
-        ctx.fillText(activeDays[lastActiveLvl], 962, 400)
-        ctx.strokeText(activeDays[lastActiveLvl], 962, 400)
+        gctx.font = '33px "ArialRound"'
 
-ctx.textAlign = 'left'
-        ctx.fillText(InputMassive[1], 689, 400)
-        ctx.strokeText(InputMassive[1], 689, 400)
-
-ctx.textAlign = 'center'
-        ctx.fillText(lastActiveLvl + ' уровень', 827, 400)
-
-
-        ctx.font = '33px "ArialRound"'
-
-    ctx.strokeStyle = 'white';
-ctx.textAlign = 'left'
-        ctx.fillText('Повседневность', 689, 320)
-        ctx.strokeText('Повседневность', 689, 320)
+    gctx.strokeStyle = 'white';
+gctx.textAlign = 'left'
+        gctx.fillText('Повседневность', 689, 320)
+        gctx.strokeText('Повседневность', 689, 320)
 debugOut = debugOut + '\n' +'222'
 sharp('./tasks/lastActiveBar.png')
         .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl] * 269 + 1 ), height: 30 })
@@ -188,42 +180,42 @@ sharp('./tasks/lastActiveBar.png')
 let currentLvl = obj.active.voice.lvl
         let userActivity = obj.active.voice.exp
 
-        
+        console.log('p4')
 let lvlArray = [0.5,1,1.5,2,3,4,5,10,15,20,25,30,45,50,75,90,120,150,180,220,280,320,390,460,500,600,750,800,900,1000]
 
       let rewards = [50,100,300,400,800,1200,3000, 7000, 7000, 8500, 9000, 9000,9000,10000,11000,15000,16000,17000,18000,19000,20000,25000,25000,25000,25000,25000,25000,40000,40000,250000]
 
 
-      ctx.font = '30px "ArialRound"'
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'right'
+      gctx.font = '30px "ArialRound"'
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
+    gctx.textAlign = 'right'
 
 let fontsize = 70
 if (currentLvl > 29) { currentLvl = 29 }
 
-        ctx.fillText(lvlArray[currentLvl], 458, 587)
-        ctx.strokeText(lvlArray[currentLvl], 458, 587)
+        gctx.fillText(lvlArray[currentLvl], 458, 587)
+        gctx.strokeText(lvlArray[currentLvl], 458, 587)
 
-ctx.textAlign = 'left'
-        ctx.fillText((userActivity/60).toFixed(1), 175, 587)
-        ctx.strokeText((userActivity/60).toFixed(1), 175, 587)
+gctx.textAlign = 'left'
+        gctx.fillText((userActivity/60).toFixed(1), 175, 587)
+        gctx.strokeText((userActivity/60).toFixed(1), 175, 587)
 
-ctx.textAlign = 'center'
-        ctx.fillText(currentLvl + ' уровень', 323, 587)
+gctx.textAlign = 'center'
+        gctx.fillText(currentLvl + ' уровень', 323, 587)
 
 
-        ctx.font = '33px "ArialRound"'
+        gctx.font = '33px "ArialRound"'
 
 
 
 debugOut = debugOut + '\n' +'SECRET NUM: ' + Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
-    ctx.strokeStyle = 'white';
-ctx.textAlign = 'left'
-        ctx.fillText('Голосовой актив', 185, 507)
-        ctx.strokeText('Голосовой актив', 185, 507)
+    gctx.strokeStyle = 'white';
+gctx.textAlign = 'left'
+        gctx.fillText('Голосовой актив', 185, 507)
+        gctx.strokeText('Голосовой актив', 185, 507)
         
         let vwidth = Math.floor(269*((userActivity/60).toFixed(1))/lvlArray[currentLvl]+1)
 
@@ -238,32 +230,34 @@ sharp('./tasks/voiceBar.png')
             .then(function(outputBufferAct2) {
 
 
+             
+              console.log('p5')
 //////////////////////СЧЁТ
 
 let countLvl = obj.active.count.lvl
 let count = Math.floor(obj.active.count.exp)
 let lvlUP = [1, 5, 10, 15, 20, 40, 60, 80, 100, 200, 300, 500, 750]
-      ctx.font = '30px "ArialRound"'
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'right'
+      gctx.font = '30px "ArialRound"'
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
+    gctx.textAlign = 'right'
 
 
 if (countLvl > 13) { countLvl = 13 }
 
-        ctx.fillText(lvlUP[countLvl], 962, 587)
-        ctx.strokeText(lvlUP[countLvl], 962, 587)
+        gctx.fillText(lvlUP[countLvl], 962, 587)
+        gctx.strokeText(lvlUP[countLvl], 962, 587)
 
-ctx.textAlign = 'left'
-        ctx.fillText(count, 689, 587)
-        ctx.strokeText(count,689, 587)
+gctx.textAlign = 'left'
+        gctx.fillText(count, 689, 587)
+        gctx.strokeText(count,689, 587)
 
-ctx.textAlign = 'center'
-        ctx.fillText(countLvl + ' уровень', 827, 587)
+gctx.textAlign = 'center'
+        gctx.fillText(countLvl + ' уровень', 827, 587)
 
 
-        ctx.font = '33px "ArialRound"'
+        gctx.font = '33px "ArialRound"'
 
         let countwidth = Math.floor(269 * ((Number(count) - Number(lvlUP[countLvl - 1])) / Number(lvlUP[countLvl - 1])) + 1)
 console.log('REWIJAKSLFA:FS ' + countwidth)
@@ -272,11 +266,11 @@ if ((countwidth >= 270) || (countwidth<1)) {countwidth = 2}
 
               
 
-    ctx.strokeStyle = 'white';
-ctx.textAlign = 'left'
-              ctx.font = '50px "ArialRound"'
-        ctx.fillText('Счёт', 689,515)
-        ctx.strokeText('Счёт', 689, 515)
+    gctx.strokeStyle = 'white';
+gctx.textAlign = 'left'
+              gctx.font = '50px "ArialRound"'
+        gctx.fillText('Счёт', 689,515)
+        gctx.strokeText('Счёт', 689, 515)
 
 debugOut = debugOut + '\n' +'444'
 sharp('./tasks/countBar.png')
@@ -302,11 +296,11 @@ sharp('./tasks/countBar.png')
 
 
 ///////////////АКТИВ ГЛОБАЛ
-      ctx.font = '20px "ArialRound"'
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'left'
+      gctx.font = '20px "ArialRound"'
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
+    gctx.textAlign = 'left'
 
 let fontsize = 45
 
@@ -318,7 +312,7 @@ let barSize = 1
   let currentGlobalExp = obj.exp
   grandPath = './Images/grandbar.png'
   barSize = 
-  ctx.fillText(Math.floor((Number(currentGlobalExp)).toString()), 132,255)
+  gctx.fillText(Math.floor((Number(currentGlobalExp)).toString()), 132,255)
 
   let neededExp = 12
   let active1 = true
@@ -362,12 +356,12 @@ sharp(grandPath)
 
 
 
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.fillStyle = 'black';
+    gctx.strokeStyle = 'black';
+    gctx.lineWidth = 2;
+    gctx.fillStyle = 'black';
 
-ctx.font = '50px "Main"'
-    ctx.textAlign = 'left'
+gctx.font = '50px "Main"'
+    gctx.textAlign = 'left'
 
 fontsize = 70
 let nameLength = User.tag.length
@@ -400,15 +394,15 @@ let Themes = obj.themes
 
 
 
-ctx.font = fontsize + 'px "Main"'
-ctx.fillText(User.tag, 245, 110)
+gctx.font = fontsize + 'px "Main"'
+gctx.fillText(User.tag, 245, 110)
 debugOut = debugOut + '\n' +'Тег: ' + User.tag
 
-ctx.font = '40px "ArialRound"'
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = 'black';
-    ctx.textAlign = 'left'
+gctx.font = '40px "ArialRound"'
+    gctx.strokeStyle = 'white';
+    gctx.lineWidth = 1;
+    gctx.fillStyle = 'black';
+    gctx.textAlign = 'left'
 
 
 
@@ -433,16 +427,16 @@ outputMoney = (Math.floor(Money/1000/10)/100).toString() + 'M'
 
 
 
-ctx.fillText(outputMoney, 275, 168)
+gctx.fillText(outputMoney, 275, 168)
 debugOut = debugOut + '\n' +'ДЕНЬГИ ВНЕСЕНЫ ' + outputMoney
 debugOut = debugOut + '\n' +'Мани: ' + outputMoney
-ctx.fillText(Level, 275, 218)
+gctx.fillText(Level, 275, 218)
 debugOut = debugOut + '\n' +'Мани: ' + Level
 debugOut = debugOut + '\n' +'VVV AMOUNT VVV'
-ctx.font = '85px "ArialRound"'
-ctx.textAlign = 'right'
+gctx.font = '85px "ArialRound"'
+gctx.textAlign = 'right'
 debugOut = debugOut + '\n' +Themes.toString()
-ctx.fillText(Themes.length , 580, 208)
+gctx.fillText(Themes.length , 580, 208)
 debugOut = debugOut + '\n' +'Мани: ' + Level
 
 // let out = fs.createWriteStream(pingedUser + 'temp.png')
@@ -463,7 +457,7 @@ if (preview == true) {
   if (fullarray.includes(args[1].toLowerCase()))
   {
     theme = args[1].toLowerCase()
-  }else{interaction.channel.send('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
+  }else{interaction.reply('К сожалению, тема не была найдена! Загрузка обычной карточки...')}
   }
 }
 
@@ -471,7 +465,7 @@ if (preview == true) {
 
 
 if (args[1] == 'hentai' ) { 
-  interaction.channel.send ('Сори, но иди ты!')
+  interaction.reply ('Сори, но иди ты!')
   theme = 'default'
   }
 
@@ -680,44 +674,11 @@ sharp.cache(false);
             ])
             .toBuffer()
             .then(function(outputBuffer) {
-              debugOut = debugOut + '\n' +"error: ", err
-              if (interaction.user != undefined)
-              {
-              interaction.editReply({files: [outputBuffer]}).catch(err => {});
-              ctx.clearRect(0, 0, canvas.width, canvas.height)
-              try{
-                debug(interaction, debugOut, obj)
-              }catch(err){}
-              }else
-              {
-                interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
-                try{
-                  debug(interaction, debugOut, obj)
-                }catch(err){}
-              ctx.clearRect(0, 0, canvas.width, canvas.height)
-              }
-              // fs.unlinkSync(pingedUser + "temp.png")
-
-outputBuffer = '0'
-outputBufferAct = null
-outputBufferAct1 = null
-  outputBufferAct2 = null
-              outputBufferAct3 = null
-              grandBuffer = null
-              out = null
-debugOut = debugOut + '\n' +outputBuffer.toString()
-
-// var variables = ""
-// for (var name in this)
-// {
-//     variables += name + "\n";
-// eval('debugOut = debugOut + '\n' +' + name + ')')
-// }
-// debugOut = debugOut + '\n' +variables)
-
+              // ctx.replyWithPhoto({photo: outputBuffer})
+              ctx.reply('DONE')
 
               })
-              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }else{
             image
             .composite([
@@ -732,48 +693,31 @@ debugOut = debugOut + '\n' +outputBuffer.toString()
               { input: out, top: 0, left: 0, blend: 'dest-over'}])
             .toBuffer()
             .then(function(outputBuffer) {
-              debugOut = debugOut + '\n' +"error: ", err
-                            if (interaction.user != undefined)
-              {
-              interaction.editReply({files: [outputBuffer]}).catch(err => {});
-              ctx.clearRect(0, 0, canvas.width, canvas.height)
-              try{
-                debug(interaction, debugOut, obj)
-              }catch(err){}
-              }else
-              {
-                interaction.channel.send({files: [outputBuffer]}).catch(err => {});;
-                try{
-                  debug(interaction, debugOut, obj)
-                }catch(err){}
-              ctx.clearRect(0, 0, canvas.width, canvas.height)
-              }
-              ctx.clearRect(0, 0, canvas.width, canvas.height)
-              // fs.unlinkSync(pingedUser + "temp.png")
+              ctx.replyWithPhoto({photo: outputBuffer})
               })
-              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           }
 
           })
-              .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
   
 
             })
-            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
          
           
           })
-              .catch(err => { interaction.channel.send('1Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+              .catch(err => { interaction.reply('1Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
             })
-            .catch(err => { interaction.channel.send('2Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            .catch(err => { interaction.reply('2Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
           })
-          .catch(err => { interaction.channel.send('3Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+          .catch(err => { interaction.reply('3Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
         })
-        .catch(err => { interaction.channel.send('4Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+        .catch(err => { interaction.reply('4Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
       })
       .catch(err => { 
         console.log(err)
-        interaction.channel.send('5Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+        interaction.reply('5Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
         });      
 
@@ -783,22 +727,22 @@ debugOut = debugOut + '\n' +outputBuffer.toString()
         })
        
             })
- .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+ .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
             })
-            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })
-            .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+            .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
  })
- .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+ .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
   })
-  .catch(err => { interaction.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+  .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
 
 
   
 
-        },error => {interaction.channel.send('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
+        // },error => {interaction.reply('Хей! Что то пошло не так! Убедись, что ты указал верный ID или упомянул существующего пользователя!\nКод ошибки: ' + error)})
   }
 
    

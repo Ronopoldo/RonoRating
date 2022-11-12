@@ -1,6 +1,6 @@
-async function calculateUserData(fs, msg, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug) {
+async function calculateUserData(fs, ctx, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug) {
   const guild = client.guilds.cache.get("544902879534907392");
-  if (msg.channel.type !== 'dm' && msg.channel.id != '978739540736999444')
+  if (ctx)
   {
     if (await isExist(msg.author.id) == true)
     {

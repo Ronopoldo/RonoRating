@@ -1,5 +1,7 @@
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const fs = require("fs");
 const axios = require("axios");
+const sharp = require("sharp");
 
 const talkedRecently = new Set();
 const Discord = require('discord.js');
@@ -149,24 +151,26 @@ gulp.task('default', function() {
 const { MessageEmbed } = require('discord.js');
 let active = true
 let shopPage = 1
-const { createCanvas, loadImage, registerFont } = require('canvas');
-const sharp = require("sharp");
+
 
 registerFont('./fonts/main.ttf', { family: "Main" })
 registerFont('./fonts/Rounded.otf', { family: "ArialRound" })
 
 const canvas = createCanvas(1024, 1024)
-const ctx = canvas.getContext('2d')
+const gctx = canvas.getContext('2d')
 let activeLvl = true
 let NeededXP = 5
 let CycleNum = -1
+
+
+
 
 // const test = require("./src/test");
 const shopCommand = require("./src/shop");
 // const invCommand = require("./src/inventory");
 // const startCommand = require("./src/start");
 const calculateUserData = require("./src/calculateUserData");
-// const cardCommand = require("./src/card");
+const cardCommand = require("./src/card");
 // const claimCommand = require("./src/claim");
 // const buyCommand = require("./src/buy")
 // const setCommand = require("./src/set")
@@ -194,7 +198,7 @@ const calculateUserData = require("./src/calculateUserData");
 
 const { Telegraf } = require('telegraf')
 
-const bot = new Telegraf('')
+const bot = new Telegraf('5609207584:AAFDJpUj5bQRyOalJ_eADL-ZsEbAHPmCBB8')
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 
@@ -203,36 +207,36 @@ bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on('sticker', (ctx) => ctx.reply('👍'))
 
 
-АКТИВ
-bot.hears(/./, async (ctx) => 
-{
-    if (ctx.chat.id == '-800289565')
-    {
-        await calculateUserData.calculateUserData(fs, ctx, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug)
-    }
-})
-
-// bot.command('shop', async (ctx) => 
+// // АКТИВ
+// bot.hears(/./, async (ctx) => 
 // {
 //     if (ctx.chat.id == '-800289565')
 //     {
-//         await ctx.reply(ctx.message)
+//         console.log(ctx.message.text)
+//         // await calculateUserData.calculateUserData(fs, ctx, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug)
 //     }
 // })
 
-
-
-bot.launch()
-console.log('DONE')
-
-
-
-
-
-
+bot.command('shop', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        await ctx.reply(ctx.message)
+    }
+})
 
 
 
+bot.command('card', async (ctx) => 
+{
+    // ctx.reply(ctx.message.text)
+    // await console.log(await bot.telegram.getChat('@Ronopoldo'))
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      cardCommand.cardCommand(bot, fs, ctx, ctx.message.text, sharp, canvas, client, ctx.from.id, ctx, isExist, getData, debug, gctx)
+    }
+})
 
 
 
@@ -246,5 +250,19 @@ console.log('DONE')
 
 
 
+
+
+
+
+
+
+
+
+client.on("ready", async() =>
+{
+    console.log('DISCORD LOADED')
+    bot.launch()
+    console.log('DONE')
+})
 
 client.login(require('../config.json').token);
