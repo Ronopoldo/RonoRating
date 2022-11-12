@@ -8,7 +8,8 @@ async function cardCommand(bot, fs, ctx , msg, sharp, canvas, client, iniciator,
 ctx.reply('Загружаем...')
 
 let pingedUser = iniciator
-
+     let XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+let xhr = new XMLHttpRequest();
 
         const args = msg.slice(`/био`).split(/ +/);
 
@@ -49,7 +50,7 @@ debugOut = debugOut + '\n' + obj
   // {
 
    let User = await bot.telegram.getChat(pingedUser)
-
+let useravatar = await bot.telegram.getUserProfilePhotos(pingedUser)
 console.log('p1')
 //АЧВИКИ
 gctx.font = '30px "ArialRound"'
@@ -140,7 +141,7 @@ InputMassive = lastActive.split(' ');
   InputMassive = ['2022-05-20T00:00:00.000Z','0']
 }
 console.log('p2.2')
-let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90]
+let activeDays = [0,2,4,7,10,14,18,21,25,31,45,60,90, -1]
 
 gctx.font = '30px "ArialRound"'
     gctx.strokeStyle = 'white';
@@ -161,6 +162,10 @@ gctx.textAlign = 'left'
 gctx.textAlign = 'center'
         gctx.fillText(lastActiveLvl + ' уровень', 827, 400)
 
+              if (lastActiveLvl > 12)
+              {
+                lastActiveLvl = 12
+              }
 
         gctx.font = '33px "ArialRound"'
 
@@ -169,8 +174,10 @@ gctx.textAlign = 'left'
         gctx.fillText('Повседневность', 689, 320)
         gctx.strokeText('Повседневность', 689, 320)
 debugOut = debugOut + '\n' +'222'
+              console.log(lastActiveLvl)
+              console.log(Math.floor(InputMassive[1] / (activeDays[lastActiveLvl] * 269 + 1) ) + 1)
 sharp('./tasks/lastActiveBar.png')
-        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / activeDays[lastActiveLvl] * 269 + 1 ), height: 30 })
+        .extract({ left: 0, top: 0, width: Math.floor(InputMassive[1] / (activeDays[lastActiveLvl] * 269 + 1) ) + 1, height: 30 })
       .toBuffer()
             .then(function(outputBufferAct1) {
 
@@ -328,7 +335,7 @@ let barSize = 1
     }
 // console.log(counterGlobal)
   }
-
+console.log('p6')
   if (neededExp > 450) { neededExp = 450 }
   
   debugOut = debugOut + '\n' +'NEEDED / CURRENT ' + neededExp + '/' + currentGlobalExp
@@ -362,14 +369,15 @@ sharp(grandPath)
 
 gctx.font = '50px "Main"'
     gctx.textAlign = 'left'
-
+console.log('p7')
 fontsize = 70
-let nameLength = User.tag.length
-var request = require('request').defaults({ encoding: null });
- request.get(User.displayAvatarURL({ format: "png"}, {size: 300}), function (err, res, body) {
+              
+let nameLength = ctx.from.username.length
+              console.log(ctx.from)
 
 
- 
+
+ console.log('p8')
 
 
 
@@ -395,8 +403,8 @@ let Themes = obj.themes
 
 
 gctx.font = fontsize + 'px "Main"'
-gctx.fillText(User.tag, 245, 110)
-debugOut = debugOut + '\n' +'Тег: ' + User.tag
+gctx.fillText(ctx.from.username, 245, 110)
+debugOut = debugOut + '\n' +'Тег: ' + ctx.from.username
 
 gctx.font = '40px "ArialRound"'
     gctx.strokeStyle = 'white';
@@ -610,8 +618,32 @@ console.log(sticker2.size)
 
 .toBuffer().then(function(stick5)
 {
+  console.log('AVATAR FUNC VVVV')
+// console.log(useravatar.photos[0])
 
-console.log('sdasa')
+
+  let httprequest = 'https://api.telegram.org/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/getFile?file_id=AgACAgIAAxUAAWNwHZFaD0jxN7O4c1ZX3Iz3CUa1AALgpzEbFQcnN0Sg365ZfWZdAQADAgADYQADKwQ ';
+
+xhr.open('GET', httprequest, true);
+const http = require('http');
+  xhr.send();
+xhr.onreadystatechange = function() {  // (3)
+    if (xhr.readyState != 4) return;
+
+
+  if (xhr.status != 200) {
+    console.log(xhr.status + ': ' + xhr.statusText);
+  } else {
+    console.log(xhr.responseText);
+  }
+  console.log(xhr.responseText)
+
+  var request = require('request').defaults({ encoding: null });
+ request.get('http://api.telegram.org/file/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/photos/file_0.jpg', function (err, res, body) {
+
+//https://api.telegram.org/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/getFile?file_id=AgACAgIAAxUAAWNwHZFaD0jxN7O4c1ZX3Iz3CUa1AALgpzEbFQcnN0Sg365ZfWZdAQADAgADYQADKwQ  
+  //https://api.telegram.org/file/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/<file_path>
+  //////////////////////АВАТАРКА В ШАРП НИЖЕ ВПИХНУТЬ
 sharp(body)
 .resize(171, 171)
 .composite([
@@ -625,8 +657,8 @@ sharp(body)
             .then(function(body2) {
 
 
-sharp(body2)
-.composite([{ input: "./Images/testcircler3.png", top: 0, left: 0, blend: 'xor'},])
+sharp("./Images/testcircler3.png")
+.composite([{ input: body2, top: 0, left: 0, blend: 'xor'},])
 .toBuffer()
             .then(function(body3) {
 
@@ -672,10 +704,11 @@ sharp.cache(false);
             {input: stick4, left: sticker4.position[0], top: sticker4.position[1]},
             {input: stick5, left: sticker5.position[0], top: sticker5.position[1]}
             ])
+            .toFormat('png')
             .toBuffer()
             .then(function(outputBuffer) {
-              // ctx.replyWithPhoto({photo: outputBuffer})
-              ctx.reply('DONE')
+              ctx.replyWithPhoto({source: outputBuffer})
+              // ctx.reply('DONE')
 
               })
               .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
@@ -706,7 +739,7 @@ sharp.cache(false);
             .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
          
           
-          })
+})}})
               .catch(err => { interaction.reply('1Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
             })
             .catch(err => { interaction.reply('2Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
@@ -724,7 +757,7 @@ sharp.cache(false);
 
 
 
-        })
+        
        
             })
  .catch(err => { interaction.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });

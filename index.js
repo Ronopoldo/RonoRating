@@ -1,5 +1,6 @@
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const fs = require("fs");
+console.log('ae')
 const axios = require("axios");
 const sharp = require("sharp");
 
@@ -25,25 +26,9 @@ let client; {
 const process = require('process');
   
 
-if (require('../isServer') == 'false')
-{}else
-{
-try {
-  
-  // Change the directory
-  process.chdir('./RonoRating');
-  console.log("directory has successfully been changed");
-} catch (err) {
-      
-  // Printing error if occurs
-  console.error("error while changing directory");
-}
-}
 
 
 
-
-const { token } = require('../config.json');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -118,7 +103,7 @@ console.log(msgid)
   console.log(updData)
   dbmsg.edit(updData)
 }
-
+console.log('oe')
 async function isExist(id)
   {
     let userlist = await JSON.parse(fs.readFileSync('./data/dbsetup'))
@@ -163,7 +148,7 @@ let NeededXP = 5
 let CycleNum = -1
 
 
-
+console.log('1')
 
 // const test = require("./src/test");
 const shopCommand = require("./src/shop");
@@ -198,7 +183,7 @@ const cardCommand = require("./src/card");
 
 const { Telegraf } = require('telegraf')
 
-const bot = new Telegraf('5609207584:AAFDJpUj5bQRyOalJ_eADL-ZsEbAHPmCBB8')
+const bot = new Telegraf( process.env['TELEGRAM_TOKEN'])
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 
@@ -253,16 +238,16 @@ bot.command('card', async (ctx) =>
 
 
 
+client.login(process.env['DISCORD_TOKEN']);
 
 
-
-
+console.log('2')
 
 client.on("ready", async() =>
-{
-    console.log('DISCORD LOADED')
+{ 
     bot.launch()
     console.log('DONE')
+    console.log('DISCORD LOADED')
+    
 })
 
-client.login(require('../config.json').token);
