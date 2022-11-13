@@ -619,11 +619,15 @@ console.log(sticker2.size)
 .toBuffer().then(function(stick5)
 {
   console.log('AVATAR FUNC VVVV')
-// console.log(useravatar.photos[0])
+console.log(useravatar.photos[0][0].file_id)
+
+console.log()
+  console.log('https://api.telegram.org/bot'+ process.env['TELEGRAM_TOKEN']+ '/getFile?file_id=' + useravatar.photos[0][0].file_id)
+  console.log()
+  let httprequest = 'https://api.telegram.org/bot'+ process.env['TELEGRAM_TOKEN']+ '/getFile?file_id=' + useravatar.photos[0][0].file_id;
 
 
-  let httprequest = 'https://api.telegram.org/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/getFile?file_id=AgACAgIAAxUAAWNwHZFaD0jxN7O4c1ZX3Iz3CUa1AALgpzEbFQcnN0Sg365ZfWZdAQADAgADYQADKwQ ';
-
+  
 xhr.open('GET', httprequest, true);
 const http = require('http');
   xhr.send();
@@ -634,12 +638,12 @@ xhr.onreadystatechange = function() {  // (3)
   if (xhr.status != 200) {
     console.log(xhr.status + ': ' + xhr.statusText);
   } else {
-    console.log(xhr.responseText);
+    console.log(xhr.responseText.file_path);
   }
-  console.log(xhr.responseText)
+  console.log('http://api.telegram.org/file/bot' + process.env['TELEGRAM_TOKEN'] + '/' + JSON.parse(xhr.responseText).result.file_path)
 
   var request = require('request').defaults({ encoding: null });
- request.get('http://api.telegram.org/file/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/photos/file_0.jpg', function (err, res, body) {
+ request.get('http://api.telegram.org/file/bot' + process.env['TELEGRAM_TOKEN'] + '/' + JSON.parse(xhr.responseText).result.file_path, function (err, res, body) { 
 
 //https://api.telegram.org/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/getFile?file_id=AgACAgIAAxUAAWNwHZFaD0jxN7O4c1ZX3Iz3CUa1AALgpzEbFQcnN0Sg365ZfWZdAQADAgADYQADKwQ  
   //https://api.telegram.org/file/bot5609207584:AAEQPn1tOddDbwQDRshtObsyunSA6l3lDys/<file_path>
