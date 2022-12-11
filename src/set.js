@@ -1,8 +1,10 @@
-async function setCommand(fs, msg, ctx, sharp, canvas, args, inciator, isExist, getData, putData, debug) {
+async function setCommand(fs, msg, ctx, sharp, canvas, inciator, isExist, getData, putData, debug) {
     if (isExist(inciator))
 {
   try{
+    const args = msg.message.text.slice(`/био`).split(/ +/);
     let obj = await getData(inciator)
+    await console.log(obj)
     let ThemeMassive = obj.themes
     if (fs.existsSync('./Background/' + args[1]))
     {
@@ -12,13 +14,13 @@ async function setCommand(fs, msg, ctx, sharp, canvas, args, inciator, isExist, 
         let desc = fs.readFileSync('./Background/' + args[1] + '/description', "utf8");
         
         msg.reply('**__Тема успешно установлена!!__**\nОписание: `' + desc + '`').catch(err => {debug(msg, err, obj)});
-        msg.channel.send({files: ["./Background/" + args[1] + "/image.png"]}).catch(err => {});
-//
+        msg.replyWithPhoto({source: "./Background/" + args[1] + "/image.png"})
+//["./Background/" + args[1] + "/image.png"]
         putData(inciator, obj)
       }else{
         msg.reply('У тебя нету этой темы!').catch(err => {});}
     }else{msg.reply('Не найдено темы!').catch(err => {});}
-  }catch(err){debug(msg, err, obj)}
+  }catch(err){console.log(err)}
   }
 }
 

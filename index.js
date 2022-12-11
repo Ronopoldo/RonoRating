@@ -76,7 +76,7 @@ async function putData(userid, obj)
   const managment = client.guilds.cache.get("968122042765422682");
 const db = managment.channels.cache.get("968123915920617472");
 const log = managment.channels.cache.get("978739540736999444");
-  
+  console.log(123)
   let userlist = JSON.parse(fs.readFileSync('./data/dbsetup'))
   let msgid = userlist[userid]
   let dbmsg = await db.messages.fetch(msgid)
@@ -152,13 +152,13 @@ console.log('1')
 
 // const test = require("./src/test");
 const shopCommand = require("./src/shop");
-// const invCommand = require("./src/inventory");
+const invCommand = require("./src/inventory");
 // const startCommand = require("./src/start");
 const calculateUserData = require("./src/calculateUserData");
 const cardCommand = require("./src/card");
 // const claimCommand = require("./src/claim");
 // const buyCommand = require("./src/buy")
-// const setCommand = require("./src/set")
+const setCommand = require("./src/set")
 // const respeccCommand = require("./src/respecc")
 // const oplotCommand = require("./src/oplot")
 // const giftCommand = require("./src/gift")
@@ -206,7 +206,31 @@ bot.command('shop', async (ctx) =>
 {
     if (ctx.chat.id == '-800289565')
     {
-        await ctx.reply(ctx.message)
+        await shopCommand.shopCommand(fs, ctx, gctx, sharp, canvas, ctx.message.text.slice(`/био`).split(/ +/)[1], ctx.from.id, getData, putData, isExist, debug, bot)
+    }
+})
+
+
+bot.command('set', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+      setCommand.setCommand(fs, ctx, gctx, sharp, canvas, ctx.from.id, isExist, getData, putData, debug)
+    }
+})
+
+
+
+bot.command('inventory', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+      
+      invCommand.invCommand(fs, ctx, gctx, sharp, canvas, client, ctx.message.text.slice(`/био`).split(/ +/)[1], ctx.from.id,isExist, getData, debug, bot) 
     }
 })
 

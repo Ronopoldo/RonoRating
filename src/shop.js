@@ -1,7 +1,13 @@
-async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, MessageButton, shopPage, iniciatorID, isButton, getData, putData, isExist, debug) {
+async function shopCommand(fs, msg, ctx, sharp, canvas, shopPage, iniciatorID, getData, putData, isExist, debug) {
   console.log(await isExist(iniciatorID))
   if (await isExist(iniciatorID) == true) {
+  let isButton = false
 
+if (isNaN(Number(shopPage)) == true)
+        {
+          shopPage = 1
+        }
+    
     let obj = await getData(iniciatorID)
     console.log('Галачька')
     let shopNames = []
@@ -29,7 +35,7 @@ async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, Messag
       if (isButton == false) {
         msg.reply('Загружаем...').catch(err => { }); //, components: [row] 
       } else {
-        msg.edit('Загружаем...').catch(err => { });
+        msg.reply('Загружаем...').catch(err => { });
       }
 
       let totalArray = ['empty', 'empty', 'empty', 'empty']
@@ -166,53 +172,53 @@ async function shopCommand(fs, msg, ctx, sharp, canvas, MessageActionRow, Messag
         let activateBegin = false
 
 
-                let btn3 = new MessageButton()
-          .setCustomId("SHOP " + iniciatorID + ' ' + beginName.toString())
-          .setDisabled(activateBegin)
-          .setLabel('В начало')
-          .setStyle('PRIMARY');
+//                 let btn3 = new MessageButton()
+//           .setCustomId("SHOP " + iniciatorID + ' ' + beginName.toString())
+//           .setDisabled(activateBegin)
+//           .setLabel('В начало')
+//           .setStyle('PRIMARY');
 
-        console.log((Number(shopPage)))
-        if (shopPage == 1 || shopPage == 2) {
-          btn3 = new MessageButton()
-          .setCustomId('FAILEDBEGIN')
-          .setDisabled(true)
-          .setLabel('В начало')
-          .setStyle('SECONDARY');
-        }
-        console.log('a')
+//         console.log((Number(shopPage)))
+//         if (shopPage == 1 || shopPage == 2) {
+//           btn3 = new MessageButton()
+//           .setCustomId('FAILEDBEGIN')
+//           .setDisabled(true)
+//           .setLabel('В начало')
+//           .setStyle('SECONDARY');
+//         }
+//         console.log('a')
 
-        let endName = (Math.floor(shopNames.length / 4)).toString()
-        let activateEnd = false
-
-
-let btn4 = new MessageButton()
-          .setCustomId("SHOP " + iniciatorID + ' ' + endName)
-          .setDisabled(activateEnd)
-          .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
-          .setStyle('PRIMARY');
-
-        if ((shopPage == Math.floor(shopNames.length / 4)) || (shopPage == (Math.floor(shopNames.length / 4) - 1))) {
- btn4 = new MessageButton()
-          .setCustomId('FAILEDEND')
-          .setDisabled(true)
-          .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
-          .setStyle('SECONDARY');
-
-        }
-
-        const btn1 = new MessageButton()
-          .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) + 1).toString())
-          .setLabel('Вперёд')
-          .setDisabled(isDisabledEnd)
-          .setStyle('SUCCESS');
+//         let endName = (Math.floor(shopNames.length / 4)).toString()
+//         let activateEnd = false
 
 
-        const btn2 = new MessageButton()
-          .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) - 1).toString())
-          .setDisabled(isDisabled)
-          .setLabel('Назад')
-          .setStyle('SUCCESS');
+// let btn4 = new MessageButton()
+//           .setCustomId("SHOP " + iniciatorID + ' ' + endName)
+//           .setDisabled(activateEnd)
+//           .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
+//           .setStyle('PRIMARY');
+
+//         if ((shopPage == Math.floor(shopNames.length / 4)) || (shopPage == (Math.floor(shopNames.length / 4) - 1))) {
+//  btn4 = new MessageButton()
+//           .setCustomId('FAILEDEND')
+//           .setDisabled(true)
+//           .setLabel('В конец (' + Math.floor(shopNames.length / 4) + ')')
+//           .setStyle('SECONDARY');
+
+//         }
+
+//         const btn1 = new MessageButton()
+//           .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) + 1).toString())
+//           .setLabel('Вперёд')
+//           .setDisabled(isDisabledEnd)
+//           .setStyle('SUCCESS');
+
+
+//         const btn2 = new MessageButton()
+//           .setCustomId("SHOP " + iniciatorID + ' ' + (Number(shopPage) - 1).toString())
+//           .setDisabled(isDisabled)
+//           .setLabel('Назад')
+//           .setStyle('SUCCESS');
 
 
 
@@ -223,9 +229,14 @@ let btn4 = new MessageButton()
 
 
         // msg.reply(shopPage + '.' + btn1.customId + ' | ' + btn2.customId + ' | ' + btn3.customId + ' | ' + btn4.customId)
-        const row = new MessageActionRow()
-          .addComponents(btn3, btn2, btn1, btn4);
 
+        
+        // const row = new MessageActionRow()
+        //   .addComponents(btn3, btn2, btn1, btn4);
+
+
+
+        
         // msg.reply({ content: 'Pong!', components: [row] });
 
         sharp.cache(false);
@@ -261,11 +272,11 @@ let btn4 = new MessageButton()
               console.log('NOTBUTTON')
               if (msg.user != undefined)
               {
-              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { console.log(err) });
+              msg.replyWithPhoto({source: outputBuffer}).catch(err => { console.log(err) });
 
               }else{
               console.log('123')
-              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { }); //, components: [row] 
+              msg.replyWithPhoto({source: outputBuffer}).catch(err => { }); //, components: [row] 
               }
             } else {
               console.log('456')
@@ -275,18 +286,18 @@ let btn4 = new MessageButton()
               //   msg.reply('1')
               // }
                       console.log('EEEEEEEEEEEEEEEEEEEEEEE________________')
-                      msg.edit('Загружаем')
-              msg.removeAttachments()
-              msg.edit('Загружено!')
+              //         msg.edit('Загружаем')
+              // msg.removeAttachments()
+              // msg.edit('Загружено!')
 
               // content: 'Страница: ' + shopPage,
 
-              msg.edit({ files: [outputBuffer], components: [row] }).catch(err => { console.log("АШЫПКА: " + err) });
+              msg.replyWithPhoto({source: outputBuffer}).catch(err => { console.log("АШЫПКА: " + err) });
 
               console.log('789')
             }
           })
-          .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
+          .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err) });
       })
       
 

@@ -1,11 +1,17 @@
 const { debug } = require("console");
 
-async function invCommand(fs, msg, ctx, sharp, canvas, client, pg, iniciatorID, pingedUser,  MessageActionRow, MessageButton, isExist, getData, debug) 
+async function invCommand(fs, msg, ctx, sharp, canvas, client, pg, iniciatorID, isExist, getData, debug, bot) 
 {
+  console.log('111')
                     if (await isExist(iniciatorID) == true) 
       {
-
-
+const args = msg.message.text.slice(`/био`).split(/ +/);
+        let pingedUser = iniciatorID
+        if (isNaN(Number(pg)) == true)
+        {
+          pg = 1
+        }
+        console.log('112')
 let  debugOut = ''
  debugOut = debugOut + '\n' + 'АЙДИ: ' + pingedUser
    if (await isExist(pingedUser) == true)
@@ -16,17 +22,20 @@ let  debugOut = ''
      pingedUser = iniciatorID
 
    }
+        console.log('113')
       //  msg.reply(pingedUser + '|' + pg)
-    client.users.fetch(pingedUser).then(async User => 
-  {
+    //client.users.fetch(pingedUser).then(async User => 
+  //{
+
+    let User = await bot.telegram.getChat(pingedUser)
                 if (iniciatorID != '899380887282675743') {
         msg.reply('Загружаем...').catch(err => { }); //, components: [row] 
       } else {
         msg.edit('Загружаем...').catch(err => { });
       }
-
+console.log(1)
     let obj = await getData(pingedUser)
-
+console.log(2)
     ctx.font = '50px "Main"'
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
@@ -183,57 +192,40 @@ let stickersList = ['./Images/Blank.png', './Images/Blank.png', './Images/Blank.
 
 console.log(totalType)
 
-let previous = new MessageButton()
-let next = new MessageButton()
+// let previous = new MessageButton()
+// let next = new MessageButton()
 
-debugOut = debugOut + '\n' + "INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser
-if (Number(pg) <= 2) { activateBegin = true }
-if (Number(pg) == 1  ) { previous
-          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV1')
-          .setDisabled(true)
-          .setLabel('Назад')
-          .setStyle('PRIMARY'); }else
-          {
+// debugOut = debugOut + '\n' + "INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser
+// if (Number(pg) <= 2) { activateBegin = true }
+// if (Number(pg) == 1  ) { previous
+//           .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV1')
+//           .setDisabled(true)
+//           .setLabel('Назад')
+//           .setStyle('PRIMARY'); }else
+//           {
 
-            previous
-          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV2')
-          .setDisabled(false)
-          .setLabel('Назад')
-          .setStyle('PRIMARY');
+//             previous
+//           .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)-1).toString() + ' ' + pingedUser + ' PREV2')
+//           .setDisabled(false)
+//           .setLabel('Назад')
+//           .setStyle('PRIMARY');
 
-          }
-if (Number(pg) >= (Math.floor(UserHave.length/4)+1) - 2) { activateEnd = true }
-if (Number(pg) > (Math.floor(UserHave.length/4)+1) - 1) 
-{
-next
-          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
-          .setDisabled(true)
-          .setLabel('Вперёд')
-          .setStyle('PRIMARY');
-}else{
-  next
-          .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
-          .setDisabled(false)
-          .setLabel('Вперёд')
-          .setStyle('PRIMARY');
-}
-
-
-
-
-
-
-
-let begin = new MessageButton()
-          .setCustomId("INV " + iniciatorID + ' 1 ' + pingedUser + ' BEGIN')
-          .setDisabled(activateBegin)
-          .setLabel('В начало')
-          .setStyle('DANGER');
-let end = new MessageButton()
-          .setCustomId("INV " + iniciatorID + ' ' + (Math.floor(UserHave.length/4)+1) + ' ' + pingedUser + ' END')
-          .setDisabled(activateEnd)
-          .setLabel('В конец (' + (Math.floor(UserHave.length/4)+1) + ')')
-          .setStyle('DANGER');
+//           }
+// if (Number(pg) >= (Math.floor(UserHave.length/4)+1) - 2) { activateEnd = true }
+// if (Number(pg) > (Math.floor(UserHave.length/4)+1) - 1) 
+// {
+// next
+//           .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
+//           .setDisabled(true)
+//           .setLabel('Вперёд')
+//           .setStyle('PRIMARY');
+// }else{
+//   next
+//           .setCustomId("INV " + iniciatorID + ' ' + (Number(pg)+1).toString() + ' ' + pingedUser + ' NEXT')
+//           .setDisabled(false)
+//           .setLabel('Вперёд')
+//           .setStyle('PRIMARY');
+// }
 
 
 
@@ -241,9 +233,26 @@ let end = new MessageButton()
 
 
 
+// let begin = new MessageButton()
+//           .setCustomId("INV " + iniciatorID + ' 1 ' + pingedUser + ' BEGIN')
+//           .setDisabled(activateBegin)
+//           .setLabel('В начало')
+//           .setStyle('DANGER');
+// let end = new MessageButton()
+//           .setCustomId("INV " + iniciatorID + ' ' + (Math.floor(UserHave.length/4)+1) + ' ' + pingedUser + ' END')
+//           .setDisabled(activateEnd)
+//           .setLabel('В конец (' + (Math.floor(UserHave.length/4)+1) + ')')
+//           .setStyle('DANGER');
 
-const row = new MessageActionRow()
-          .addComponents(begin, previous, next, end);
+
+
+
+
+
+
+
+// const row = new MessageActionRow()
+//           .addComponents(begin, previous, next, end);
 
 canvas.toBuffer((err, out) => { debugOut = debugOut + '\n' + 'The PNG file was created.' 
 
@@ -276,10 +285,10 @@ sharp.cache(false);
 == null || msg.applicationId == undefined)
                             {
               debugOut = debugOut + '\n' + '123'
-              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + err}) 
+              msg.replyWithPhoto({source: outputBuffer}).catch(err => { debugOut = debugOut + '\n' + err}) 
                             }else{
                               
-              msg.channel.send({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + "АШЫПКА: " + err });
+              msg.reply({ files: [outputBuffer], components: [row] }).catch(err => { debugOut = debugOut + '\n' + "АШЫПКА: " + err });
                             }
             } else {
               debugOut = debugOut + '\n' + '456'
@@ -293,9 +302,9 @@ sharp.cache(false);
 
             debug(msg, debugOut, obj)
               })
-              .catch(err => { msg.channel.send('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {debugOut = debugOut + '\n' + err}) });
+              .catch(err => { msg.reply('Сожалеем, но произошла ошибка при загрузке карточки!\nКод: ' + err).catch(err => {debugOut = debugOut + '\n' + err}) });
         });
-    })
+    //})
   }
 }
 
