@@ -156,8 +156,8 @@ const invCommand = require("./src/inventory");
 // const startCommand = require("./src/start");
 const calculateUserData = require("./src/calculateUserData");
 const cardCommand = require("./src/card");
-// const claimCommand = require("./src/claim");
-// const buyCommand = require("./src/buy")
+const claimCommand = require("./src/claim");
+const buyCommand = require("./src/buy")
 const setCommand = require("./src/set")
 // const respeccCommand = require("./src/respecc")
 // const oplotCommand = require("./src/oplot")
@@ -166,8 +166,8 @@ const setCommand = require("./src/set")
 // const DMprocessing = require("./src/DMprocessing")
 // const balCommand = require("./src/bal")
 // const badgesCommand = require("./src/badges")
-// const setbadgeCommand = require("./src/setbadge")
-// const setbadge2Command = require("./src/setbadge2")
+const setbadgeCommand = require("./src/setbadge")
+const setbadge2Command = require("./src/setbadge2")
 // const transferCommand = require("./src/transfer")
 // const exportCommand = require("./src/export")
 // const jsCommand = require("./src/javascript")
@@ -221,6 +221,48 @@ bot.command('set', async (ctx) =>
     }
 })
 
+bot.command('badge', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+setbadgeCommand.setbadgeCommand(fs, ctx, gctx, sharp, canvas, ctx.message.text.slice(`/био`).split(/ +/), isExist, getData, putData, ctx.from.id)
+    }
+})
+
+
+bot.command('badge2', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+setbadge2Command.setbadge2Command(fs, ctx, gctx, sharp, canvas, ctx.message.text.slice(`/био`).split(/ +/), isExist, getData, putData, ctx.from.id)
+    }
+})
+
+
+bot.command('claim', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+claimCommand.claimCommand(fs, ctx, gctx, sharp, canvas, client, getData, putData, isExist, ctx.from.id)
+    }
+})
+
+
+bot.command('buy', async (ctx) => 
+{
+    if (ctx.chat.id == '-800289565')
+    {
+        console.log('started')
+      console.log(ctx.from.id)
+      buyCommand.buyCommand(fs, ctx, gctx, sharp, canvas, ctx.from.id, getData, putData, isExist)
+    }
+})
 
 
 bot.command('inventory', async (ctx) => 

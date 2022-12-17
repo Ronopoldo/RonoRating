@@ -1,4 +1,4 @@
-async function setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, iniciator, debug) {
+async function setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getData, putData, iniciator) {
 
   
     if (await isExist(iniciator) == true)
@@ -7,7 +7,7 @@ async function setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getDa
   try{
     let obj = await getData(iniciator)
 
-    debug(msg, 'popa' + iniciator + '\npisya', obj)
+    
 
     let ThemeMassive = obj.badges
     if (fs.existsSync('./Badges/' + args[1] + '.png'))
@@ -17,12 +17,12 @@ async function setbadgeCommand(fs, msg, ctx, sharp, canvas, args, isExist, getDa
         obj.config.badge1 = args[1]
         putData(iniciator, obj)
         msg.reply('**__Значок успешно установлен!!__**').catch(err => {});
-        msg.channel.send({files: ["./Badges/" + args[1] + ".png"]}).catch(err => {});
+        msg.reply({source: "./Badges/" + args[1] + ".png"}).catch(err => {});
 //
       }else{
         msg.reply('У тебя нету этого значка!').catch(err => {});}
     }else{msg.reply('Не найдено значка!').catch(err => {});}
-  }catch(err){msg.channel.send(err + ' . ')}
+  }catch(err){msg.reply(err + ' . ')}
   }
 }
 

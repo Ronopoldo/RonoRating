@@ -7,7 +7,7 @@ async function claimCommand(fs, msg, ctx, sharp, canvas, client, getData, putDat
     let obj = await getData(iniciator)
     let userThemes = obj.themes
        
-    const args = msg.content.slice(`/био`).split(/ +/);
+    const args = msg.message.text.slice(`/био`).split(/ +/);
     if (args[1] == '2022pixel')
     {
       if (userThemes.includes('2022pixel'))
@@ -24,6 +24,8 @@ async function claimCommand(fs, msg, ctx, sharp, canvas, client, getData, putDat
       }
       console.log(iniciator)
       putData(iniciator, obj)
+    }else{
+      msg.reply('Не найдено темы..')
     }
   
   }catch(err){ msg.reply('Ошибка: ' + err).catch(err => {}); }

@@ -9,7 +9,7 @@ async function buyCommand(fs, msg, ctx, sharp, canvas, iniciator, getData, putDa
      let UserThemes = obj.themes
 let ShopThemes = fs.readdirSync('./Background')
 
-    const args = msg.content.slice(`/био`).split(/ +/);
+    const args = msg.message.text.slice(`/био`).split(/ +/);
     if (UserThemes.includes(args[1]))
     {
       msg.reply('У тебя уже есть эта тема!').catch(err => {});
@@ -70,7 +70,7 @@ let ShopThemes = fs.readdirSync('./Background')
     }
   }
   
-  }catch(err){ msg.channel.send('Хей! Скорее всего у тебя неправильный ввод! Ввод доолжен быть в формате `/buy <ID ТЕМЫ>`\nОшибка: ' + err).catch(err => {console.log(err)}); }
+  }catch(err){ msg.reply('Хей! Скорее всего у тебя неправильный ввод! Ввод доолжен быть в формате `/buy <ID ТЕМЫ>`\nОшибка: ' + err).catch(err => {console.log(err)}); }
 
 }
 
