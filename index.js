@@ -26,12 +26,21 @@ let client; {
 const process = require('process');
   
 
-
+try {
+  
+  // Change the directory
+  process.chdir('./RonoRating');
+  console.log("directory has successfully been changed");
+} catch (err) {
+      
+  // Printing error if occurs
+  console.error("error while changing directory");
+}
 
 
 
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
 
 // Place your client and guild ids here
 const clientId = '899380887282675743';
@@ -104,9 +113,12 @@ console.log(msgid)
   dbmsg.edit(updData)
 }
 console.log('oe')
+
+
 async function isExist(id)
   {
     let userlist = await JSON.parse(fs.readFileSync('./data/dbsetup'))
+    console.log('ISEXIST: ' + id in userlist)
     return id in userlist
   }
 
@@ -183,19 +195,19 @@ const setbadge2Command = require("./src/setbadge2")
 
 const { Telegraf } = require('telegraf')
 
-const bot = new Telegraf( process.env['TELEGRAM_TOKEN'])
+const bot = new Telegraf(process.env['TELEGRAM_TOKEN'])
 bot.start((ctx) => ctx.reply('Welcome'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 
 
 
-bot.on('sticker', (ctx) => ctx.reply('👍'))
+bot.on('sticker', (ctx) => ctx.reply('������'))
 
 
 // // АКТИВ
 // bot.hears(/./, async (ctx) => 
 // {
-//     if (ctx.chat.id == '-800289565')
+//     if (ctx.chat.id == '-1001537684385')
 //     {
 //         console.log(ctx.message.text)
 //         // await calculateUserData.calculateUserData(fs, ctx, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug)
@@ -204,7 +216,7 @@ bot.on('sticker', (ctx) => ctx.reply('👍'))
 
 bot.command('shop', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         await shopCommand.shopCommand(fs, ctx, gctx, sharp, canvas, ctx.message.text.slice(`/био`).split(/ +/)[1], ctx.from.id, getData, putData, isExist, debug, bot)
     }
@@ -213,7 +225,7 @@ bot.command('shop', async (ctx) =>
 
 bot.command('set', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -223,7 +235,7 @@ bot.command('set', async (ctx) =>
 
 bot.command('badge', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -234,7 +246,7 @@ setbadgeCommand.setbadgeCommand(fs, ctx, gctx, sharp, canvas, ctx.message.text.s
 
 bot.command('badge2', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -245,7 +257,7 @@ setbadge2Command.setbadge2Command(fs, ctx, gctx, sharp, canvas, ctx.message.text
 
 bot.command('claim', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -256,7 +268,7 @@ claimCommand.claimCommand(fs, ctx, gctx, sharp, canvas, client, getData, putData
 
 bot.command('buy', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -267,7 +279,7 @@ bot.command('buy', async (ctx) =>
 
 bot.command('inventory', async (ctx) => 
 {
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       console.log(ctx.from.id)
@@ -279,10 +291,11 @@ bot.command('inventory', async (ctx) =>
 
 
 bot.command('card', async (ctx) => 
-{
+{ 
+  console.log(ctx.chat.id)
     // ctx.reply(ctx.message.text)
     // await console.log(await bot.telegram.getChat('@Ronopoldo'))
-    if (ctx.chat.id == '-800289565')
+    if (ctx.chat.id == '-1001537684385')
     {
         console.log('started')
       cardCommand.cardCommand(bot, fs, ctx, ctx.message.text, sharp, canvas, client, ctx.from.id, ctx, isExist, getData, debug, gctx)
@@ -292,9 +305,101 @@ bot.command('card', async (ctx) =>
 
 
 
+bot.command('move', async (ctx) => 
+{ 
+  if (ctx.chat.type == 'private')
+    {
+    let tempOBJ = JSON.parse(fs.readFileSync('./moving/temp.json'))
+    let tempReverse = JSON.parse(fs.readFileSync('./moving/tempReverse.json'))
+  
+    function guidGenerator() {
+      var S4 = function() {
+         return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+      };
+      return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  }
+  
+    let newID = guidGenerator()
+    if (tempOBJ[ctx.from.id] == undefined)
+    {
+      tempOBJ[ctx.from.id] = newID
+      fs.writeFileSync('./moving/temp.json', JSON.stringify(tempOBJ))
+      tempReverse[newID] = ctx.from.id
+      fs.writeFileSync('./moving/tempReverse.json', JSON.stringify(tempReverse))
+      ctx.replyWithHTML('Успешно присвоен ID-токен:\n<code>' + newID + '</code>\n\nОтлично! Теперь скопируйте его и отправьте через Discord в личные сообщения бота (без доп. символов)\n\nRonoRating#6899\n\n<u>ВНИМАНИЕ! НИ В КОЕМ СЛУЧАЕ НЕ ДАВАЙТЕ ВАШ ТОКЕН ДРУГОМУ ПОЛЬЗОВАТЕЛЮ! В ТАКОМ СЛУЧАЕ ОН СМОЖЕТ ЗАБРАТЬ ВАШИ ДАННЫЕ</u>')
+    }else
+    {
+      ctx.replyWithHTML('Ваш ID-токен:\n<code>\n' + tempOBJ[ctx.from.id] + '</code>\nСкопируйте его и отправьте через Discord в личные сообщения бота (без доп. символов)\n\nRonoRating#6899\n\n<u>ВНИМАНИЕ! НИ В КОЕМ СЛУЧАЕ НЕ ДАВАЙТЕ ВАШ ТОКЕН ДРУГОМУ ПОЛЬЗОВАТЕЛЮ! В ТАКОМ СЛУЧАЕ ОН СМОЖЕТ ЗАБРАТЬ ВАШИ ДАННЫЕ</u>')
+    }
+  }else
+  {
+    ctx.reply('Данная команда доступна только в личных сообщениях!\nНЕ ДЕЛИТЕСЬ ВАШИМ ID-токеном С ДРУГИМИ!!')
+  }
+})
+
+client.on('messageCreate', msg => {
+  if (msg.author.id != "899380887282675743"){
+  let tempReverse = JSON.parse(fs.readFileSync('./moving/tempReverse.json'))
+let confirmedJSON = JSON.parse(fs.readFileSync('./moving/confirmed.json'))
+let userData = JSON.parse(fs.readFileSync('./data/dbsetup'))
+
+
+if (userData[msg.author.id] != undefined)
+    {
+  if (tempReverse[msg.content] == undefined)
+  {
+    msg.reply('Пользователь не найден. Проверьте правильность ID')
+  }else
+  {
+    if (confirmedJSON[msg.author.id] == undefined)
+    {
+
+      let tempVar = userData[msg.author.id]
+        
+      confirmedJSON[msg.author.id] = tempReverse[msg.content]
+      fs.writeFileSync('./moving/confirmed.json', JSON.stringify(confirmedJSON))
+
+  
+      userData[tempReverse[msg.content]] = tempVar
+fs.writeFileSync('./data/dbsetup', JSON.stringify(userData))
+
+      
+        tempReverse[msg.content] = undefined
+fs.writeFileSync('./moving/tempReverse.json', JSON.stringify(tempReverse))
+      
+      msg.reply('Поздравляю! Вы успешно подтверждены!\n\nТеперь Вы можете использовать RonoRating и в Discord и в Telegram.\n\nДобро пожаловать назад!')
+    }else{
+      msg.reply('Вы уже подтверждены.')
+    }
+    
+  }
+  }else
+{
+  msg.reply('Похоже, Вы не были зарегистрированы в RonoRating раньше. Пока что команда доступна только для тех, кто был зарегистрирован раньше.')
+}
+}
+})
 
 
 
+
+
+bot.command('edit', async (ctx) => 
+{
+        if (ctx.from.id == '925304597')
+        {
+          let args  = ctx.message.text.slice(`/био`).split(/ +/);
+          let objectData = JSON.parse(ctx.message.text.replace('/edit ' + args[1] + ' ',''))
+
+          console.log(objectData)
+          console.log(args[1])
+        putData(args[1], objectData)
+          ctx.reply('Успешно!')
+        }else{
+          ctx.reply('Прав у тя нет. Подтверждение того, что ты лох по жизни :Р')
+             }
+        
+      });
 
 
 

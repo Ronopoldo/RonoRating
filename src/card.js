@@ -3,7 +3,9 @@ async function cardCommand(bot, fs, ctx , msg, sharp, canvas, client, iniciator,
 // 'use strict';
   {
     const Color = require('color');
-    if (isExist(iniciator))
+    console.log('EXISSTTT')
+    console.log(await isExist(iniciator))
+    if (await isExist(iniciator) == true)
    {
 ctx.reply('Загружаем...')
 
