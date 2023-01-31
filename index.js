@@ -110,6 +110,7 @@ log.send('Обновлены данные ' + userid + ':\n`' + dbmsg.content + 
   let updData = JSON.stringify(obj);
 console.log(msgid)
   console.log(updData)
+  console.log(dbmsg)
   dbmsg.edit(updData)
 }
 console.log('oe')
@@ -337,7 +338,7 @@ bot.command('move', async (ctx) =>
   }
 })
 
-client.on('messageCreate', msg => {
+client.on('messageCreate', async msg => {
   if (msg.author.id != "899380887282675743"){
   let tempReverse = JSON.parse(fs.readFileSync('./moving/tempReverse.json'))
 let confirmedJSON = JSON.parse(fs.readFileSync('./moving/confirmed.json'))
@@ -358,7 +359,9 @@ if (userData[msg.author.id] != undefined)
         
       confirmedJSON[msg.author.id] = tempReverse[msg.content]
       fs.writeFileSync('./moving/confirmed.json', JSON.stringify(confirmedJSON))
-
+    let obj = await getData(msg.author.id)
+      obj.telegramID = tempReverse[msg.content]
+      putData(msg.author.id, obj)
   
       userData[tempReverse[msg.content]] = tempVar
 fs.writeFileSync('./data/dbsetup', JSON.stringify(userData))
@@ -402,7 +405,10 @@ bot.command('edit', async (ctx) =>
       });
 
 
-
+bot.on('message', async (ctx) =>
+          {
+            calculateUserData.calculateUserData(fs, ctx, talkedRecently, getData, isExist, putData, debug);
+          })
 
 
 

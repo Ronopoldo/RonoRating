@@ -1,14 +1,13 @@
-async function calculateUserData(fs, ctx, client, checkCount, sharp, canvas, talkedRecently, getData, isExist, putData, debug) {
-  const guild = client.guilds.cache.get("544902879534907392");
-  if (ctx)
-  {
-    if (await isExist(msg.author.id) == true)
+async function calculateUserData(fs, msg, talkedRecently, getData, isExist, putData, debug) {
+  
+
+    if (await isExist(msg.from.id) == true)
     {
 
-     if (talkedRecently.has(msg.author.id)) {
+     if (talkedRecently.has(msg.from.id)) {
     } else {
       let debugOut = ''
-      let obj = await getData(msg.author.id)
+      let obj = await getData(msg.from.id)
       debugOut = debugOut +'\n' + 'LOL x2'
       let textexp = Number(obj.active.text.exp)
       let textlvl = Number(obj.active.text.lvl)
@@ -139,15 +138,15 @@ let rewards = [0,50,100,150,200,400,500,550,600,1000,700,1000,5000]
 
        obj.money = Math.floor(money)
        debugOut = debugOut +'\n' + JSON.stringify(obj).toString()
-       putData(msg.author.id, obj)
+       putData(msg.from.id, obj)
        debug(msg,debugOut,obj)
     }
-                    talkedRecently.add(msg.author.id);
+                    talkedRecently.add(msg.from.id);
         setTimeout(() => {
-          talkedRecently.delete(msg.author.id);
+          talkedRecently.delete(msg.from.id);
         }, 60000);
   }
-    }
+    
 }
 
 
