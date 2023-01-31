@@ -361,6 +361,7 @@ if (userData[msg.author.id] != undefined)
       fs.writeFileSync('./moving/confirmed.json', JSON.stringify(confirmedJSON))
     let obj = await getData(msg.author.id)
       obj.telegramID = tempReverse[msg.content]
+obj.migrationDate = new Date(new Date().toLocaleDateString("en-US", {timeZone: "Europe/Moscow"}))
       putData(msg.author.id, obj)
   
       userData[tempReverse[msg.content]] = tempVar
