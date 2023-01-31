@@ -366,6 +366,7 @@ if (userData[msg.author.id] != undefined)
       userData[tempReverse[msg.content]] = tempVar
 fs.writeFileSync('./data/dbsetup', JSON.stringify(userData))
 
+
       
         tempReverse[msg.content] = undefined
 fs.writeFileSync('./moving/tempReverse.json', JSON.stringify(tempReverse))
