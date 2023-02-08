@@ -50,7 +50,10 @@ debugOut = debugOut + '\n' + obj
 
   //   client.users.fetch(pingedUser).then(User => 
   // {
-
+if (pingedUser == '136817688' || pingedUser == 136817688)
+     {
+       pingedUser = "925304597"
+     }
    let User = await bot.telegram.getChat(pingedUser)
 let useravatar = await bot.telegram.getUserProfilePhotos(pingedUser)
 console.log('p1')
@@ -373,8 +376,15 @@ gctx.font = '50px "Main"'
     gctx.textAlign = 'left'
 console.log('p7')
 fontsize = 70
+let nameUsed = User.id
+              if ("username" in User)
+              {
+                nameUsed = User.username
+              }
+
+
               
-let nameLength = ctx.from.username.length
+let nameLength = nameUsed.length
               console.log(ctx.from)
 
 
@@ -405,8 +415,8 @@ let Themes = obj.themes
 
 
 gctx.font = fontsize + 'px "Main"'
-gctx.fillText(ctx.from.username, 245, 110)
-debugOut = debugOut + '\n' +'Тег: ' + ctx.from.username
+gctx.fillText(nameUsed, 245, 110)
+debugOut = debugOut + '\n' +'Тег: ' + nameUsed
 
 gctx.font = '40px "ArialRound"'
     gctx.strokeStyle = 'white';
