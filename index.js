@@ -27,13 +27,10 @@ const process = require('process');
   
 
 try {
-  
-  // Change the directory
-  process.chdir('./RonoRating');
+    process.chdir('./RonoRating');
   console.log("directory has successfully been changed");
 } catch (err) {
       
-  // Printing error if occurs
   console.error("error while changing directory");
 }
 
@@ -42,7 +39,6 @@ try {
 const commands = [];
 
 
-// Place your client and guild ids here
 const clientId = '899380887282675743';
 const guildId = '544902879534907392';
 
@@ -202,7 +198,7 @@ bot.help((ctx) => ctx.reply('Send me a sticker'))
 
 
 
-bot.on('sticker', (ctx) => ctx.reply('������'))
+bot.on('sticker', (ctx) => ctx.reply('      '))
 
 
 // // АКТИВ
